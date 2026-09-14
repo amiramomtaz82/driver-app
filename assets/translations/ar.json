@@ -1,15 +1,22 @@
-{"common": {
-  "continue": "متابعة",
-  "login": "تسجيل الدخول",
-  "update": "تحديث",
-  "cancel": "إلغاء",
-  "logout": "تسجيل الخروج",
-  "change": "تغيير",
-  "upload": "رفع",
-  "female": "أنثى",
-  "male": "ذكر",
-  "gender": "النوع"
-},
+{
+  "common": {
+    "continue": "متابعة",
+    "login": "تسجيل الدخول",
+    "update": "تحديث",
+    "cancel": "إلغاء",
+    "logout": "تسجيل الخروج",
+    "change": "تغيير",
+    "upload": "رفع",
+    "female": "أنثى",
+    "male": "ذكر",
+    "gender": "النوع",
+    "done": "تم"
+  },
+  "onboarding": {
+    "welcome_title": "مرحباً بك في",
+    "app_name": "تطبيق مندوب فلوري",
+    "apply_now": "قدم الآن"
+  },
   "auth": {
     "login_title": "تسجيل الدخول",
     "email_label": "البريد الإلكتروني",
@@ -43,6 +50,35 @@
     "confirm_password_hint": "تأكيد كلمة المرور",
     "submitted_title": "تم إرسال طلبك بنجاح!",
     "submitted_desc": "شكراً لتقديم طلبك، سنقوم بمراجعته وسنتواصل معك قريباً."
+  },
+  "orders": {
+    "my_orders": "طلباتي",
+    "recent_orders": "الطلبات الأخيرة",
+    "order_details": "تفاصيل الطلب",
+    "flower_order": "طلب باقة ورد",
+    "order_id": "رقم الطلب",
+    "status": "الحالة",
+    "status_accepted": "تم القبول",
+    "status_picked": "تم الاستلام",
+    "status_arrived": "وصل للموقع",
+    "status_delivered": "تم التوصيل",
+    "status_completed": "مكتمل",
+    "status_cancelled": "ملغي",
+    "pickup_address": "عنوان الاستلام",
+    "user_address": "عنوان العميل",
+    "pickup_location": "موقع الاستلام",
+    "user_location": "موقع العميل",
+    "accept": "قبول",
+    "arrived_at_pickup": "وصلت لنقطة الاستلام",
+    "start_deliver": "بدء التوصيل",
+    "arrived_to_user": "وصلت للعميل",
+    "delivered_to_user": "تم التسليم للعميل",
+    "total": "الإجمالي",
+    "payment_method": "طريقة الدفع",
+    "cash_on_delivery": "الدفع عند الاستلام",
+    "currency_egp": "جنيه",
+    "thank_you": "شكراً لك!!",
+    "order_delivered_successfully": "تم توصيل الطلب بنجاح"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -84,6 +120,8 @@
     "invalid_fields": "يرجى التحقق من البيانات المدخلة وتصحيح الأخطاء.",
     "internal_server_error": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
     "device_id_failed": "فشل في الحصول على معرّف الجهاز.",
+    "email_not_valid": "هذا البريد الإلكتروني غير صحيح",
+    "invalid_password": "كلمة المرور غير صحيحة",
     "validation": {
       "name_required": "الاسم مطلوب.",
       "name_too_short": "يجب ألا يقل الاسم عن حرفين.",

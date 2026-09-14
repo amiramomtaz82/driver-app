@@ -48,10 +48,28 @@ abstract final class AppTheme {
         centerTitle: true,
       ),
       textTheme: TextTheme(
+        // Main Screen Titles ("Welcome!!", "Login", "Your application has been submitted!")
         headlineLarge: AppTextStyles.headlineLarge.copyWith(color: colors.textPrimary),
+
+        // Card headers, Dialog titles, Order numbers ("#123456", "LOGOUT")
         titleMedium: AppTextStyles.titleMedium.copyWith(color: colors.textPrimary),
+
+        // Section Headers ("Pickup address", "User address", "Order details")
+        titleSmall: AppTextStyles.titleSmall.copyWith(color: colors.textPrimary),
+
+        // Input Field Values, Radio Titles, Order Item Names
         bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colors.textPrimary),
+
+        // Descriptions, Subtitles, Address lines
         bodyMedium: AppTextStyles.bodyMedium.copyWith(color: colors.darkGrey),
+
+        // Timestamps, order metadata, and versions ("Wed, 03 Sep 2024", "v 6.3.0")
+        bodySmall: AppTextStyles.caption.copyWith(color: colors.grey),
+
+        // Button text ("Continue", "Accept", "Start deliver")
+        labelLarge: AppTextStyles.button.copyWith(color: colors.white),
+
+        // Floating Labels on TextFields
         labelSmall: AppTextStyles.labelSmall.copyWith(color: colors.darkGrey),
       ),
       ///--------------- Text Field -------------------///
