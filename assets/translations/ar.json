@@ -1,0 +1,34 @@
+{
+  "device_id": "معرّف الجهاز",
+  "device_id_copied": "تم نسخ معرّف الجهاز إلى الحافظة.",
+  "errors": {
+    "something_went_wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "connection_timeout": "انتهت مهلة الاتصال. يرجى المحاولة مرة أخرى.",
+    "no_internet_connection": "لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة.",
+    "invalid_certificate": "شهادة الأمان غير صالحة.",
+    "request_cancelled": "تم إلغاء الطلب.",
+    "check_your_connection": "حدث خطأ ما. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+    "invalid_request": "طلب غير صالح. يرجى التحقق من البيانات المدخلة.",
+    "session_expired": "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+    "no_permission": "ليس لديك الإذن للقيام بهذا الإجراء.",
+    "data_not_found": "البيانات المطلوبة غير موجودة.",
+    "conflict_occurred": "حدث تعارض في البيانات. يرجى المحاولة مرة أخرى.",
+    "invalid_fields": "يرجى التحقق من البيانات المدخلة وتصحيح الأخطاء.",
+    "internal_server_error": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
+    "device_id_failed": "فشل في الحصول على معرّف الجهاز.",
+    "validation": {
+      "name_required": "الاسم مطلوب.",
+      "name_too_short": "يجب ألا يقل الاسم عن حرفين.",
+      "email_required": "البريد الإلكتروني مطلوب.",
+      "email_invalid": "يرجى إدخال بريد إلكتروني صالح.",
+      "password_required": "كلمة المرور مطلوبة.",
+      "password_too_short": "يجب ألا تقل كلمة المرور عن 8 أحرف.",
+      "password_needs_letter": "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل.",
+      "password_needs_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+      "confirm_password_required": "يرجى تأكيد كلمة المرور.",
+      "passwords_do_not_match": "كلمتا المرور غير متطابقتين.",
+      "phone_required": "رقم الهاتف مطلوب.",
+      "phone_invalid": "يرجى إدخال رقم هاتف صالح."
+    }
+  }
+}
