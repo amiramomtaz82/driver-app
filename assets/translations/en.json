@@ -1,4 +1,73 @@
 {
+  "common": {
+    "continue": "Continue",
+    "login": "Login",
+    "update": "Update",
+    "cancel": "Cancel",
+    "logout": "Logout",
+    "change": "Change",
+    "upload": "Upload",
+    "female": "Female",
+    "male": "Male",
+    "gender": "Gender"
+  },
+  "auth": {
+    "login_title": "Login",
+    "email_label": "Email",
+    "email_hint": "Enter your email",
+    "password_label": "Password",
+    "password_hint": "Enter your password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?"
+  },
+  "apply": {
+    "title": "Apply",
+    "welcome_header": "Welcome!!",
+    "welcome_sub": "You want to be a delivery man?\nJoin our team",
+    "country_label": "Country",
+    "first_name_label": "First legal name",
+    "first_name_hint": "Enter first legal name",
+    "second_name_label": "Second legal name",
+    "second_name_hint": "Enter second legal name",
+    "vehicle_type_label": "Vehicle type",
+    "vehicle_number_label": "Vehicle number",
+    "vehicle_number_hint": "Enter vehicle number",
+    "vehicle_license_label": "Vehicle license",
+    "vehicle_license_hint": "Upload license photo",
+    "phone_label": "Phone number",
+    "phone_hint": "Enter phone number",
+    "id_number_label": "ID number",
+    "id_number_hint": "Enter national ID number",
+    "id_image_label": "ID image",
+    "id_image_hint": "Upload ID image",
+    "confirm_password_label": "Confirm password",
+    "confirm_password_hint": "Confirm password",
+    "submitted_title": "Your application has been submitted!",
+    "submitted_desc": "Thank you for providing your application, we will review your application and will get back to you soon."
+  },
+  "profile": {
+    "title": "Profile",
+    "edit_profile": "Edit profile",
+    "vehicle_info": "Vehicle info",
+    "language": "Language",
+    "current_language": "English",
+    "logout_dialog_title": "LOGOUT",
+    "logout_dialog_desc": "Confirm logout!!"
+  },
+  "reset_password": {
+    "title": "Reset password",
+    "current_password_label": "Current password",
+    "current_password_hint": "Current password",
+    "new_password_label": "New password",
+    "new_password_hint": "New password",
+    "confirm_password_label": "Confirm password",
+    "confirm_password_hint": "Confirm password"
+  },
+  "nav": {
+    "home": "Home",
+    "orders": "Orders",
+    "profile": "Profile"
+  },
   "device_id": "Device ID",
   "device_id_copied": "Device ID copied to clipboard.",
   "errors": {

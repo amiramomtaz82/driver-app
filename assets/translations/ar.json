@@ -1,4 +1,72 @@
-{
+{"common": {
+  "continue": "متابعة",
+  "login": "تسجيل الدخول",
+  "update": "تحديث",
+  "cancel": "إلغاء",
+  "logout": "تسجيل الخروج",
+  "change": "تغيير",
+  "upload": "رفع",
+  "female": "أنثى",
+  "male": "ذكر",
+  "gender": "النوع"
+},
+  "auth": {
+    "login_title": "تسجيل الدخول",
+    "email_label": "البريد الإلكتروني",
+    "email_hint": "أدخل بريدك الإلكتروني",
+    "password_label": "كلمة المرور",
+    "password_hint": "أدخل كلمة المرور",
+    "remember_me": "تذكرني",
+    "forgot_password": "هل نسيت كلمة المرور؟"
+  },
+  "apply": {
+    "title": "تقديم الطلب",
+    "welcome_header": "مرحباً!!",
+    "welcome_sub": "هل ترغب في العمل معنا كمندوب توصيل؟\nانضم إلى فريقنا",
+    "country_label": "الدولة",
+    "first_name_label": "الاسم الأول الرسمي",
+    "first_name_hint": "أدخل الاسم الأول الرسمي",
+    "second_name_label": "الاسم الثاني الرسمي",
+    "second_name_hint": "أدخل الاسم الثاني الرسمي",
+    "vehicle_type_label": "نوع المركبة",
+    "vehicle_number_label": "رقم المركبة",
+    "vehicle_number_hint": "أدخل رقم المركبة",
+    "vehicle_license_label": "رخصة المركبة",
+    "vehicle_license_hint": "ارفع صورة الرخصة",
+    "phone_label": "رقم الهاتف",
+    "phone_hint": "أدخل رقم الهاتف",
+    "id_number_label": "الرقم القومي",
+    "id_number_hint": "أدخل الرقم القومي",
+    "id_image_label": "صورة البطاقة",
+    "id_image_hint": "ارفع صورة البطاقة الشخصية",
+    "confirm_password_label": "تأكيد كلمة المرور",
+    "confirm_password_hint": "تأكيد كلمة المرور",
+    "submitted_title": "تم إرسال طلبك بنجاح!",
+    "submitted_desc": "شكراً لتقديم طلبك، سنقوم بمراجعته وسنتواصل معك قريباً."
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "edit_profile": "تعديل الملف الشخصي",
+    "vehicle_info": "بيانات المركبة",
+    "language": "اللغة",
+    "current_language": "العربية",
+    "logout_dialog_title": "تسجيل الخروج",
+    "logout_dialog_desc": "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
+  },
+  "reset_password": {
+    "title": "إعادة تعيين كلمة المرور",
+    "current_password_label": "كلمة المرور الحالية",
+    "current_password_hint": "كلمة المرور الحالية",
+    "new_password_label": "كلمة المرور الجديدة",
+    "new_password_hint": "كلمة المرور الجديدة",
+    "confirm_password_label": "تأكيد كلمة المرور",
+    "confirm_password_hint": "تأكيد كلمة المرور"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "orders": "الطلبات",
+    "profile": "حسابي"
+  },
   "device_id": "معرّف الجهاز",
   "device_id_copied": "تم نسخ معرّف الجهاز إلى الحافظة.",
   "errors": {

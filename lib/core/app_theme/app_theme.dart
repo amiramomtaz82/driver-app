@@ -1,4 +1,5 @@
 // lib/core/theme/app_theme.dart
+import 'package:driver_app/core/app_theme/text_styels.dart';
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 
@@ -46,7 +47,13 @@ abstract final class AppTheme {
         elevation: 0,
         centerTitle: true,
       ),
-
+      textTheme: TextTheme(
+        headlineLarge: AppTextStyles.headlineLarge.copyWith(color: colors.textPrimary),
+        titleMedium: AppTextStyles.titleMedium.copyWith(color: colors.textPrimary),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colors.textPrimary),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(color: colors.darkGrey),
+        labelSmall: AppTextStyles.labelSmall.copyWith(color: colors.darkGrey),
+      ),
       ///--------------- Text Field -------------------///
       inputDecorationTheme: InputDecorationTheme(
         floatingLabelBehavior: FloatingLabelBehavior.always,
