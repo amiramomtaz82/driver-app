@@ -2,26 +2,26 @@ import 'package:equatable/equatable.dart';
 
 enum ApiStatus { initial, loading, success, error }
 
-class Resource<E> extends Equatable {
+class BaseState<E> extends Equatable {
   final E? data;
   final String? errorMessage;
   final ApiStatus status;
 
-  const Resource(this.status, this.data, this.errorMessage);
+  const BaseState(this.status, this.data, this.errorMessage);
 
-  const Resource.loading({this.data})
+  const BaseState.loading({this.data})
       : status = ApiStatus.loading,
         errorMessage = null;
 
-  const Resource.success(this.data)
+  const BaseState.success(this.data)
       : status = ApiStatus.success,
         errorMessage = null;
 
-  const Resource.error(String error, {this.data})
+  const BaseState.error(String error, {this.data})
       : status = ApiStatus.error,
         errorMessage = error;
 
-  const Resource.initial()
+  const BaseState.initial()
       : status = ApiStatus.initial,
         data = null,
         errorMessage = null;
