@@ -3,24 +3,27 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../base/base_cubit.dart';
-
 import '../base/ui_events.dart';
 
-mixin UiEventMixin<T extends StatefulWidget> on State<T> {
-  BaseCubit get cubit;
+mixin UiEventMixin<
+W extends StatefulWidget,
+S,
+E extends UiEvent> on State<W> {
 
-  StreamSubscription<UiEvent>? _subscription;
+  BaseCubit<S, E> get cubit;
+
+  StreamSubscription<E>? _subscription;
 
   @override
   void initState() {
     super.initState();
 
-    _subscription = cubit.uiEvents.listen(
+    _subscription = cubit.eventStream.listen(
       _handleUiEvent,
     );
   }
 
-  void _handleUiEvent(UiEvent event) {
+  void _handleUiEvent(E event) {
     if (!mounted) return;
 
     switch (event) {
@@ -44,7 +47,9 @@ mixin UiEventMixin<T extends StatefulWidget> on State<T> {
         );
 
       case PopEvent():
-        Navigator.of(context).pop(event.result);
+        Navigator.of(context).pop(
+          event.result,
+        );
 
       case ShowDialogEvent():
         showDialog<void>(
@@ -70,7 +75,7 @@ mixin UiEventMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  void onCustomUiEvent(UiEvent event) {}
+  void onCustomUiEvent(E event) {}
 
   @override
   void dispose() {
