@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'config/di/di.dart';
 
+import 'core/app_theme/app_theme.dart';
 import 'core/go_routes/app_routers.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
     );
   }
 }
