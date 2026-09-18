@@ -20,8 +20,6 @@ class DioExceptionMapper {
         return LocaleKeys.errors_invalid_certificate;
       case DioExceptionType.cancel:
         return LocaleKeys.errors_request_cancelled;
-    // The backend returned an error response,
-    //we can map the status code to a user-friendly message
       case DioExceptionType.badResponse:
         return StatusCodeMapper.toMessage(error.response?.statusCode);
       default:

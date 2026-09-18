@@ -19,11 +19,8 @@ class AuthInterceptor extends Interceptor {
       ) async {
     final token = await _secureStorage.read(key: _accessTokenKey);
 
-    // Debug print to confirm whether storage actually holds the token
-    // print('AuthInterceptor -> read token: $token');
 
     if (token != null && token.isNotEmpty) {
-      // Must match Postman: 'Authorization': 'Bearer <token>'
       options.headers['Authorization'] = 'Bearer $token';
     }
 
