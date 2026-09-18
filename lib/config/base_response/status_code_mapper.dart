@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-// Adjust import path to your generated file:
 import '../../generated/locale_keys.g.dart';
 
 
@@ -20,6 +19,6 @@ class StatusCodeMapper {
 
   static String toMessage(int? statusCode) {
     final key = _messages[statusCode] ?? LocaleKeys.errors_something_went_wrong;
-    return key.tr();
+    return tr(key);
   }
 }
