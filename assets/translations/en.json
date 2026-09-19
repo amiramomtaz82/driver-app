@@ -98,6 +98,21 @@
     "confirm_password_label": "Confirm Password",
     "confirm_password_hint": "Confirm new password"
   },
+  "forget_password": {
+    "title": "Password",
+    "email_title": "Forget Password",
+    "email_subtitle": "Please enter the email associated with your account",
+    "otp_title": "Email Verification",
+    "otp_subtitle": "Please enter the code that was sent to your email address",
+    "didnt_receive_code": "Didn't receive the code?",
+    "resend": "Resend",
+    "code_sent": "Code sent successfully",
+    "invalid_code": "Invalid or expired code",
+    "reset_title": "Reset Password",
+    "reset_subtitle": "Password must be at least 8 characters and contain at least one letter and one number",
+    "confirm": "Confirm",
+    "reset_session_expired": "Your reset code has expired. Please request a new one."
+  },
   "nav": {
     "home": "Home",
     "orders": "Orders",
