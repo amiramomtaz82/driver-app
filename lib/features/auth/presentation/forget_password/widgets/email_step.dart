@@ -46,6 +46,7 @@ class _EmailStepState extends State<EmailStep>
           Form(
             key: _formKey,
             child: TextFormField(
+              key: const Key('emailField'),
               initialValue: cubit.state.email,
               onChanged: (v) => cubit.onIntent(EmailChanged(v)),
               validator: Validators.validateEmail,
@@ -62,6 +63,7 @@ class _EmailStepState extends State<EmailStep>
             builder: (context, selected) {
               final (isEmailValid, isLoading) = selected;
               return AuthSubmitButton(
+                key: const Key('sendCodeBtn'),
                 label: LocaleKeys.forget_password_confirm,
                 isLoading: isLoading,
                 onPressed: isEmailValid ? _onConfirm : null,

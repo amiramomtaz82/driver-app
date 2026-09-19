@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/core/constants/endpoints.dart';
-import 'package:driver_app/features/auth/domain/models/message_response_model.dart';
-import 'package:driver_app/features/auth/domain/models/verify_otp_response_model.dart';
+import 'package:driver_app/features/auth/data/models/message_response_model.dart';
+import 'package:driver_app/features/auth/data/models/verify_otp_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 

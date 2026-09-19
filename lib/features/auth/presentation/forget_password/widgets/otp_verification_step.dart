@@ -57,8 +57,9 @@ class _OtpVerificationStepState extends State<OtpVerificationStep>
             ),
           ),
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
                 LocaleKeys.forget_password_didnt_receive_code.tr(),
@@ -77,6 +78,7 @@ class _OtpVerificationStepState extends State<OtpVerificationStep>
                       : context.customColors.grey;
                   final label = LocaleKeys.forget_password_resend.tr();
                   return TextButton(
+                    key: const Key('resendCodeBtn'),
                     onPressed: canResend
                         ? () => cubit.onIntent(const ResendCodeTapped())
                         : null,

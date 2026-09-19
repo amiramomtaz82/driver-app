@@ -4,9 +4,11 @@ import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/core/go_routes/routes_names.dart';
-import 'package:driver_app/features/auth/domain/models/message_response_model.dart';
-import 'package:driver_app/features/auth/domain/models/verify_otp_response_model.dart';
-import 'package:driver_app/features/auth/domain/repo/auth_repo.dart';
+import 'package:driver_app/features/auth/domain/entities/auth_message_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/reset_token_entity.dart';
+import 'package:driver_app/features/auth/domain/use_cases/forget_password_use_case.dart';
+import 'package:driver_app/features/auth/domain/use_cases/reset_password_use_case.dart';
+import 'package:driver_app/features/auth/domain/use_cases/verify_otp_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../config/base/base_cubit.dart';
@@ -16,9 +18,15 @@ import 'forget_password_state.dart';
 
 @injectable
 class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
-  final AuthRepo _authRepo;
+  final ForgetPasswordUseCase _forgetPasswordUseCase;
+  final VerifyOtpUseCase _verifyOtpUseCase;
+  final ResetPasswordUseCase _resetPasswordUseCase;
 
-  ForgetPasswordCubit(this._authRepo) : super(const ForgetPasswordState());
+  ForgetPasswordCubit(
+    this._forgetPasswordUseCase,
+    this._verifyOtpUseCase,
+    this._resetPasswordUseCase,
+  ) : super(const ForgetPasswordState());
 
   static const int resendCooldownSeconds = 30;
 
@@ -58,10 +66,10 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
       ),
     );
 
-    final response = await _authRepo.forgetPassword(email: state.email);
+    final response = await _forgetPasswordUseCase(email: state.email);
 
     switch (response) {
-      case SuccessResponse<MessageResponseModel> s:
+      case SuccessResponse<AuthMessageEntity> s:
         emit(
           state.copyWith(
             sendCodeResource: Resource.success(s.data),
@@ -75,7 +83,7 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
           );
         }
         _startResendCooldown();
-      case ErrorResponse<MessageResponseModel> e:
+      case ErrorResponse<AuthMessageEntity> e:
         emit(state.copyWith(sendCodeResource: Resource.error(e.errMessage)));
         emitEvent(ShowSnackBarEvent(message: e.errMessage, isError: true));
     }
@@ -86,20 +94,20 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
 
     emit(state.copyWith(verifyOtpResource: const Resource.loading()));
 
-    final response = await _authRepo.verifyOtp(
+    final response = await _verifyOtpUseCase(
       email: state.email,
       otpCode: code,
     );
 
     switch (response) {
-      case SuccessResponse<ResetTokenModel> s:
+      case SuccessResponse<ResetToken> s:
         emit(
           state.copyWith(
             verifyOtpResource: Resource.success(s.data),
             step: ForgetPasswordStep.resetPassword,
           ),
         );
-      case ErrorResponse<ResetTokenModel> e:
+      case ErrorResponse<ResetToken> e:
         // The OTP step shows this one inline, so no snackbar event.
         // The backend answers a wrong code with a technical 500, so any
         // server answer means the code was rejected.
@@ -134,17 +142,17 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
 
     emit(state.copyWith(resetPasswordResource: const Resource.loading()));
 
-    final response = await _authRepo.resetPassword(
-      resetToken: resetToken.resetToken,
+    final response = await _resetPasswordUseCase(
+      resetToken: resetToken.token,
       newPassword: state.newPassword,
       confirmNewPassword: state.confirmPassword,
     );
 
     switch (response) {
-      case SuccessResponse<MessageResponseModel> s:
+      case SuccessResponse<AuthMessageEntity> s:
         emit(state.copyWith(resetPasswordResource: Resource.success(s.data)));
         emitEvent(const NavigateReplacementEvent(AppRoutes.login));
-      case ErrorResponse<MessageResponseModel> e:
+      case ErrorResponse<AuthMessageEntity> e:
         emit(
           state.copyWith(resetPasswordResource: Resource.error(e.errMessage)),
         );

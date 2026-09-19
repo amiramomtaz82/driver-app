@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
 import '../../data/data_source/remote_data_source.dart';
-import '../../domain/models/message_response_model.dart';
-import '../../domain/models/verify_otp_response_model.dart';
+import '../../data/models/message_response_model.dart';
+import '../../data/models/verify_otp_response_model.dart';
 import '../client/auth_client.dart';
 
 @Injectable(as: AuthRemoteDataSource)
@@ -17,7 +17,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<ResetTokenModel> verifyOtp({
+  Future<VerifyOtpResponseData> verifyOtp({
     required String email,
     required String otpCode,
   }) async {

@@ -1,6 +1,6 @@
 import 'package:driver_app/config/resource/resource.dart';
-import 'package:driver_app/features/auth/domain/models/message_response_model.dart';
-import 'package:driver_app/features/auth/domain/models/verify_otp_response_model.dart';
+import 'package:driver_app/features/auth/domain/entities/auth_message_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/reset_token_entity.dart';
 import 'package:equatable/equatable.dart';
 
 enum ForgetPasswordStep { email, otp, resetPassword }
@@ -11,9 +11,9 @@ class ForgetPasswordState extends Equatable {
   final String newPassword;
   final String confirmPassword;
   final int resendCooldown;
-  final Resource<MessageResponseModel> sendCodeResource;
-  final Resource<ResetTokenModel> verifyOtpResource;
-  final Resource<MessageResponseModel> resetPasswordResource;
+  final Resource<AuthMessageEntity> sendCodeResource;
+  final Resource<ResetToken> verifyOtpResource;
+  final Resource<AuthMessageEntity> resetPasswordResource;
 
   const ForgetPasswordState({
     this.step = ForgetPasswordStep.email,
@@ -34,7 +34,7 @@ class ForgetPasswordState extends Equatable {
   bool get canResend => resendCooldown == 0 && !sendCodeResource.isLoading;
 
   /// The reset token is only kept while the OTP verification succeeded.
-  ResetTokenModel? get resetToken => verifyOtpResource.data;
+  ResetToken? get resetToken => verifyOtpResource.data;
 
   /// The inline error under the OTP boxes — only while the verify step failed.
   String? get otpErrorMessage =>
@@ -46,9 +46,9 @@ class ForgetPasswordState extends Equatable {
     String? newPassword,
     String? confirmPassword,
     int? resendCooldown,
-    Resource<MessageResponseModel>? sendCodeResource,
-    Resource<ResetTokenModel>? verifyOtpResource,
-    Resource<MessageResponseModel>? resetPasswordResource,
+    Resource<AuthMessageEntity>? sendCodeResource,
+    Resource<ResetToken>? verifyOtpResource,
+    Resource<AuthMessageEntity>? resetPasswordResource,
   }) {
     return ForgetPasswordState(
       step: step ?? this.step,

@@ -51,6 +51,7 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
               spacing: 16,
               children: [
                 TextFormField(
+                  key: const Key('newPasswordField'),
                   initialValue: cubit.state.newPassword,
                   onChanged: (v) => cubit.onIntent(NewPasswordChanged(v)),
                   validator: Validators.validatePassword,
@@ -62,6 +63,7 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
                   ),
                 ),
                 TextFormField(
+                  key: const Key('confirmPasswordField'),
                   initialValue: cubit.state.confirmPassword,
                   onChanged: (v) => cubit.onIntent(ConfirmPasswordChanged(v)),
                   validator: (value) => Validators.validateConfirmPassword(
@@ -87,6 +89,7 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
             builder: (context, selected) {
               final (isFormValid, isLoading) = selected;
               return AuthSubmitButton(
+                key: const Key('resetPasswordBtn'),
                 label: LocaleKeys.forget_password_confirm,
                 isLoading: isLoading,
                 onPressed: isFormValid ? _onConfirm : null,
