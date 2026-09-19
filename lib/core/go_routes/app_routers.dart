@@ -4,13 +4,14 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/forget_password/view/forget_password_view.dart';
 import '../../features/auth/presentation/login/login_view.dart';
 import '../../features/auth/presentation/register/view/register_view.dart';
+import '../../features/auth/presentation/register/view/registeration_success_view.dart';
 import '../../features/home/presentation/view/home_view.dart';
 
 
 
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.register,
+  initialLocation: AppRoutes.registrationSuccess,
   routes: [
     GoRoute(
       path: AppRoutes.login,
@@ -21,6 +22,11 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.register,
       name: AppRoutes.register,
       builder: (context, state) => const RegisterView(),
+    ),
+    GoRoute(
+      path: AppRoutes.registrationSuccess,
+      name: AppRoutes.registrationSuccess,
+      builder: (context, state) => const RegistrationSuccessView(),
     ),
     GoRoute(
       path: AppRoutes.forgotPassword,

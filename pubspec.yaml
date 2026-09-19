@@ -59,6 +59,7 @@ dependencies:
   geocoding: ^4.0.0
   nominatim_flutter: ^0.0.8
   plugin_platform_interface: ^2.1.8
+  image_picker: ^1.1.2
 
 
 dev_dependencies:

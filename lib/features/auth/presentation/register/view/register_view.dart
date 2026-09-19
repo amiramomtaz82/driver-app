@@ -16,6 +16,7 @@ import '../../../domain/entities/vehicle_type_entity.dart';
 import '../manager/register_cubit.dart';
 import '../manager/register_intents.dart';
 import '../manager/register_state.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -39,7 +40,49 @@ class _RegisterViewState extends State<RegisterView>
   final _nationalIdController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
+  Future<void> _showImageSourcePicker({
+    required BuildContext context,
+    required ValueChanged<String> onImagePicked,
+  }) async {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera_outlined),
+              title: const Text('Camera'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? photo = await _picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 80,
+                );
+                if (photo != null) onImagePicked(photo.path);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: const Text('Gallery'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? image = await _picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 80,
+                );
+                if (image != null) onImagePicked(image.path);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -196,13 +239,19 @@ class _RegisterViewState extends State<RegisterView>
                       // 6. Vehicle License Upload
                       _buildUploadTile(
                         label: LocaleKeys.apply_vehicle_license_label.tr(),
-                        hint: state.licensePhotoPath ?? LocaleKeys.apply_vehicle_license_hint.tr(),
+                        hint: state.licensePhotoPath != null
+                            ? state.licensePhotoPath!.split(RegExp(r'[\\/]')).last
+                            : LocaleKeys.apply_vehicle_license_hint.tr(),
+                        isSelected: state.licensePhotoPath != null,
                         onTap: () {
-                          // File picker, then: cubit.onIntent(SetLicensePhotoIntent(path));
+                          _showImageSourcePicker(
+                            context: context,
+                            onImagePicked: (path) =>
+                                cubit.onIntent(SetLicensePhotoIntent(path)),
+                          );
                         },
                       ),
                       const SizedBox(height: 16),
-
                       // 7. Email
                       TextFormField(
                         controller: _emailController,
@@ -242,13 +291,19 @@ class _RegisterViewState extends State<RegisterView>
                       // 10. ID image upload
                       _buildUploadTile(
                         label: LocaleKeys.apply_id_image_label.tr(),
-                        hint: state.idImagePath ?? LocaleKeys.apply_id_image_hint.tr(),
+                        hint: state.idImagePath != null
+                            ? state.idImagePath!.split(RegExp(r'[\\/]')).last
+                            : LocaleKeys.apply_id_image_hint.tr(),
+                        isSelected: state.idImagePath != null,
                         onTap: () {
-                          // File picker, then: cubit.onIntent(SetIdImageIntent(path));
+                          _showImageSourcePicker(
+                            context: context,
+                            onImagePicked: (path) =>
+                                cubit.onIntent(SetIdImageIntent(path)),
+                          );
                         },
                       ),
                       const SizedBox(height: 16),
-
                       // 11. Passwords (side-by-side row matching Figma)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,17 +397,26 @@ class _RegisterViewState extends State<RegisterView>
     required String label,
     required String hint,
     required VoidCallback onTap,
+    bool isSelected = false,
   }) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(5),
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: label,
-          suffixIcon: const Icon(Icons.file_upload_outlined, color: Colors.grey),
+          suffixIcon: Icon(
+            isSelected ? Icons.check_circle_outline : Icons.file_upload_outlined,
+            color: isSelected ? Colors.green : Colors.grey,
+          ),
         ),
         child: Text(
           hint,
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+          style: TextStyle(
+            color: isSelected ? Colors.black87 : Colors.grey.shade600,
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+          ),
           overflow: TextOverflow.ellipsis,
         ),
       ),
