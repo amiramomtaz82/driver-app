@@ -48,3 +48,4 @@ app.*.map.json
 **/*.gr.dart
 .env
 **/*.mocks.dart
+**/build/
