@@ -28,8 +28,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<List<VehicleTypeDto>> getVehicleTypes() {
     return _authApiClient.getVehicleTypes();
   }
-}
-  AuthRemoteDataSourceImpl(this._authApiClient);
+
+
 
   @override
   Future<MessageResponseModel> forgetPassword({required String email}) {

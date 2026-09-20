@@ -4,8 +4,10 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
+import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';
 
+import '../../domain/entities/reset_token_entity.dart';
 import '../../domain/entities/vehicle_type_entity.dart';
 import '../../domain/repo/auth_repo.dart';
 import '../data_source/local_data_source.dart';
@@ -21,12 +23,8 @@ class AuthRepoImpl implements AuthRepo {
   final AuthLocalDataSource _authLocalDataSource;
 
   AuthRepoImpl(this._authRemoteDataSource, this._authLocalDataSource);
-  AuthRepoImpl(
-      this._authRemoteDataSource,
-      this._authLocalDataSource,
-      );
 
-  // Toggle: change to false when backend endpoints are ready!
+
   static const bool useDummyData = true;
 
   @override
@@ -39,15 +37,19 @@ class AuthRepoImpl implements AuthRepo {
     } catch (e) {
       return ErrorResponse(error: e);
     }
+  }
+
   @override
-  Future<BaseResponse<RegisterResponseDto>> register(RegisterRequestDto request) {
+  Future<BaseResponse<RegisterResponseDto>> register(
+      RegisterRequestDto request) {
     return safeCall(() => _authRemoteDataSource.register(request));
   }
 
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
     if (useDummyData) {
-      return SuccessResponse(CountryDto.dummyList.map((dto) => dto.toEntity()).toList());
+      return SuccessResponse(
+          CountryDto.dummyList.map((dto) => dto.toEntity()).toList());
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getCountries();
@@ -58,14 +60,14 @@ class AuthRepoImpl implements AuthRepo {
   @override
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
     if (useDummyData) {
-      return SuccessResponse(VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList());
+      return SuccessResponse(
+          VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList());
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getVehicleTypes();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
   }
-}
 
   @override
   Future<BaseResponse<ResetToken>> verifyOtp({
