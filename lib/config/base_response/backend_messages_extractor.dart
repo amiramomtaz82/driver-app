@@ -6,8 +6,6 @@ class BackendMessageExtractor {
   static String? extract(DioException error) {
     final data = error.response?.data;
     if (data is Map) {
-     
-      final error = data['error'];
       final message =
           data['messageLocalized'] ??
               data['message'] ??

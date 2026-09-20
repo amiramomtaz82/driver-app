@@ -1,4 +1,7 @@
 
+import 'package:driver_app/config/base_response/base_response.dart';
+import 'package:driver_app/features/auth/domain/models/login_request_model.dart';
+import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 
@@ -44,6 +47,7 @@ class AuthRepoImpl implements AuthRepo {
       RegisterRequestDto request) {
     return safeCall(() => _authRemoteDataSource.register(request));
   }
+  AuthRepoImpl(this._authRemoteDataSource, this._authLocalDataSource);
 
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
@@ -55,6 +59,24 @@ class AuthRepoImpl implements AuthRepo {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
+  @override
+  Future<BaseResponse<LoginResponseModel>> login({
+    required String email,
+    required String password,
+    required bool rememberMe,
+  }) async {
+    try {
+      final result = await _authRemoteDataSource.login(
+        LoginRequestModel(email: email, password: password),
+      );
+      if (rememberMe) {
+        await _authLocalDataSource.saveToken(result.token);
+        await _authLocalDataSource.saveRefreshToken(result.refreshToken);
+      }
+      return SuccessResponse(result);
+    } catch (e) {
+      return ErrorResponse(error: e);
+    }
   }
 
   @override
@@ -102,4 +124,6 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
+}
+
 }
