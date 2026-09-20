@@ -59,6 +59,7 @@ dependencies:
   geocoding: ^4.0.0
   nominatim_flutter: ^0.0.8
   plugin_platform_interface: ^2.1.8
+  lottie: ^3.6.1
 
 
 dev_dependencies:
@@ -97,6 +98,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
+    - assets/animations/
     - .env
 
   assets:

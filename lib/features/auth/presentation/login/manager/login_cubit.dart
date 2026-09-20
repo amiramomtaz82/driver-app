@@ -40,6 +40,7 @@ class LoginCubit extends BaseCubit<LoginState, UiEvent> {
     final response = await _authRepo.login(
       email: state.email,
       password: state.password,
+      rememberMe: state.rememberMe,
     );
 
     switch (response) {

@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../data/data_source/remote_data_source.dart';
+import '../../domain/models/login_request_model.dart';
 import '../../domain/models/login_response_model.dart';
 import '../client/auth_client.dart';
 
@@ -11,10 +12,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this._authApiClient);
 
   @override
-  Future<LoginResponseModel> login({
-    required String email,
-    required String password,
-  }) {
-    return _authApiClient.login({'email': email, 'password': password});
+  Future<LoginResponseModel> login(LoginRequestModel request) {
+    return _authApiClient.login(request.toJson());
   }
-}
+}

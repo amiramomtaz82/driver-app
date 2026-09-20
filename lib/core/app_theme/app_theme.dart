@@ -1,4 +1,4 @@
-import 'package:driver_app/core/app_theme/text_styels.dart';
+import 'package:driver_app/core/app_theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 
@@ -138,6 +138,21 @@ abstract final class AppTheme {
           textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colors.textPrimary,
+          minimumSize: const Size(double.infinity, 52),
+          side: BorderSide(color: colors.darkGrey, width: 1.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

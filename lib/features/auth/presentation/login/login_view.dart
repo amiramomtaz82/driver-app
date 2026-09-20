@@ -47,90 +47,104 @@ class _LoginViewState extends State<LoginView>
           titleSpacing: 0,
           leading: const BackButton(),
         ),
-        body: BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      key: const Key('emailField'),
-                      initialValue: state.email,
-                      onChanged: (v) =>
-                          _cubit.onIntent(EmailChanged(v)),
-                      validator: Validators.validateEmail,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: LocaleKeys.auth_email_label.tr(),
-                        hintText: LocaleKeys.auth_email_hint.tr(),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  key: const Key('emailField'),
+                  onChanged: (v) => _cubit.onIntent(EmailChanged(v)),
+                  validator: Validators.validateEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: LocaleKeys.auth_email_label.tr(),
+                    hintText: LocaleKeys.auth_email_hint.tr(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BlocSelector<LoginCubit, LoginState, bool>(
+                  selector: (s) => s.isPasswordVisible,
+                  builder: (context, isPasswordVisible) {
+                    return TextFormField(
                       key: const Key('passwordField'),
-                      initialValue: state.password,
-                      onChanged: (v) =>
-                          _cubit.onIntent(PasswordChanged(v)),
+                      onChanged: (v) => _cubit.onIntent(PasswordChanged(v)),
                       validator: Validators.validatePassword,
-                      obscureText: !state.isPasswordVisible,
+                      obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: LocaleKeys.auth_password_label.tr(),
                         hintText: LocaleKeys.auth_password_hint.tr(),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            state.isPasswordVisible
+                            isPasswordVisible
                                 ? Icons.visibility_outlined
                                 : Icons.visibility_off_outlined,
                           ),
-                          onPressed: () => _cubit
-                              .onIntent(const TogglePasswordVisibility()),
+                          onPressed: () => _cubit.onIntent(
+                            const TogglePasswordVisibility(),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    BlocSelector<LoginCubit, LoginState, bool>(
+                      selector: (s) => s.rememberMe,
+                      builder: (context, rememberMe) {
+                        return Checkbox(
+                          key: const Key('rememberMeCheckbox'),
+                          value: rememberMe,
+                          activeColor: Theme.of(context).colorScheme.primary,
+                          onChanged: (_) => _cubit.onIntent(
+                            const RememberMeToggled(),
+                          ),
+                        );
+                      },
+                    ),
+                    Text(
+                      LocaleKeys.auth_remember_me.tr(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      key: const Key('forgotPasswordBtn'),
+                      onPressed: () => _cubit.onIntent(
+                        const ForgotPasswordTapped(),
+                      ),
+                      child: Text(
+                        LocaleKeys.auth_forgot_password.tr(),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 12,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Checkbox(
-                          key: const Key('rememberMeCheckbox'),
-                          value: state.rememberMe,
-                          activeColor: Theme.of(context).colorScheme.primary,
-                          onChanged: (_) =>
-                              _cubit.onIntent(const RememberMeToggled()),
-                        ),
-                        Text(
-                          LocaleKeys.auth_remember_me.tr(),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const Spacer(),
-                        TextButton(
-                          key: const Key('forgotPasswordBtn'),
-                          onPressed: () =>
-                              _cubit.onIntent(const ForgotPasswordTapped()),
-                          child: Text(
-                            LocaleKeys.auth_forgot_password.tr(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
+                  ],
+                ),
+                const SizedBox(height: 24),
+                BlocSelector<LoginCubit, LoginState,
+                    ({bool isFormValid, ApiStatus status})>(
+                  selector: (s) => (
+                    isFormValid: s.isFormValid,
+                    status: s.loginResource.status,
+                  ),
+                  builder: (context, data) {
+                    return ElevatedButton(
                       key: const Key('continueBtn'),
-                      onPressed: state.isFormValid &&
-                              state.loginResource.status != ApiStatus.loading
+                      onPressed: data.isFormValid &&
+                              data.status != ApiStatus.loading
                           ? () {
                               if (_formKey.currentState?.validate() ?? false) {
                                 _cubit.onIntent(const LoginSubmitted());
                               }
                             }
                           : null,
-                      child: state.loginResource.isLoading
+                      child: data.status == ApiStatus.loading
                           ? const SizedBox(
                               height: 22,
                               width: 22,
@@ -140,12 +154,12 @@ class _LoginViewState extends State<LoginView>
                               ),
                             )
                           : Text(LocaleKeys.common_continue.tr()),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-            );
-          },
+              ],
+            ),
+          ),
         ),
       ),
     );

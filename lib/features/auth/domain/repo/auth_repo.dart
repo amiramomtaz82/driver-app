@@ -5,5 +5,6 @@ abstract interface class AuthRepo {
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
     required String password,
+    required bool rememberMe,
   });
 }
