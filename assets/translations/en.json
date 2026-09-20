@@ -108,7 +108,6 @@
     "resend": "Resend",
     "code_sent": "Code sent successfully",
     "invalid_code": "Invalid or expired code",
-    "reset_title": "Reset Password",
     "reset_subtitle": "Password must be at least 8 characters and contain at least one letter and one number",
     "confirm": "Confirm",
     "reset_session_expired": "Your reset code has expired. Please request a new one."

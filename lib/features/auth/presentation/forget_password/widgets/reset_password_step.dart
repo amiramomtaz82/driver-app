@@ -42,7 +42,7 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
         spacing: 24,
         children: [
           AuthHeaderText(
-            title: LocaleKeys.forget_password_reset_title.tr(),
+            title: LocaleKeys.reset_password_title.tr(),
             subtitle: LocaleKeys.forget_password_reset_subtitle.tr(),
           ),
           Form(
