@@ -7,7 +7,9 @@ class Endpoints {
 
   static const String loginEndPoint = '/auth/login';
 
-
+  static const String forgetPassword = '/auth/forgot-password';
+  static const String verifyOtp = '/auth/verify-otp';
+  static const String resetPassword = '/auth/reset-password';
 
   static const String countries = '/api/v1/meta/countries';
   static const String vehicleTypes = '/api/v1/meta/vehicle-types';
