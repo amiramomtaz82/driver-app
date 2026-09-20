@@ -7,7 +7,6 @@ class Endpoints {
 
   static const String loginEndPoint = '/auth/login';
 
-}
 
 
   static const String countries = '/api/v1/meta/countries';

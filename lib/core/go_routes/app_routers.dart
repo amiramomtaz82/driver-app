@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/forget_password/view/forget_password_view.dart';
 import '../../features/auth/presentation/login/login_view.dart';
 import '../../features/auth/presentation/register/view/register_view.dart';
+import '../../features/auth/presentation/register/view/registeration_success_view.dart';
 import '../../features/home/presentation/view/home_view.dart';
 import '../../features/onboarding/presentation/view/onboarding_view.dart';
 
