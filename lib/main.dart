@@ -10,12 +10,6 @@ import 'core/go_routes/app_routers.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await dotenv.load(fileName: '.env');
-  } catch (e) {
-    debugPrint('Failed to load .env: $e');
-  }
-
   await EasyLocalization.ensureInitialized();
   configureDependencies();
   runApp(EasyLocalization(
@@ -39,7 +33,11 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: AppTheme.lightTheme,
+
+
       darkTheme: AppTheme.darkTheme,
+
+
       themeMode: ThemeMode.system,
     );
   }

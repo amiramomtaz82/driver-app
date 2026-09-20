@@ -1,7 +1,7 @@
 {
   "common": {
     "continue": "Continue",
-    "login": "Log In",
+    "login": "Login",
     "update": "Update",
     "cancel": "Cancel",
     "logout": "Log Out",
@@ -38,18 +38,18 @@
     "vehicle_type_label": "Vehicle Type",
     "vehicle_number_label": "Vehicle Plate Number",
     "vehicle_number_hint": "Enter vehicle plate number",
-    "vehicle_license_label": "Vehicle Registration",
-    "vehicle_license_hint": "Upload registration document",
+    "vehicle_license_label": "Vehicle license",
+    "vehicle_license_hint": "Upload license photo",
     "phone_label": "Phone Number",
     "phone_hint": "Enter your phone number",
     "id_number_label": "National ID Number",
     "id_number_hint": "Enter your national ID number",
-    "id_image_label": "National ID Photo",
+    "id_image_label": "ID image",
     "id_image_hint": "Upload national ID photo",
     "confirm_password_label": "Confirm Password",
     "confirm_password_hint": "Confirm your password",
-    "submitted_title": "Application Submitted Successfully!",
-    "submitted_desc": "Thank you for applying. We will review your application and contact you shortly."
+    "submitted_title":"Your application has been\nsubmitted!",
+    "submitted_desc": "Thank you for providing your application\n, we will review your application and will \nget back to you soon.."
   },
   "orders": {
     "my_orders": "My Orders",
@@ -97,21 +97,6 @@
     "new_password_hint": "Enter new password",
     "confirm_password_label": "Confirm Password",
     "confirm_password_hint": "Confirm new password"
-  },
-  "forget_password": {
-    "title": "Password",
-    "email_title": "Forget Password",
-    "email_subtitle": "Please enter the email associated with your account",
-    "otp_title": "Email Verification",
-    "otp_subtitle": "Please enter the code that was sent to your email address",
-    "didnt_receive_code": "Didn't receive the code?",
-    "resend": "Resend",
-    "code_sent": "Code sent successfully",
-    "invalid_code": "Invalid or expired code",
-    "reset_title": "Reset Password",
-    "reset_subtitle": "Password must be at least 8 characters and contain at least one letter and one number",
-    "confirm": "Confirm",
-    "reset_session_expired": "Your reset code has expired. Please request a new one."
   },
   "nav": {
     "home": "Home",

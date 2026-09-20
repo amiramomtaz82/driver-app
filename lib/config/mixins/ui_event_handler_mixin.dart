@@ -37,16 +37,9 @@ E extends UiEvent> on State<W> {
         );
 
       case NavigateEvent():
-        context.push(
-          event.route,
-          extra: event.arguments,
-        );
-
+        context.push(event.route, extra: event.arguments);
       case NavigateReplacementEvent():
-        context.go(
-          event.route,
-          extra: event.arguments,
-        );
+        context.go(event.route, extra: event.arguments);
 
       case PopEvent():
         if (context.canPop()) {
