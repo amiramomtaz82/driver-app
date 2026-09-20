@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../base/base_cubit.dart';
 import '../base/ui_events.dart';
@@ -35,16 +36,9 @@ E extends UiEvent> on State<W> {
         );
 
       case NavigateEvent():
-        Navigator.of(context).pushNamed(
-          event.route,
-          arguments: event.arguments,
-        );
-
+        context.push(event.route, extra: event.arguments);
       case NavigateReplacementEvent():
-        Navigator.of(context).pushReplacementNamed(
-          event.route,
-          arguments: event.arguments,
-        );
+        context.go(event.route, extra: event.arguments);
 
       case PopEvent():
         Navigator.of(context).pop(

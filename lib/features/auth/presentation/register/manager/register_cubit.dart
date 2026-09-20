@@ -5,6 +5,7 @@ import '../../../../../config/base/ui_events.dart';
 import '../../../../../config/base_response/base_response.dart';
 import '../../../../../config/resource/resource.dart';
 
+import '../../../../../core/go_routes/routes_names.dart';
 import '../../../data/models/register_request_dto.dart';
 import '../../../domain/entities/country.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
@@ -89,11 +90,11 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
     switch (result) {
       case SuccessResponse(:final data):
         emit(state.copyWith(registerResource: Resource.success(data)));
-    // Note: RegisterView will render the Figma Success screen when registerResource.isSuccess is true
+        emitEvent(const NavigateReplacementEvent(AppRoutes.registrationSuccess));
 
       case ErrorResponse(:final errMessage):
         emit(state.copyWith(registerResource: Resource.error(errMessage)));
-        // Handled automatically by UiEventMixin in the view!
+    
         emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));
     }
   }

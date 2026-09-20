@@ -51,38 +51,40 @@ class _RegisterViewState extends State<RegisterView>
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (ctx) => SafeArea(
-        child: Wrap(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_camera_outlined),
-              title: const Text('Camera'),
-              onTap: () async {
-                Navigator.pop(ctx);
-                final XFile? photo = await _picker.pickImage(
-                  source: ImageSource.camera,
-                  imageQuality: 80,
-                );
-                if (photo != null) onImagePicked(photo.path);
-              },
+      builder: (ctx) =>
+          SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_camera_outlined),
+                  title: const Text('Camera'),
+                  onTap: () async {
+                    Navigator.pop(ctx);
+                    final XFile? photo = await _picker.pickImage(
+                      source: ImageSource.camera,
+                      imageQuality: 80,
+                    );
+                    if (photo != null) onImagePicked(photo.path);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library_outlined),
+                  title: const Text('Gallery'),
+                  onTap: () async {
+                    Navigator.pop(ctx);
+                    final XFile? image = await _picker.pickImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 80,
+                    );
+                    if (image != null) onImagePicked(image.path);
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('Gallery'),
-              onTap: () async {
-                Navigator.pop(ctx);
-                final XFile? image = await _picker.pickImage(
-                  source: ImageSource.gallery,
-                  imageQuality: 80,
-                );
-                if (image != null) onImagePicked(image.path);
-              },
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -122,11 +124,6 @@ class _RegisterViewState extends State<RegisterView>
       value: cubit,
       child: BlocBuilder<RegisterCubit, RegisterState>(
         builder: (context, state) {
-          // When registration succeeds, show the Figma Success screen
-          if (state.registerResource.isSuccess) {
-            return _buildSuccessApplyScreen();
-          }
-
           final countries = state.countriesResource.data ?? [];
           final vehicleTypes = state.vehicleTypesResource.data ?? [];
 
@@ -138,13 +135,15 @@ class _RegisterViewState extends State<RegisterView>
               ),
               title: Text(
                 LocaleKeys.apply_title.tr(),
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 18),
               ),
               centerTitle: false,
             ),
             body: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20, vertical: 12),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -152,12 +151,14 @@ class _RegisterViewState extends State<RegisterView>
                     children: [
                       Text(
                         LocaleKeys.apply_welcome_header.tr(),
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         LocaleKeys.apply_welcome_sub.tr(),
-                        style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                        style: TextStyle(color: Colors.grey.shade600,
+                            fontSize: 13),
                       ),
                       const SizedBox(height: 20),
 
@@ -172,7 +173,8 @@ class _RegisterViewState extends State<RegisterView>
                             value: c,
                             child: Row(
                               children: [
-                                Text(c.flag, style: const TextStyle(fontSize: 18)),
+                                Text(c.flag,
+                                    style: const TextStyle(fontSize: 18)),
                                 const SizedBox(width: 8),
                                 Text(c.name),
                               ],
@@ -220,7 +222,8 @@ class _RegisterViewState extends State<RegisterView>
                           );
                         }).toList(),
                         onChanged: (v) {
-                          if (v != null) cubit.onIntent(SelectVehicleTypeIntent(v));
+                          if (v != null) cubit.onIntent(
+                              SelectVehicleTypeIntent(v));
                         },
                       ),
                       const SizedBox(height: 16),
@@ -232,7 +235,10 @@ class _RegisterViewState extends State<RegisterView>
                           labelText: LocaleKeys.apply_vehicle_number_label.tr(),
                           hintText: LocaleKeys.apply_vehicle_number_hint.tr(),
                         ),
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        validator: (v) =>
+                        v == null || v.isEmpty
+                            ? 'Required'
+                            : null,
                       ),
                       const SizedBox(height: 16),
 
@@ -240,7 +246,9 @@ class _RegisterViewState extends State<RegisterView>
                       _buildUploadTile(
                         label: LocaleKeys.apply_vehicle_license_label.tr(),
                         hint: state.licensePhotoPath != null
-                            ? state.licensePhotoPath!.split(RegExp(r'[\\/]')).last
+                            ? state.licensePhotoPath!
+                            .split(RegExp(r'[\\/]'))
+                            .last
                             : LocaleKeys.apply_vehicle_license_hint.tr(),
                         isSelected: state.licensePhotoPath != null,
                         onTap: () {
@@ -284,7 +292,10 @@ class _RegisterViewState extends State<RegisterView>
                           labelText: LocaleKeys.apply_id_number_label.tr(),
                           hintText: LocaleKeys.apply_id_number_hint.tr(),
                         ),
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        validator: (v) =>
+                        v == null || v.isEmpty
+                            ? 'Required'
+                            : null,
                       ),
                       const SizedBox(height: 16),
 
@@ -325,13 +336,16 @@ class _RegisterViewState extends State<RegisterView>
                               controller: _confirmPasswordController,
                               obscureText: state.isConfirmPasswordHidden,
                               decoration: InputDecoration(
-                                labelText: LocaleKeys.apply_confirm_password_label.tr(),
-                                hintText: LocaleKeys.apply_confirm_password_hint.tr(),
+                                labelText: LocaleKeys
+                                    .apply_confirm_password_label.tr(),
+                                hintText: LocaleKeys.apply_confirm_password_hint
+                                    .tr(),
                               ),
-                              validator: (v) => Validators.validateConfirmPassword(
-                                v,
-                                _passwordController.text,
-                              ),
+                              validator: (v) =>
+                                  Validators.validateConfirmPassword(
+                                    v,
+                                    _passwordController.text,
+                                  ),
                             ),
                           ),
                         ],
@@ -343,14 +357,16 @@ class _RegisterViewState extends State<RegisterView>
                         children: [
                           Text(
                             LocaleKeys.common_gender.tr(),
-                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
                           ),
                           const SizedBox(width: 16),
                           Radio<String>(
                             value: 'female',
                             groupValue: state.gender,
                             activeColor: AppColors.pink,
-                            onChanged: (val) => cubit.onIntent(SelectGenderIntent(val!)),
+                            onChanged: (val) =>
+                                cubit.onIntent(SelectGenderIntent(val!)),
                           ),
                           Text('common.female'.tr()),
                           const SizedBox(width: 12),
@@ -358,7 +374,8 @@ class _RegisterViewState extends State<RegisterView>
                             value: 'male',
                             groupValue: state.gender,
                             activeColor: AppColors.pink,
-                            onChanged: (val) => cubit.onIntent(SelectGenderIntent(val!)),
+                            onChanged: (val) =>
+                                cubit.onIntent(SelectGenderIntent(val!)),
                           ),
                           Text('common.male'.tr()),
                         ],
@@ -406,7 +423,8 @@ class _RegisterViewState extends State<RegisterView>
         decoration: InputDecoration(
           labelText: label,
           suffixIcon: Icon(
-            isSelected ? Icons.check_circle_outline : Icons.file_upload_outlined,
+            isSelected ? Icons.check_circle_outline : Icons
+                .file_upload_outlined,
             color: isSelected ? Colors.green : Colors.grey,
           ),
         ),
@@ -418,49 +436,6 @@ class _RegisterViewState extends State<RegisterView>
             fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
           ),
           overflow: TextOverflow.ellipsis,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSuccessApplyScreen() {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.pink, width: 3),
-                ),
-                child: const Icon(Icons.check, size: 50, color: AppColors.pink),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                LocaleKeys.apply_submitted_title.tr(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                LocaleKeys.apply_submitted_desc.tr(),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600, height: 1.4),
-              ),
-              const SizedBox(height: 36),
-              ElevatedButton(
-                onPressed: () => context.go('/login'),
-                child: Text(LocaleKeys.common_login.tr()),
-              ),
-              const Spacer(),
-            ],
-          ),
         ),
       ),
     );
