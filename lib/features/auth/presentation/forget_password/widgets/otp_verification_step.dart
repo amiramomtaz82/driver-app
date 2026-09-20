@@ -31,9 +31,9 @@ class _OtpVerificationStepState extends State<OtpVerificationStep>
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Column(
         children: [
-          const AuthHeaderText(
-            title: LocaleKeys.forget_password_otp_title,
-            subtitle: LocaleKeys.forget_password_otp_subtitle,
+          AuthHeaderText(
+            title: LocaleKeys.forget_password_otp_title.tr(),
+            subtitle: LocaleKeys.forget_password_otp_subtitle.tr(),
           ),
           const SizedBox(height: 24),
           BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
@@ -44,7 +44,7 @@ class _OtpVerificationStepState extends State<OtpVerificationStep>
             builder: (context, state) => Column(
               children: [
                 OtpHolder(
-                  errorText: state.otpErrorMessage?.tr(),
+                  errorText: state.otpErrorMessage,
                   onChanged: (_) => cubit.onIntent(const OtpChanged()),
                   onCompleted: (code) => cubit.onIntent(OtpCompleted(code)),
                 ),

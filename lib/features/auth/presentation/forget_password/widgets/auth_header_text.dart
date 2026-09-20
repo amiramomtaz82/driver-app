@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AuthHeaderText extends StatelessWidget {
@@ -16,10 +15,10 @@ class AuthHeaderText extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
-        Text(title.tr(), style: textTheme.headlineLarge),
+        Text(title, style: textTheme.headlineLarge),
         const SizedBox(height: 8),
         Text(
-          subtitle.tr(),
+          subtitle,
           textAlign: TextAlign.center,
           style: textTheme.bodyMedium,
         ),

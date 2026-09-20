@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
@@ -79,13 +81,15 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
         );
         if (isResend) {
           emitEvent(
-            const ShowSnackBarEvent(message: LocaleKeys.forget_password_code_sent),
+            ShowSnackBarEvent(
+              message: LocaleKeys.forget_password_code_sent.tr(),
+            ),
           );
         }
         _startResendCooldown();
       case ErrorResponse<AuthMessageEntity> e:
-        emit(state.copyWith(sendCodeResource: Resource.error(e.errMessage)));
-        emitEvent(ShowSnackBarEvent(message: e.errMessage, isError: true));
+        emit(state.copyWith(sendCodeResource: Resource.error(e.errMessage.tr())));
+        emitEvent(ShowSnackBarEvent(message: e.errMessage.tr(), isError: true));
     }
   }
 
@@ -114,7 +118,7 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
         final message = e.statusCode != null
             ? LocaleKeys.forget_password_invalid_code
             : e.errMessage;
-        emit(state.copyWith(verifyOtpResource: Resource.error(message)));
+        emit(state.copyWith(verifyOtpResource: Resource.error(message.tr())));
     }
   }
 
@@ -131,8 +135,8 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
     if (resetToken == null || resetToken.isExpired(DateTime.now())) {
       emit(
         state.copyWith(
-          verifyOtpResource: const Resource.error(
-            LocaleKeys.forget_password_reset_session_expired,
+          verifyOtpResource: Resource.error(
+            LocaleKeys.forget_password_reset_session_expired.tr(),
           ),
           step: ForgetPasswordStep.otp,
         ),
@@ -154,9 +158,11 @@ class ForgetPasswordCubit extends BaseCubit<ForgetPasswordState, UiEvent> {
         emitEvent(const NavigateReplacementEvent(AppRoutes.login));
       case ErrorResponse<AuthMessageEntity> e:
         emit(
-          state.copyWith(resetPasswordResource: Resource.error(e.errMessage)),
+          state.copyWith(
+            resetPasswordResource: Resource.error(e.errMessage.tr()),
+          ),
         );
-        emitEvent(ShowSnackBarEvent(message: e.errMessage, isError: true));
+        emitEvent(ShowSnackBarEvent(message: e.errMessage.tr(), isError: true));
     }
   }
 

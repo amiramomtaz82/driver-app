@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AuthSubmitButton extends StatelessWidget {
@@ -28,7 +27,7 @@ class AuthSubmitButton extends StatelessWidget {
                 strokeWidth: 2.5,
               ),
             )
-          : Text(label.tr()),
+          : Text(label),
     );
   }
 }

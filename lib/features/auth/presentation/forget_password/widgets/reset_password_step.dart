@@ -41,9 +41,9 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
       child: Column(
         spacing: 24,
         children: [
-          const AuthHeaderText(
-            title: LocaleKeys.forget_password_reset_title,
-            subtitle: LocaleKeys.forget_password_reset_subtitle,
+          AuthHeaderText(
+            title: LocaleKeys.forget_password_reset_title.tr(),
+            subtitle: LocaleKeys.forget_password_reset_subtitle.tr(),
           ),
           Form(
             key: _formKey,
@@ -90,7 +90,7 @@ class _ResetPasswordStepState extends State<ResetPasswordStep>
               final (isFormValid, isLoading) = selected;
               return AuthSubmitButton(
                 key: const Key('resetPasswordBtn'),
-                label: LocaleKeys.forget_password_confirm,
+                label: LocaleKeys.forget_password_confirm.tr(),
                 isLoading: isLoading,
                 onPressed: isFormValid ? _onConfirm : null,
               );

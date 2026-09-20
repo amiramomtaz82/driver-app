@@ -39,9 +39,9 @@ class _EmailStepState extends State<EmailStep>
       child: Column(
         spacing: 24,
         children: [
-          const AuthHeaderText(
-            title: LocaleKeys.forget_password_email_title,
-            subtitle: LocaleKeys.forget_password_email_subtitle,
+          AuthHeaderText(
+            title: LocaleKeys.forget_password_email_title.tr(),
+            subtitle: LocaleKeys.forget_password_email_subtitle.tr(),
           ),
           Form(
             key: _formKey,
@@ -64,7 +64,7 @@ class _EmailStepState extends State<EmailStep>
               final (isEmailValid, isLoading) = selected;
               return AuthSubmitButton(
                 key: const Key('sendCodeBtn'),
-                label: LocaleKeys.forget_password_confirm,
+                label: LocaleKeys.forget_password_confirm.tr(),
                 isLoading: isLoading,
                 onPressed: isEmailValid ? _onConfirm : null,
               );
