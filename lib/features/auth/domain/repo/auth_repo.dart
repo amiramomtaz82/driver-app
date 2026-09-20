@@ -7,6 +7,9 @@ import '../../data/models/register_request_dto.dart';
 import '../../data/models/register_response_dto.dart';
 import '../entities/country.dart';
 import '../entities/vehicle_type_entity.dart';
+import 'package:driver_app/config/base_response/base_response.dart';
+import '../models/login_response_model.dart';
+
 abstract interface class AuthRepo {
   Future<BaseResponse<AuthMessageEntity>> forgetPassword({
     required String email,
@@ -29,12 +32,10 @@ abstract interface class AuthRepo {
   Future<BaseResponse<RegisterResponseDto>> register(RegisterRequestDto request);
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes();
   Future<BaseResponse<List<Country>>> getCountries();
-}
 
-import 'package:driver_app/config/base_response/base_response.dart';
-import '../models/login_response_model.dart';
 
-abstract interface class AuthRepo {
+
+
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
     required String password,

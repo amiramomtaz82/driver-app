@@ -47,7 +47,7 @@ class AuthRepoImpl implements AuthRepo {
       RegisterRequestDto request) {
     return safeCall(() => _authRemoteDataSource.register(request));
   }
-  AuthRepoImpl(this._authRemoteDataSource, this._authLocalDataSource);
+
 
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
@@ -59,6 +59,8 @@ class AuthRepoImpl implements AuthRepo {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
+
+}
   @override
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
@@ -124,6 +126,4 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
-}
-
 }

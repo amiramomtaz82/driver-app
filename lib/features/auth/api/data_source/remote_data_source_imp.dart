@@ -20,9 +20,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<LoginResponseModel> login(LoginRequestModel request) {
     return _authApiClient.login(request.toJson());
   }
-}
 
-  AuthRemoteDataSourceImpl(this._authApiClient);
+
+
 
   @override
   Future<RegisterResponseDto> register(RegisterRequestDto request) {
