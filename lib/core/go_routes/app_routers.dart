@@ -9,7 +9,7 @@ import '../../features/home/presentation/view/home_view.dart';
 import '../../features/onboarding/presentation/view/onboarding_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.registrationSuccess,
+  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,

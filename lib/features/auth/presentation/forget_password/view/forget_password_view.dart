@@ -59,7 +59,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView>
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                LocaleKeys.forget_password_title.tr(),
+                LocaleKeys.forget_password_email_title.tr(),
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               centerTitle: false,

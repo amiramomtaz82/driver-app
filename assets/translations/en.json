@@ -24,7 +24,9 @@
     "password_label": "Password",
     "password_hint": "Enter your password",
     "remember_me": "Remember Me",
-    "forgot_password": "Forgot Password?"
+    "forgot_password": "Forgot Password?",
+    "dont_have_an_account": "Don't have an account?",
+    "sign_up": "Sign Up"
   },
   "apply": {
     "title": "Application Submission",
@@ -48,7 +50,7 @@
     "id_image_hint": "Upload national ID photo",
     "confirm_password_label": "Confirm Password",
     "confirm_password_hint": "Confirm your password",
-    "submitted_title":"Your application has been\nsubmitted!",
+    "submitted_title": "Your application has been\nsubmitted!",
     "submitted_desc": "Thank you for providing your application\n, we will review your application and will \nget back to you soon.."
   },
   "orders": {

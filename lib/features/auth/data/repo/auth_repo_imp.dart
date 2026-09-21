@@ -44,7 +44,18 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<BaseResponse<RegisterResponseDto>> register(
-      RegisterRequestDto request) {
+      RegisterRequestDto request) async {
+    if (useDummyData) {
+      // Simulate network delay so your loading indicator shows during the demo
+      await Future.delayed(const Duration(seconds: 1));
+      return const SuccessResponse(
+        RegisterResponseDto(
+          success: true,
+          message: 'Registered successfully',
+          token: 'dummy_token_for_demo',
+        ),
+      );
+    }
     return safeCall(() => _authRemoteDataSource.register(request));
   }
 

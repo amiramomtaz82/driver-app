@@ -1,6 +1,8 @@
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/mixins/ui_event_handler_mixin.dart';
 import 'package:driver_app/config/resource/resource.dart';
+import 'package:driver_app/core/app_theme/app_colors.dart';
+import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:driver_app/core/validation/validation.dart';
 import 'package:driver_app/features/auth/presentation/login/manager/login_cubit.dart';
 import 'package:driver_app/features/auth/presentation/login/manager/login_intents.dart';
@@ -9,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../generated/locale_keys.g.dart';
 
@@ -130,32 +133,59 @@ class _LoginViewState extends State<LoginView>
                 BlocSelector<LoginCubit, LoginState,
                     ({bool isFormValid, ApiStatus status})>(
                   selector: (s) => (
-                    isFormValid: s.isFormValid,
-                    status: s.loginResource.status,
+                  isFormValid: s.isFormValid,
+                  status: s.loginResource.status,
                   ),
                   builder: (context, data) {
                     return ElevatedButton(
                       key: const Key('continueBtn'),
                       onPressed: data.isFormValid &&
-                              data.status != ApiStatus.loading
+                          data.status != ApiStatus.loading
                           ? () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                _cubit.onIntent(const LoginSubmitted());
-                              }
-                            }
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _cubit.onIntent(const LoginSubmitted());
+                        }
+                      }
                           : null,
                       child: data.status == ApiStatus.loading
                           ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2.5,
-                              ),
-                            )
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
                           : Text(LocaleKeys.common_continue.tr()),
                     );
                   },
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        LocaleKeys.auth_dont_have_an_account.tr(),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(width: 4),
+                      InkWell(
+                        onTap: () {
+                          context.push(AppRoutes.register);
+                        },
+                        child: Text(
+                          LocaleKeys.auth_sign_up.tr(),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -24,7 +24,9 @@
     "password_label": "كلمة المرور",
     "password_hint": "أدخل كلمة المرور",
     "remember_me": "تذكرني",
-    "forgot_password": "هل نسيت كلمة المرور؟"
+    "forgot_password": "هل نسيت كلمة المرور؟",
+    "dont_have_an_account": "ليس لديك حساب؟",
+    "sign_up": "إنشاء حساب"
   },
   "apply": {
     "title": "تقديم الطلب",
