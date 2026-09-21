@@ -59,6 +59,7 @@ dependencies:
   geocoding: ^4.0.0
   nominatim_flutter: ^0.0.8
   plugin_platform_interface: ^2.1.8
+  lottie: ^3.6.1
 
 
 dev_dependencies:
@@ -94,6 +95,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/translations/
+    - assets/images/
+    - assets/animations/
+    - .env
 
   assets:
     - assets/translations/

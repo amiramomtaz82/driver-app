@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../base/base_cubit.dart';
@@ -30,7 +31,7 @@ E extends UiEvent> on State<W> {
       case ShowSnackBarEvent():
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(event.message),
+            content: Text(event.message.tr()),
           ),
         );
 
