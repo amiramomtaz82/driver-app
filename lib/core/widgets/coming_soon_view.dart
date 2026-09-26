@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Placeholder for tabs whose screen is not built yet.
 class ComingSoonView extends StatelessWidget {
   const ComingSoonView({super.key, required this.title});
 

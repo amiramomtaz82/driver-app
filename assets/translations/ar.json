@@ -10,7 +10,15 @@
     "female": "أنثى",
     "male": "ذكر",
     "gender": "النوع",
-    "done": "تم"
+    "done": "تم",
+    "retry": "إعادة المحاولة",
+    "no_more_items": "لا توجد طلبات أخرى",
+    "confirm": "تأكيد"
+  },
+  "home": {
+    "title": "فلوري رايدر",
+    "no_available_orders": "لا توجد طلبات متاحة حالياً",
+    "order_accepted": "تم قبول الطلب"
   },
   "onboarding": {
     "welcome_title": "مرحباً بك في",
@@ -62,7 +70,9 @@
     "status": "الحالة",
     "status_accepted": "تم القبول",
     "status_picked": "تم الاستلام",
-    "status_arrived": "وصل للموقع",
+    "status_out_for_delivery": "خرج للتوصيل",
+    "status_arrived": "وصل",
+    "status_unknown": "غير معروف",
     "status_delivered": "تم التوصيل",
     "status_completed": "مكتمل",
     "status_cancelled": "ملغي",
@@ -79,6 +89,10 @@
     "payment_method": "طريقة الدفع",
     "cash_on_delivery": "الدفع عند الاستلام",
     "currency_egp": "جنيه",
+    "quantity_short": "{count}×",
+    "waiting_customer_confirmation": "في انتظار تأكيد العميل",
+    "confirm_status_title": "تحديث حالة الطلب",
+    "confirm_status_message": "هل أنت متأكد من تغيير حالة الطلب إلى \"{status}\"؟",
     "thank_you": "شكراً لك!!",
     "order_delivered_successfully": "تم توصيل الطلب بنجاح"
   },
