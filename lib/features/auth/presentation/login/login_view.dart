@@ -85,9 +85,8 @@ class _LoginViewState extends State<LoginView>
                                 ? Icons.visibility_outlined
                                 : Icons.visibility_off_outlined,
                           ),
-                          onPressed: () => _cubit.onIntent(
-                            const TogglePasswordVisibility(),
-                          ),
+                          onPressed: () =>
+                              _cubit.onIntent(const TogglePasswordVisibility()),
                         ),
                       ),
                     );
@@ -103,9 +102,8 @@ class _LoginViewState extends State<LoginView>
                           key: const Key('rememberMeCheckbox'),
                           value: rememberMe,
                           activeColor: Theme.of(context).colorScheme.primary,
-                          onChanged: (_) => _cubit.onIntent(
-                            const RememberMeToggled(),
-                          ),
+                          onChanged: (_) =>
+                              _cubit.onIntent(const RememberMeToggled()),
                         );
                       },
                     ),
@@ -116,9 +114,8 @@ class _LoginViewState extends State<LoginView>
                     const Spacer(),
                     TextButton(
                       key: const Key('forgotPasswordBtn'),
-                      onPressed: () => _cubit.onIntent(
-                        const ForgotPasswordTapped(),
-                      ),
+                      onPressed: () =>
+                          _cubit.onIntent(const ForgotPasswordTapped()),
                       child: Text(
                         LocaleKeys.auth_forgot_password.tr(),
                         style: TextStyle(
@@ -130,32 +127,35 @@ class _LoginViewState extends State<LoginView>
                   ],
                 ),
                 const SizedBox(height: 24),
-                BlocSelector<LoginCubit, LoginState,
-                    ({bool isFormValid, ApiStatus status})>(
+                BlocSelector<
+                  LoginCubit,
+                  LoginState,
+                  ({bool isFormValid, ApiStatus status})
+                >(
                   selector: (s) => (
-                  isFormValid: s.isFormValid,
-                  status: s.loginResource.status,
+                    isFormValid: s.isFormValid,
+                    status: s.loginResource.status,
                   ),
                   builder: (context, data) {
                     return ElevatedButton(
                       key: const Key('continueBtn'),
-                      onPressed: data.isFormValid &&
-                          data.status != ApiStatus.loading
+                      onPressed:
+                          data.isFormValid && data.status != ApiStatus.loading
                           ? () {
-                        if (_formKey.currentState?.validate() ?? false) {
-                          _cubit.onIntent(const LoginSubmitted());
-                        }
-                      }
+                              if (_formKey.currentState?.validate() ?? false) {
+                                _cubit.onIntent(const LoginSubmitted());
+                              }
+                            }
                           : null,
                       child: data.status == ApiStatus.loading
                           ? const SizedBox(
-                        height: 22,
-                        width: 22,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.5,
-                        ),
-                      )
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.5,
+                              ),
+                            )
                           : Text(LocaleKeys.common_continue.tr()),
                     );
                   },
@@ -176,12 +176,15 @@ class _LoginViewState extends State<LoginView>
                         },
                         child: Text(
                           LocaleKeys.auth_sign_up.tr(),
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w600,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Theme.of(context).colorScheme.primary,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                              ),
                         ),
                       ),
                     ],
