@@ -2,26 +2,21 @@ import 'package:driver_app/core/app_theme/context_extension.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../generated/locale_keys.g.dart';
 import '../manager/forget_password_cubit.dart';
 import '../manager/forget_password_intents.dart';
 import '../manager/forget_password_state.dart';
 import 'auth_header_text.dart';
 import 'otp_holder.dart';
-
 class OtpVerificationStep extends StatefulWidget {
   const OtpVerificationStep({super.key});
-
   @override
   State<OtpVerificationStep> createState() => _OtpVerificationStepState();
 }
-
 class _OtpVerificationStepState extends State<OtpVerificationStep>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);

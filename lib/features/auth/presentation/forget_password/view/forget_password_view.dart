@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../../../../generated/locale_keys.g.dart';
 import '../manager/forget_password_cubit.dart';
 import '../manager/forget_password_intents.dart';
@@ -12,29 +11,23 @@ import '../manager/forget_password_state.dart';
 import '../widgets/email_step.dart';
 import '../widgets/otp_verification_step.dart';
 import '../widgets/reset_password_step.dart';
-
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
-
   @override
   State<ForgetPasswordView> createState() => _ForgetPasswordViewState();
 }
-
 class _ForgetPasswordViewState extends State<ForgetPasswordView>
     with UiEventMixin<ForgetPasswordView, ForgetPasswordState, UiEvent> {
   final _pageController = PageController();
-
   @override
   ForgetPasswordCubit get cubit => _cubit;
   final ForgetPasswordCubit _cubit = GetIt.I<ForgetPasswordCubit>();
-
   @override
   void dispose() {
     _pageController.dispose();
     _cubit.close();
     super.dispose();
   }
-
   void _goToStep(ForgetPasswordStep step) {
     _pageController.animateToPage(
       step.index,
@@ -42,7 +35,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView>
       curve: Curves.easeInOut,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(

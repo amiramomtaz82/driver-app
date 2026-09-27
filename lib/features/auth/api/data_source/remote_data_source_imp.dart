@@ -9,43 +9,30 @@ import '../../data/models/vehicle_type_dto.dart';
 import '../../domain/models/login_request_model.dart';
 import '../../domain/models/login_response_model.dart';
 import '../client/auth_client.dart';
-
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final AuthApiClient _authApiClient;
-
   AuthRemoteDataSourceImpl(this._authApiClient);
-
   @override
   Future<LoginResponseModel> login(LoginRequestModel request) {
     return _authApiClient.login(request.toJson());
   }
-
-
-
-
   @override
   Future<RegisterResponseDto> register(RegisterRequestDto request) {
     return _authApiClient.register(request);
   }
-
   @override
   Future<List<CountryDto>> getCountries() {
     return _authApiClient.getCountries();
   }
-
   @override
   Future<List<VehicleTypeDto>> getVehicleTypes() {
     return _authApiClient.getVehicleTypes();
   }
-
-
-
   @override
   Future<MessageResponseModel> forgetPassword({required String email}) {
     return _authApiClient.forgetPassword({'email': email});
   }
-
   @override
   Future<VerifyOtpResponseData> verifyOtp({
     required String email,
@@ -57,7 +44,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     });
     return response.value;
   }
-
   @override
   Future<MessageResponseModel> resetPassword({
     required String resetToken,

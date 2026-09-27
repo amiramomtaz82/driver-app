@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'register_request_dto.g.dart';
-
 @JsonSerializable()
 class RegisterRequestDto {
   final String firstName;
@@ -15,7 +13,6 @@ class RegisterRequestDto {
   final String? vehicleLicense;
   final String nationalId;
   final String? idImage;
-
   const RegisterRequestDto({
     required this.firstName,
     required this.lastName,
@@ -29,6 +26,5 @@ class RegisterRequestDto {
     required this.nationalId,
     this.idImage,
   });
-
   Map<String, dynamic> toJson() => _$RegisterRequestDtoToJson(this);
 }

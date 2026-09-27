@@ -1,10 +1,8 @@
 import 'package:injectable/injectable.dart';
-
 import '../../../../../config/base/base_cubit.dart';
 import '../../../../../config/base/ui_events.dart';
 import '../../../../../config/base_response/base_response.dart';
 import '../../../../../config/resource/resource.dart';
-
 import '../../../../../core/go_routes/routes_names.dart';
 import '../../../data/models/register_request_dto.dart';
 import '../../../domain/entities/country.dart';
@@ -14,13 +12,11 @@ import '../../../domain/use_cases/get_vehicle_type_use_case.dart';
 import '../../../domain/use_cases/register_use_case.dart';
 import 'register_intents.dart';
 import 'register_state.dart';
-
 @injectable
 class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
   final RegisterUseCase _registerUseCase;
   final GetCountriesUseCase _getCountriesUseCase;
   final GetVehicleTypesUseCase _getVehicleTypesUseCase;
-
   RegisterCubit(
       this._registerUseCase,
       this._getCountriesUseCase,
@@ -28,7 +24,6 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
       ) : super(const RegisterState()) {
     onIntent(const LoadDropdownDataIntent());
   }
-
   void onIntent(RegisterIntent intent) {
     switch (intent) {
       case LoadDropdownDataIntent():
@@ -51,12 +46,9 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
         _submitRegister(request);
     }
   }
-
   Future<void> _loadDropdownData() async {
-    // 1. Fetch Countries
     emit(state.copyWith(countriesResource: const Resource.loading()));
     final countriesResult = await _getCountriesUseCase();
-
     switch (countriesResult) {
       case SuccessResponse<List<Country>>(:final data):
         emit(state.copyWith(
@@ -66,11 +58,8 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
       case ErrorResponse<List<Country>>(:final errMessage):
         emit(state.copyWith(countriesResource: Resource.error(errMessage)));
     }
-
-    // 2. Fetch Vehicle Types
     emit(state.copyWith(vehicleTypesResource: const Resource.loading()));
     final vehiclesResult = await _getVehicleTypesUseCase();
-
     switch (vehiclesResult) {
       case SuccessResponse<List<VehicleType>>(:final data):
         emit(state.copyWith(
@@ -81,20 +70,15 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
         emit(state.copyWith(vehicleTypesResource: Resource.error(errMessage)));
     }
   }
-
   Future<void> _submitRegister(RegisterRequestDto request) async {
     emit(state.copyWith(registerResource: const Resource.loading()));
-
     final result = await _registerUseCase(request);
-
     switch (result) {
       case SuccessResponse(:final data):
         emit(state.copyWith(registerResource: Resource.success(data)));
         emitEvent(const NavigateReplacementEvent(AppRoutes.registrationSuccess));
-
       case ErrorResponse(:final errMessage):
         emit(state.copyWith(registerResource: Resource.error(errMessage)));
-    
         emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));
     }
   }

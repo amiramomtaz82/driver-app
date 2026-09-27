@@ -1,17 +1,12 @@
-
 import 'package:easy_localization/easy_localization.dart';
-
 abstract final class Validators {
   Validators._();
-
   static final RegExp _emailRegExp = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
   );
-
   static final RegExp _phoneRegExp = RegExp(
     r'^\+?[0-9]{7,15}$',
   );
-
   static String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'errors.validation.name_required'.tr();
@@ -21,7 +16,6 @@ abstract final class Validators {
     }
     return null;
   }
-
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'errors.validation.email_required'.tr();
@@ -31,7 +25,6 @@ abstract final class Validators {
     }
     return null;
   }
-
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'errors.validation.password_required'.tr();
@@ -47,7 +40,6 @@ abstract final class Validators {
     }
     return null;
   }
-
   static String? validateConfirmPassword(String? value, String? originalPassword) {
     if (value == null || value.isEmpty) {
       return 'errors.validation.confirm_password_required'.tr();
@@ -57,7 +49,6 @@ abstract final class Validators {
     }
     return null;
   }
-
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'errors.validation.phone_required'.tr();
