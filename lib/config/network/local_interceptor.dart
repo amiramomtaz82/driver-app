@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 
 import '../local/local_service.dart';
 
-
 /// Sends the language the app is currently showing so the backend can localize
 /// the messages it returns. Every endpoint requires the header.
 @injectable

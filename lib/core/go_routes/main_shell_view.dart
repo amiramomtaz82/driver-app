@@ -23,7 +23,6 @@ class MainShellView extends StatelessWidget {
             selectedIndex: navigationShell.currentIndex,
             onDestinationSelected: (index) => navigationShell.goBranch(
               index,
-              // tapping the current tab again pops it back to its first screen
               initialLocation: index == navigationShell.currentIndex,
             ),
             destinations: [

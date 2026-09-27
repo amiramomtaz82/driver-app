@@ -1,9 +1,7 @@
-
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/auth/domain/models/login_request_model.dart';
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
-
 
 import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
@@ -27,7 +25,6 @@ class AuthRepoImpl implements AuthRepo {
 
   AuthRepoImpl(this._authRemoteDataSource, this._authLocalDataSource);
 
-
   static const bool useDummyData = true;
 
   @override
@@ -44,7 +41,8 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<BaseResponse<RegisterResponseDto>> register(
-      RegisterRequestDto request) async {
+    RegisterRequestDto request,
+  ) async {
     if (useDummyData) {
       // Simulate network delay so your loading indicator shows during the demo
       await Future.delayed(const Duration(seconds: 1));
@@ -59,19 +57,19 @@ class AuthRepoImpl implements AuthRepo {
     return safeCall(() => _authRemoteDataSource.register(request));
   }
 
-
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
     if (useDummyData) {
       return SuccessResponse(
-          CountryDto.dummyList.map((dto) => dto.toEntity()).toList());
+        CountryDto.dummyList.map((dto) => dto.toEntity()).toList(),
+      );
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
+  }
 
-}
   @override
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
@@ -82,8 +80,8 @@ class AuthRepoImpl implements AuthRepo {
       final result = await _authRemoteDataSource.login(
         LoginRequestModel(email: email, password: password),
       );
+      await _authLocalDataSource.saveToken(result.token);
       if (rememberMe) {
-        await _authLocalDataSource.saveToken(result.token);
         await _authLocalDataSource.saveRefreshToken(result.refreshToken);
       }
       return SuccessResponse(result);
@@ -96,7 +94,8 @@ class AuthRepoImpl implements AuthRepo {
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
     if (useDummyData) {
       return SuccessResponse(
-          VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList());
+        VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList(),
+      );
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getVehicleTypes();
