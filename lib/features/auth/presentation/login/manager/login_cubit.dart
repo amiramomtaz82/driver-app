@@ -6,17 +6,13 @@ import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:driver_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../../../../config/base/base_cubit.dart';
 import 'login_intents.dart';
 import 'login_state.dart';
-
 @injectable
 class LoginCubit extends BaseCubit<LoginState, UiEvent> {
   final AuthRepo _authRepo;
-
   LoginCubit(this._authRepo) : super(const LoginState());
-
   void onIntent(LoginIntent intent) {
     switch (intent) {
       case EmailChanged():
@@ -33,16 +29,13 @@ class LoginCubit extends BaseCubit<LoginState, UiEvent> {
         emitEvent(NavigateEvent(AppRoutes.forgotPassword));
     }
   }
-
   Future<void> _login() async {
     emit(state.copyWith(loginResource: const Resource.loading()));
-
     final response = await _authRepo.login(
       email: state.email,
       password: state.password,
       rememberMe: state.rememberMe,
     );
-
     switch (response) {
       case SuccessResponse<LoginResponseModel> s:
         emit(state.copyWith(loginResource: Resource.success(s.data)));

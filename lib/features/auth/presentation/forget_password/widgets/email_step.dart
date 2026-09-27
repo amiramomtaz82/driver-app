@@ -2,34 +2,27 @@ import 'package:driver_app/core/validation/validation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../generated/locale_keys.g.dart';
 import '../manager/forget_password_cubit.dart';
 import '../manager/forget_password_intents.dart';
 import '../manager/forget_password_state.dart';
 import 'auth_header_text.dart';
 import 'auth_submit_button.dart';
-
 class EmailStep extends StatefulWidget {
   const EmailStep({super.key});
-
   @override
   State<EmailStep> createState() => _EmailStepState();
 }
-
 class _EmailStepState extends State<EmailStep>
     with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormState>();
-
   @override
   bool get wantKeepAlive => true;
-
   void _onConfirm() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<ForgetPasswordCubit>().onIntent(const SendCodeSubmitted());
     }
   }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);

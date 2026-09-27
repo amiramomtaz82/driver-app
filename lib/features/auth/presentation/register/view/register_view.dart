@@ -2,14 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../config/base/ui_events.dart';
 import '../../../../../config/di/di.dart';
 import '../../../../../config/mixins/ui_event_handler_mixin.dart';
 import '../../../../../core/app_theme/app_colors.dart';
 import '../../../../../core/validation/validation.dart';
 import '../../../../../generated/locale_keys.g.dart';
-
 import '../../../data/models/register_request_dto.dart';
 import '../../../domain/entities/country.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
@@ -17,20 +15,15 @@ import '../manager/register_cubit.dart';
 import '../manager/register_intents.dart';
 import '../manager/register_state.dart';
 import 'package:image_picker/image_picker.dart';
-
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
-
   @override
   State<RegisterView> createState() => _RegisterViewState();
 }
-
 class _RegisterViewState extends State<RegisterView>
     with UiEventMixin<RegisterView, RegisterState, UiEvent> {
-  // Required by UiEventMixin
   @override
   late final RegisterCubit cubit = getIt<RegisterCubit>();
-
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _secondNameController = TextEditingController();
@@ -41,7 +34,6 @@ class _RegisterViewState extends State<RegisterView>
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-
   Future<void> _showImageSourcePicker({
     required BuildContext context,
     required ValueChanged<String> onImagePicked,
@@ -51,40 +43,38 @@ class _RegisterViewState extends State<RegisterView>
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (ctx) =>
-          SafeArea(
-            child: Wrap(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.photo_camera_outlined),
-                  title: const Text('Camera'),
-                  onTap: () async {
-                    Navigator.pop(ctx);
-                    final XFile? photo = await _picker.pickImage(
-                      source: ImageSource.camera,
-                      imageQuality: 80,
-                    );
-                    if (photo != null) onImagePicked(photo.path);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_library_outlined),
-                  title: const Text('Gallery'),
-                  onTap: () async {
-                    Navigator.pop(ctx);
-                    final XFile? image = await _picker.pickImage(
-                      source: ImageSource.gallery,
-                      imageQuality: 80,
-                    );
-                    if (image != null) onImagePicked(image.path);
-                  },
-                ),
-              ],
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera_outlined),
+              title: const Text('Camera'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? photo = await _picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 80,
+                );
+                if (photo != null) onImagePicked(photo.path);
+              },
             ),
-          ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: const Text('Gallery'),
+              onTap: () async {
+                Navigator.pop(ctx);
+                final XFile? image = await _picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 80,
+                );
+                if (image != null) onImagePicked(image.path);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
-
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -98,7 +88,6 @@ class _RegisterViewState extends State<RegisterView>
     cubit.close();
     super.dispose();
   }
-
   void _onSubmit(RegisterState state) {
     if (_formKey.currentState?.validate() ?? false) {
       final request = RegisterRequestDto(
@@ -117,7 +106,6 @@ class _RegisterViewState extends State<RegisterView>
       cubit.onIntent(SubmitRegisterIntent(request));
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -126,7 +114,6 @@ class _RegisterViewState extends State<RegisterView>
         builder: (context, state) {
           final countries = state.countriesResource.data ?? [];
           final vehicleTypes = state.vehicleTypesResource.data ?? [];
-
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -135,15 +122,15 @@ class _RegisterViewState extends State<RegisterView>
               ),
               title: Text(
                 LocaleKeys.apply_title.tr(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 18),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               centerTitle: false,
             ),
             body: SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -157,12 +144,10 @@ class _RegisterViewState extends State<RegisterView>
                       const SizedBox(height: 4),
                       Text(
                         LocaleKeys.apply_welcome_sub.tr(),
-                        style: TextStyle(color: Colors.grey.shade600,
-                            fontSize: 13),
+                        style: TextStyle(
+                            color: Colors.grey.shade600, fontSize: 13),
                       ),
                       const SizedBox(height: 20),
-
-                      // 1. Country Dropdown
                       DropdownButtonFormField<Country>(
                         value: state.selectedCountry,
                         decoration: InputDecoration(
@@ -186,8 +171,6 @@ class _RegisterViewState extends State<RegisterView>
                         },
                       ),
                       const SizedBox(height: 16),
-
-                      // 2. First legal name
                       TextFormField(
                         controller: _firstNameController,
                         decoration: InputDecoration(
@@ -197,8 +180,6 @@ class _RegisterViewState extends State<RegisterView>
                         validator: Validators.validateName,
                       ),
                       const SizedBox(height: 16),
-
-                      // 3. Second legal name
                       TextFormField(
                         controller: _secondNameController,
                         decoration: InputDecoration(
@@ -208,8 +189,6 @@ class _RegisterViewState extends State<RegisterView>
                         validator: Validators.validateName,
                       ),
                       const SizedBox(height: 16),
-
-                      // 4. Vehicle Type Dropdown
                       DropdownButtonFormField<VehicleType>(
                         value: state.selectedVehicleType,
                         decoration: InputDecoration(
@@ -222,13 +201,12 @@ class _RegisterViewState extends State<RegisterView>
                           );
                         }).toList(),
                         onChanged: (v) {
-                          if (v != null) cubit.onIntent(
-                              SelectVehicleTypeIntent(v));
+                          if (v != null) {
+                            cubit.onIntent(SelectVehicleTypeIntent(v));
+                          }
                         },
                       ),
                       const SizedBox(height: 16),
-
-                      // 5. Vehicle number
                       TextFormField(
                         controller: _vehicleNumberController,
                         decoration: InputDecoration(
@@ -236,19 +214,15 @@ class _RegisterViewState extends State<RegisterView>
                           hintText: LocaleKeys.apply_vehicle_number_hint.tr(),
                         ),
                         validator: (v) =>
-                        v == null || v.isEmpty
-                            ? 'Required'
-                            : null,
+                            v == null || v.isEmpty ? 'Required' : null,
                       ),
                       const SizedBox(height: 16),
-
-                      // 6. Vehicle License Upload
                       _buildUploadTile(
                         label: LocaleKeys.apply_vehicle_license_label.tr(),
                         hint: state.licensePhotoPath != null
                             ? state.licensePhotoPath!
-                            .split(RegExp(r'[\\/]'))
-                            .last
+                                .split(RegExp(r'[\\/]'))
+                                .last
                             : LocaleKeys.apply_vehicle_license_hint.tr(),
                         isSelected: state.licensePhotoPath != null,
                         onTap: () {
@@ -260,7 +234,6 @@ class _RegisterViewState extends State<RegisterView>
                         },
                       ),
                       const SizedBox(height: 16),
-                      // 7. Email
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -271,8 +244,6 @@ class _RegisterViewState extends State<RegisterView>
                         validator: Validators.validateEmail,
                       ),
                       const SizedBox(height: 16),
-
-                      // 8. Phone number
                       TextFormField(
                         controller: _phoneController,
                         keyboardType: TextInputType.phone,
@@ -283,8 +254,6 @@ class _RegisterViewState extends State<RegisterView>
                         validator: Validators.validatePhone,
                       ),
                       const SizedBox(height: 16),
-
-                      // 9. ID number
                       TextFormField(
                         controller: _nationalIdController,
                         keyboardType: TextInputType.number,
@@ -293,13 +262,9 @@ class _RegisterViewState extends State<RegisterView>
                           hintText: LocaleKeys.apply_id_number_hint.tr(),
                         ),
                         validator: (v) =>
-                        v == null || v.isEmpty
-                            ? 'Required'
-                            : null,
+                            v == null || v.isEmpty ? 'Required' : null,
                       ),
                       const SizedBox(height: 16),
-
-                      // 10. ID image upload
                       _buildUploadTile(
                         label: LocaleKeys.apply_id_image_label.tr(),
                         hint: state.idImagePath != null
@@ -315,7 +280,6 @@ class _RegisterViewState extends State<RegisterView>
                         },
                       ),
                       const SizedBox(height: 16),
-                      // 11. Passwords (side-by-side row matching Figma)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -336,23 +300,21 @@ class _RegisterViewState extends State<RegisterView>
                               controller: _confirmPasswordController,
                               obscureText: state.isConfirmPasswordHidden,
                               decoration: InputDecoration(
-                                labelText: LocaleKeys
-                                    .apply_confirm_password_label.tr(),
-                                hintText: LocaleKeys.apply_confirm_password_hint
-                                    .tr(),
+                                labelText:
+                                    LocaleKeys.apply_confirm_password_label.tr(),
+                                hintText:
+                                    LocaleKeys.apply_confirm_password_hint.tr(),
                               ),
                               validator: (v) =>
                                   Validators.validateConfirmPassword(
-                                    v,
-                                    _passwordController.text,
-                                  ),
+                                v,
+                                _passwordController.text,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
-
-                      // 12. Gender Radio Buttons
                       Row(
                         children: [
                           Text(
@@ -381,21 +343,19 @@ class _RegisterViewState extends State<RegisterView>
                         ],
                       ),
                       const SizedBox(height: 24),
-
-                      // 13. Continue Button
                       ElevatedButton(
                         onPressed: state.registerResource.isLoading
                             ? null
                             : () => _onSubmit(state),
                         child: state.registerResource.isLoading
                             ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
                             : Text(LocaleKeys.common_continue.tr()),
                       ),
                       const SizedBox(height: 24),
@@ -409,7 +369,6 @@ class _RegisterViewState extends State<RegisterView>
       ),
     );
   }
-
   Widget _buildUploadTile({
     required String label,
     required String hint,
@@ -423,8 +382,7 @@ class _RegisterViewState extends State<RegisterView>
         decoration: InputDecoration(
           labelText: label,
           suffixIcon: Icon(
-            isSelected ? Icons.check_circle_outline : Icons
-                .file_upload_outlined,
+            isSelected ? Icons.check_circle_outline : Icons.file_upload_outlined,
             color: isSelected ? Colors.green : Colors.grey,
           ),
         ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
-
-
 @immutable
 class CustomColors extends ThemeExtension<CustomColors> {
   const CustomColors({
@@ -21,7 +19,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.divider,
     required this.hint,
   });
-
   final Color primary;
   final Color secondary;
   final Color error;
@@ -37,7 +34,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color border;
   final Color divider;
   final Color hint;
-
   static const light = CustomColors(
     primary: AppColors.pink,
     secondary: AppColors.darkGrey,
@@ -55,7 +51,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
     divider: AppColors.dividerGrey,
     hint: AppColors.grey,
   );
-
   static const dark = CustomColors(
     primary: AppColors.darkPink,
     secondary: AppColors.grey,
@@ -73,7 +68,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
     divider: AppColors.darkDivider,
     hint: AppColors.darkGrey,
   );
-
   @override
   CustomColors copyWith({
     Color? primary,
@@ -110,7 +104,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
       hint: hint ?? this.hint,
     );
   }
-
   @override
   CustomColors lerp(ThemeExtension<CustomColors>? other, double t) {
     if (other is! CustomColors) return this;

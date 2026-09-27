@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'user_model.g.dart';
-
 @JsonSerializable()
 class UserModel {
   final String id;
@@ -10,7 +8,6 @@ class UserModel {
   final String role;
   final bool isActive;
   final String? driverStatus;
-
   const UserModel({
     required this.id,
     required this.email,
@@ -19,9 +16,7 @@ class UserModel {
     required this.isActive,
     this.driverStatus,
   });
-
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
-
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }
