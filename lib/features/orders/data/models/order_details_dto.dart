@@ -2,72 +2,111 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/order_details_entity.dart';
 import '../../domain/entities/order_status.dart';
-import 'available_order_dto.dart';
 
 part 'order_details_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class OrderDetailsDto {
   const OrderDetailsDto({
-    this.id,
-    this.orderNumber,
+    this.orderId,
     this.status,
-    this.createdAt,
-    this.totalAmount,
-    this.currency,
+    this.total,
     this.paymentMethod,
-    this.store,
-    this.recipient,
+    this.pickup,
+    this.userAddress,
     this.items,
   });
 
-  final String? id;
-  final String? orderNumber;
+  final String? orderId;
   final String? status;
-  final String? createdAt;
-  final num? totalAmount;
-  final String? currency;
+  final num? total;
   final String? paymentMethod;
-  final OrderPartyDto? store;
-  final OrderPartyDto? recipient;
+  final OrderPickupDto? pickup;
+  final OrderUserAddressDto? userAddress;
   final List<OrderItemDto>? items;
 
   factory OrderDetailsDto.fromJson(Map<String, dynamic> json) =>
       _$OrderDetailsDtoFromJson(json);
 
   OrderDetailsEntity toEntity() => OrderDetailsEntity(
-    id: id ?? '',
-    orderNumber: orderNumber ?? '',
+    id: orderId ?? '',
+    orderNumber: _shortNumber(orderId),
     status: OrderStatus.fromApi(status),
-    createdAt: DateTime.tryParse(createdAt ?? ''),
-    total: totalAmount?.toDouble() ?? 0,
-    currency: currency ?? '',
+    createdAt: null,
+    total: total?.toDouble() ?? 0,
+    currency: '',
     paymentMethod: paymentMethod ?? '',
     pickup: OrderPartyEntity(
-      name: store?.name ?? '',
-      address: store?.address ?? '',
-      phone: store?.phone,
-      imageUrl: store?.imageUrl,
-      latitude: store?.latitude,
-      longitude: store?.longitude,
+      name: pickup?.storeName ?? '',
+      address: pickup?.address ?? '',
+      latitude: pickup?.location?.lat,
+      longitude: pickup?.location?.lng,
     ),
     recipient: OrderPartyEntity(
-      name: recipient?.name ?? '',
-      address: recipient?.address ?? '',
-      phone: recipient?.phone,
-      imageUrl: recipient?.imageUrl,
-      latitude: recipient?.latitude,
-      longitude: recipient?.longitude,
+      name: userAddress?.recipientName ?? '',
+      address: userAddress?.address ?? '',
+      phone: userAddress?.recipientPhone,
+      latitude: userAddress?.location?.lat,
+      longitude: userAddress?.location?.lng,
     ),
     items: (items ?? []).map((i) => i.toEntity()).toList(),
   );
+
+  static String _shortNumber(String? id) {
+    if (id == null || id.isEmpty) return '';
+    final digits = id.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.isEmpty) return id;
+    return digits.substring(0, digits.length.clamp(0, 6));
+  }
+}
+
+@JsonSerializable(createToJson: false)
+class OrderPickupDto {
+  const OrderPickupDto({this.storeName, this.address, this.location});
+
+  final String? storeName;
+  final String? address;
+  final OrderLocationDto? location;
+
+  factory OrderPickupDto.fromJson(Map<String, dynamic> json) =>
+      _$OrderPickupDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class OrderUserAddressDto {
+  const OrderUserAddressDto({
+    this.recipientName,
+    this.recipientPhone,
+    this.address,
+    this.location,
+  });
+
+  final String? recipientName;
+  final String? recipientPhone;
+  final String? address;
+  final OrderLocationDto? location;
+
+  factory OrderUserAddressDto.fromJson(Map<String, dynamic> json) =>
+      _$OrderUserAddressDtoFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class OrderLocationDto {
+  const OrderLocationDto({this.lat, this.lng});
+
+  final double? lat;
+  final double? lng;
+
+  factory OrderLocationDto.fromJson(Map<String, dynamic> json) =>
+      _$OrderLocationDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
 class OrderItemDto {
-  const OrderItemDto({this.name, this.quantity, this.price, this.imageUrl});
+  const OrderItemDto({this.productName, this.quantity, this.price, this.imageUrl});
 
-  final String? name;
+  @JsonKey(name: 'productName')
+  final String? productName;
   final int? quantity;
   final num? price;
   final String? imageUrl;
@@ -76,7 +115,7 @@ class OrderItemDto {
       _$OrderItemDtoFromJson(json);
 
   OrderItemEntity toEntity() => OrderItemEntity(
-    name: name ?? '',
+    name: productName ?? '',
     quantity: quantity ?? 1,
     price: price?.toDouble() ?? 0,
     imageUrl: imageUrl,

@@ -44,16 +44,17 @@ class OrdersRepoImpl implements OrdersRepo {
         pageSize: pageSize,
       );
 
+      final pagination = orders.pagination;
       return SuccessResponse(
         PaginatedResponse<AvailableOrderEntity>(
           data: orders.items.map((order) => order.toEntity()).toList(),
           pagination: PaginationModel(
-            page: orders.pageNumber,
-            pageSize: orders.pageSize,
-            totalCount: orders.totalCount,
-            totalPages: orders.totalPages,
-            hasNextPage: orders.hasNextPage,
-            hasPreviousPage: orders.hasPreviousPage,
+            page: pagination?.page,
+            pageSize: pagination?.pageSize,
+            totalCount: pagination?.totalCount,
+            totalPages: pagination?.totalPages,
+            hasNextPage: pagination?.hasNextPage,
+            hasPreviousPage: pagination?.hasPreviousPage,
           ),
         ),
       );

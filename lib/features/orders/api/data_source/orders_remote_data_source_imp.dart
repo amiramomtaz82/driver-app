@@ -21,7 +21,7 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
       page: page,
       pageSize: pageSize,
     );
-    return response.value;
+    return response.data;
   }
 
   @override
@@ -44,7 +44,7 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
   @override
   Future<OrderDetailsDto> getOrderDetails({required String orderId}) async {
     final response = await _ordersApiClient.getOrderDetails(orderId);
-    return response.data;
+    return response.data ?? const OrderDetailsDto();
   }
 
   @override
