@@ -13,7 +13,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<RegisterResponseDto> register(RegisterRequestDto request) {
-    return _authApiClient.register(request);
+    return _authApiClient.register(request.toMap());
   }
 
   @override

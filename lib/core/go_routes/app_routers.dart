@@ -1,8 +1,11 @@
 import 'package:driver_app/core/go_routes/routes_names.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../config/di/di.dart';
 import '../../features/auth/presentation/forget_password/view/forget_password_view.dart';
 import '../../features/auth/presentation/login/login_view.dart';
+import '../../features/auth/presentation/register/manager/register_cubit.dart';
 import '../../features/auth/presentation/register/view/register_view.dart';
 import '../../features/auth/presentation/register/view/registeration_success_view.dart';
 import '../../features/home/presentation/view/home_view.dart';
@@ -21,7 +24,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.register,
       name: AppRoutes.register,
-      builder: (context, state) => const RegisterView(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<RegisterCubit>(),
+        child: const RegisterView(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.registrationSuccess,

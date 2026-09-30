@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../config/resource/resource.dart';
 
-import '../../../data/models/register_response_dto.dart';
 import '../../../domain/entities/country.dart';
+import '../../../domain/entities/register_response_entity.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
 
 class RegisterState extends Equatable {
   // Async Resources for independent status management
   final Resource<List<Country>> countriesResource;
   final Resource<List<VehicleType>> vehicleTypesResource;
-  final Resource<RegisterResponseDto> registerResource;
+  final Resource<RegisterEntityResponse> registerResource;
 
   // Selected dropdown values
   final Country? selectedCountry;
@@ -41,7 +41,7 @@ class RegisterState extends Equatable {
   RegisterState copyWith({
     Resource<List<Country>>? countriesResource,
     Resource<List<VehicleType>>? vehicleTypesResource,
-    Resource<RegisterResponseDto>? registerResource,
+    Resource<RegisterEntityResponse>? registerResource,
     Country? selectedCountry,
     VehicleType? selectedVehicleType,
     String? gender,

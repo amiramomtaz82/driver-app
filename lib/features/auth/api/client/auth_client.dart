@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/constants/endpoints.dart';
-import '../../data/models/register_request_dto.dart';
 import '../../data/models/register_response_dto.dart';
 
 
@@ -20,7 +19,9 @@ abstract class AuthApiClient {
   factory AuthApiClient(Dio dio) = _AuthApiClient;
 
   @POST(Endpoints.register)
-  Future<RegisterResponseDto> register(@Body() RegisterRequestDto request);
+  @MultiPart()
+  Future<RegisterResponseDto> register(@PartMap() Map<String, dynamic> request);
+
 
   @GET(Endpoints.countries)
   Future<List<CountryDto>> getCountries();

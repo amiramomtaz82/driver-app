@@ -5,6 +5,8 @@ import '../../data/data_source/local_data_source.dart';
 
 @LazySingleton(as: AuthLocalDataSource)
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+  // ignore: unused_field
   final SecureStorage _secureStorage;
 
-  AuthLocalDataSourceImpl(this._secureStorage);}
+  AuthLocalDataSourceImpl(this._secureStorage);
+}
