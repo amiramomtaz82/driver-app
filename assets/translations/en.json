@@ -9,7 +9,11 @@
     "upload": "Upload",
     "female": "Female",
     "male": "Male",
+    "gender_female": "Female",
+    "gender_male": "Male",
     "gender": "Gender",
+    "camera": "Camera",
+    "gallery": "Gallery",
     "done": "Done"
   },
   "onboarding": {

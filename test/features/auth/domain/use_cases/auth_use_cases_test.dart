@@ -1,6 +1,6 @@
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/auth/domain/entities/country.dart';
-import 'package:driver_app/features/auth/domain/entities/register_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:driver_app/features/auth/domain/entities/vehicle_type_entity.dart';
 import 'package:driver_app/features/auth/domain/repo/auth_repo.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepo extends Mock implements AuthRepo {}
-class FakeRegisterEntity extends Fake implements RegisterEntity {}
+class FakeRegisterEntity extends Fake implements RegisterForm {}
 
 void main() {
   late MockAuthRepo mockAuthRepo;
@@ -31,7 +31,7 @@ void main() {
   });
 
   group('RegisterUseCase', () {
-    const params = RegisterEntity(
+    const params = RegisterForm(
       firstName: 'Ahmed',
       lastName: 'Ali',
       email: 'ahmed@example.com',

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/app_theme/app_colors.dart';
+import '../../../../../../core/constants/app_constants.dart';
 import '../../../../../../generated/locale_keys.g.dart';
 import '../../manager/register_cubit.dart';
 import '../../manager/register_intents.dart';
@@ -24,24 +25,24 @@ class GenderSelectorSection extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             Radio<String>(
-              value: 'female',
+              value: GenderConstants.female,
               groupValue: state.gender,
               activeColor: AppColors.pink,
               onChanged: (val) {
                 if (val != null) cubit.onIntent(SelectGenderIntent(val));
               },
             ),
-            Text('common.female'.tr()),
+            Text(LocaleKeys.common_gender_female.tr()),
             const SizedBox(width: 12),
             Radio<String>(
-              value: 'male',
+              value: GenderConstants.male,
               groupValue: state.gender,
               activeColor: AppColors.pink,
               onChanged: (val) {
                 if (val != null) cubit.onIntent(SelectGenderIntent(val));
               },
             ),
-            Text('common.male'.tr()),
+            Text(LocaleKeys.common_gender_male.tr()),
           ],
         );
       },

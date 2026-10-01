@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class RegisterEntity extends Equatable {
+class RegisterForm extends Equatable {
   final String firstName;
   final String lastName;
   final String email;
@@ -13,7 +13,7 @@ class RegisterEntity extends Equatable {
   final String? vehicleLicense;
   final String? idImage;
 
-  const RegisterEntity({
+  const RegisterForm({
     required this.firstName,
     required this.lastName,
     required this.email,

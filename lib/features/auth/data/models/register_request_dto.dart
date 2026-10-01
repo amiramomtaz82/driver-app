@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../domain/entities/register_entity.dart';
+import '../../domain/entities/register_form.dart';
 
 
 class RegisterRequestDto {
@@ -31,7 +31,7 @@ class RegisterRequestDto {
   });
 
   /// Mapper: Converts Domain RegisterRequestParams (String paths) to Data DTO (MultipartFile)
-  static Future<RegisterRequestDto> fromParams(RegisterEntity  params) async {
+  static Future<RegisterRequestDto> fromParams(RegisterForm  params) async {
     return RegisterRequestDto(
       firstName: params.firstName,
       lastName: params.lastName,

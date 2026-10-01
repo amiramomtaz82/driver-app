@@ -9,11 +9,12 @@ import '../../../../../config/resource/resource.dart';
 import '../../../../../core/go_routes/routes_names.dart';
 import '../../../../../core/services/image_picker_service.dart';
 import '../../../domain/entities/country.dart';
+import '../../../domain/entities/register_form.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
 import '../../../domain/use_cases/get_countries_use_case.dart';
 import '../../../domain/use_cases/get_vehicle_type_use_case.dart';
 import '../../../domain/use_cases/register_use_case.dart';
-import '../models/register_form.dart';
+
 import 'register_intents.dart';
 import 'register_state.dart';
 
@@ -54,61 +55,47 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
     }
   }
 
-  Future<void> _loadDropdownData() async {
-    // 1. Set both resources to loading simultaneously
-    emit(state.copyWith(
-      countriesResource: const Resource.loading(),
-      vehicleTypesResource: const Resource.loading(),
-    ));
+  Future<void> _loadCountries() async {
+    emit(state.copyWith(countriesResource: const Resource.loading()));
 
-    // 2. Fetch both in parallel
-    final results = await Future.wait([
-      _getCountriesUseCase(),
-      _getVehicleTypesUseCase(),
-    ]);
+    final result = await _getCountriesUseCase();
 
-    final countriesResult = results[0] as BaseResponse<List<Country>>;
-    final vehiclesResult = results[1] as BaseResponse<List<VehicleType>>;
-
-    // 3. Handle Countries Result
-    Country? selectedCountry;
-    final Resource<List<Country>> countriesResource;
-    switch (countriesResult) {
+    switch (result) {
       case SuccessResponse<List<Country>>(:final data):
-        countriesResource = Resource.success(data);
-        selectedCountry = data.isNotEmpty ? data.first : null;
+        emit(state.copyWith(
+          countriesResource: Resource.success(data),
+          selectedCountry: data.isNotEmpty ? data.first : null,
+        ));
       case ErrorResponse<List<Country>>(:final errMessage):
-        countriesResource = Resource.error(errMessage);
+        emit(state.copyWith(countriesResource: Resource.error(errMessage)));
+        emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));
     }
-
-    // 4. Handle Vehicle Types Result
-    VehicleType? selectedVehicleType;
-    final Resource<List<VehicleType>> vehicleTypesResource;
-    switch (vehiclesResult) {
-      case SuccessResponse<List<VehicleType>>(:final data):
-        vehicleTypesResource = Resource.success(data);
-        selectedVehicleType = data.isNotEmpty ? data.first : null;
-      case ErrorResponse<List<VehicleType>>(:final errMessage):
-        vehicleTypesResource = Resource.error(errMessage);
-    }
-
-    // 5. (Optional) Combined Error Notification
-    if (countriesResult is ErrorResponse || vehiclesResult is ErrorResponse) {
-      final errorMessage = countriesResult is ErrorResponse
-          ? (countriesResult as ErrorResponse).errMessage
-          : (vehiclesResult as ErrorResponse).errMessage;
-      emitEvent(ShowSnackBarEvent(message: errorMessage, isError: true));
-    }
-
-    // 6. Emit combined final state in a single transition
-    emit(state.copyWith(
-      countriesResource: countriesResource,
-      selectedCountry: selectedCountry,
-      vehicleTypesResource: vehicleTypesResource,
-      selectedVehicleType: selectedVehicleType,
-    ));
   }
-  Future<void> _submitRegister(RegisterEntity  form) async {
+
+  Future<void> _loadVehicleTypes() async {
+    emit(state.copyWith(vehicleTypesResource: const Resource.loading()));
+
+    final result = await _getVehicleTypesUseCase();
+
+    switch (result) {
+      case SuccessResponse<List<VehicleType>>(:final data):
+        emit(state.copyWith(
+          vehicleTypesResource: Resource.success(data),
+          selectedVehicleType: data.isNotEmpty ? data.first : null,
+        ));
+      case ErrorResponse<List<VehicleType>>(:final errMessage):
+        emit(state.copyWith(vehicleTypesResource: Resource.error(errMessage)));
+        emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));
+    }
+  }
+
+  Future<void> _loadDropdownData() async {
+    await Future.wait([
+      _loadCountries(),
+      _loadVehicleTypes(),
+    ]);
+  }
+  Future<void> _submitRegister(RegisterForm  form) async {
     emit(state.copyWith(registerResource: const Resource.loading()));
 
     final result = await _registerUseCase(form);

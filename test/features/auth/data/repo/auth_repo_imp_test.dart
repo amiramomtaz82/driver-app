@@ -7,7 +7,7 @@ import 'package:driver_app/features/auth/data/models/register_response_dto.dart'
 import 'package:driver_app/features/auth/data/models/vehicle_type_dto.dart';
 import 'package:driver_app/features/auth/data/repo/auth_repo_imp.dart';
 import 'package:driver_app/features/auth/domain/entities/country.dart';
-import 'package:driver_app/features/auth/domain/entities/register_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:driver_app/features/auth/domain/entities/vehicle_type_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,7 +33,7 @@ void main() {
   });
 
   group('AuthRepoImpl - register', () {
-    const form = RegisterEntity(
+    const form = RegisterForm(
       firstName: 'Sarah',
       lastName: 'Hassan',
       email: 'sarah@example.com',

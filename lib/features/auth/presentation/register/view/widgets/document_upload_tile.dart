@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../../generated/locale_keys.g.dart';
 
 class DocumentUploadTile extends StatelessWidget {
   final String label;
@@ -26,7 +28,7 @@ class DocumentUploadTile extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
-              title: const Text('Camera'),
+              title: Text(LocaleKeys.common_camera.tr()),
               onTap: () {
                 Navigator.pop(ctx);
                 onSourceSelected(ImageSource.camera);
@@ -34,7 +36,7 @@ class DocumentUploadTile extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('Gallery'),
+              title: Text(LocaleKeys.common_gallery.tr()),
               onTap: () {
                 Navigator.pop(ctx);
                 onSourceSelected(ImageSource.gallery);

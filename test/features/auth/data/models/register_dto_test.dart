@@ -2,7 +2,7 @@ import 'package:driver_app/features/auth/data/models/country_dto.dart';
 import 'package:driver_app/features/auth/data/models/register_request_dto.dart';
 import 'package:driver_app/features/auth/data/models/register_response_dto.dart';
 import 'package:driver_app/features/auth/data/models/vehicle_type_dto.dart';
-import 'package:driver_app/features/auth/domain/entities/register_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -66,7 +66,7 @@ void main() {
     });
 
     test('fromParams should map domain entity without file paths to DTO', () async {
-      const entity = RegisterEntity(
+      const entity = RegisterForm(
         firstName: 'Jane',
         lastName: 'Smith',
         email: 'jane@example.com',

@@ -1,7 +1,8 @@
 
 import 'package:image_picker/image_picker.dart';
 
-import '../models/register_form.dart';
+import '../../../domain/entities/register_form.dart';
+
 import '../../../domain/entities/country.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
 
@@ -41,7 +42,7 @@ class ToggleConfirmPasswordVisibilityIntent extends RegisterIntent {
 
 
 class SubmitRegisterIntent extends RegisterIntent {
-  final RegisterEntity form;
+  final RegisterForm form;
   const SubmitRegisterIntent(this.form);
 }
 class PickLicensePhotoIntent extends RegisterIntent {

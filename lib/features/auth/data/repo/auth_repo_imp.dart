@@ -4,12 +4,11 @@ import 'package:injectable/injectable.dart';
 import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/country.dart';
-import '../../domain/entities/register_entity.dart';
+import '../../domain/entities/register_form.dart';
 import '../../domain/entities/vehicle_type_entity.dart';
 import '../../domain/repo/auth_repo.dart';
 import '../data_source/local_data_source.dart';
 import '../data_source/remote_data_source.dart';
-import '../models/country_dto.dart';
 import '../models/register_request_dto.dart';
 
 import '../models/vehicle_type_dto.dart';
@@ -31,7 +30,7 @@ class AuthRepoImpl implements AuthRepo {
 
 
   @override
-  Future<BaseResponse<RegisterEntityResponse>> register(RegisterEntity params) {
+  Future<BaseResponse<RegisterEntityResponse>> register(RegisterForm params) {
     return safeCall(() async {
       // 1. Map domain params (String paths) to DTO (MultipartFiles)
       final requestDto = await RegisterRequestDto.fromParams(params);
@@ -45,9 +44,7 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
-    if (useDummyData) {
-      return SuccessResponse(CountryDto.dummyList.map((dto) => dto.toEntity()).toList());
-    }
+
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();

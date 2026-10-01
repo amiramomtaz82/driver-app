@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../config/resource/resource.dart';
+import '../../../../../core/constants/app_constants.dart';
 
 import '../../../domain/entities/country.dart';
 import '../../../domain/entities/register_response_entity.dart';
@@ -31,7 +32,7 @@ class RegisterState extends Equatable {
     this.registerResource = const Resource.initial(),
     this.selectedCountry,
     this.selectedVehicleType,
-    this.gender = 'male',
+    this.gender = GenderConstants.male,
     this.licensePhotoPath,
     this.idImagePath,
     this.isPasswordHidden = true,

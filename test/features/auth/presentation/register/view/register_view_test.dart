@@ -4,7 +4,7 @@ import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:driver_app/core/services/image_picker_service.dart';
 import 'package:driver_app/features/auth/domain/entities/country.dart';
-import 'package:driver_app/features/auth/domain/entities/register_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:driver_app/features/auth/domain/entities/vehicle_type_entity.dart';
 import 'package:driver_app/features/auth/domain/use_cases/get_countries_use_case.dart';
@@ -12,7 +12,8 @@ import 'package:driver_app/features/auth/domain/use_cases/get_vehicle_type_use_c
 import 'package:driver_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:driver_app/features/auth/presentation/register/manager/register_cubit.dart';
 import 'package:driver_app/features/auth/presentation/register/view/register_view.dart';
-import 'package:driver_app/features/auth/presentation/register/view/widgets/document_uploade_tile.dart';
+import 'package:driver_app/features/auth/presentation/register/view/widgets/country_dropdowen_field.dart';
+import 'package:driver_app/features/auth/presentation/register/view/widgets/document_upload_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class MockRegisterUseCase extends Mock implements RegisterUseCase {}
 class MockGetCountriesUseCase extends Mock implements GetCountriesUseCase {}
 class MockGetVehicleTypesUseCase extends Mock implements GetVehicleTypesUseCase {}
 class MockImagePickerService extends Mock implements ImagePickerService {}
-class FakeRegisterEntity extends Fake implements RegisterEntity {}
+class FakeRegisterEntity extends Fake implements RegisterForm {}
 
 class TestAssetLoader extends AssetLoader {
   const TestAssetLoader();
@@ -68,6 +69,10 @@ class TestAssetLoader extends AssetLoader {
         'gender': 'Gender',
         'female': 'Female',
         'male': 'Male',
+        'gender_female': 'Female',
+        'gender_male': 'Male',
+        'camera': 'Camera',
+        'gallery': 'Gallery',
         'login': 'Log In',
       },
       'errors': {
@@ -356,6 +361,45 @@ void main() {
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator, skipOffstage: false), findsOneWidget);
+    });
+
+    testWidgets('shows loading spinner on country dropdown when countriesResource is loading', (tester) async {
+      configureViewport(tester);
+      final cubit = RegisterCubit(
+        mockRegisterUseCase,
+        mockGetCountriesUseCase,
+        mockGetVehicleTypesUseCase,
+        mockImagePickerService,
+      );
+
+      await tester.pumpWidget(buildTestWidget(customCubit: cubit));
+      await tester.pumpAndSettle();
+
+      cubit.emit(cubit.state.copyWith(
+        countriesResource: const Resource.loading(),
+      ));
+      await tester.pump();
+      await tester.pump();
+
+      debugPrint('Total CPI in tree: ${find.byType(CircularProgressIndicator).evaluate().length}');
+      for (final element in find.byType(CircularProgressIndicator).evaluate()) {
+        debugPrint('Found CPI parent: ${element.depth}');
+      }
+
+      for (final element in find.descendant(of: find.byType(CountryDropdownField), matching: find.byWidgetPredicate((_) => true)).evaluate()) {
+        if (element.widget.runtimeType.toString().contains('Progress') ||
+            element.widget.runtimeType.toString().contains('Circular')) {
+          debugPrint('Matching descendant: ${element.widget.runtimeType}');
+        }
+      }
+
+      expect(
+        find.descendant(
+          of: find.byType(CountryDropdownField),
+          matching: find.byType(CircularProgressIndicator, skipOffstage: false),
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('dispatches SubmitRegisterIntent when valid form is submitted', (tester) async {

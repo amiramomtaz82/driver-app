@@ -1,10 +1,10 @@
-import 'package:driver_app/features/auth/domain/entities/register_entity.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:driver_app/features/auth/presentation/register/view/widgets/country_dropdowen_field.dart';
-import 'package:driver_app/features/auth/presentation/register/view/widgets/document_uploade_tile.dart';
+import 'package:driver_app/features/auth/presentation/register/view/widgets/document_upload_tile.dart';
 import 'package:driver_app/features/auth/presentation/register/view/widgets/geneder_selction.dart';
 import 'package:driver_app/features/auth/presentation/register/view/widgets/password_field_section.dart';
 import 'package:driver_app/features/auth/presentation/register/view/widgets/register_header_section.dart';
-import 'package:driver_app/features/auth/presentation/register/view/widgets/vehichle_type_dropdowen.dart';
+import 'package:driver_app/features/auth/presentation/register/view/widgets/vehicle_type_dropdown.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,14 +68,17 @@ class _RegisterViewState extends State<RegisterView>
   void _onSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
       final state = cubit.state;
-      final params = RegisterEntity(
+      final selectedVehicleType = state.selectedVehicleType;
+      if (selectedVehicleType == null) return;
+
+      final params = RegisterForm(
         firstName: _firstNameController.text.trim(),
         lastName: _secondNameController.text.trim(),
         email: _emailController.text.trim(),
         phone: _phoneController.text.trim(),
         password: _passwordController.text,
         gender: state.gender,
-        vehicleType: state.selectedVehicleType?.id ?? 'car',
+        vehicleType: selectedVehicleType.id,
         vehicleNumber: _vehicleNumberController.text.trim(),
         nationalId: _nationalIdController.text.trim(),
         vehicleLicense: state.licensePhotoPath,

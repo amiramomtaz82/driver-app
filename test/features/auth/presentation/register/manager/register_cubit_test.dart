@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/core/services/image_picker_service.dart';
 import 'package:driver_app/features/auth/domain/entities/country.dart';
+import 'package:driver_app/features/auth/domain/entities/register_form.dart';
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:driver_app/features/auth/domain/entities/vehicle_type_entity.dart';
 import 'package:driver_app/features/auth/domain/use_cases/get_countries_use_case.dart';
@@ -10,7 +11,7 @@ import 'package:driver_app/features/auth/domain/use_cases/register_use_case.dart
 import 'package:driver_app/features/auth/presentation/register/manager/register_cubit.dart';
 import 'package:driver_app/features/auth/presentation/register/manager/register_intents.dart';
 import 'package:driver_app/features/auth/presentation/register/manager/register_state.dart';
-import 'package:driver_app/features/auth/presentation/register/models/register_form.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,7 +20,7 @@ class MockRegisterUseCase extends Mock implements RegisterUseCase {}
 class MockGetCountriesUseCase extends Mock implements GetCountriesUseCase {}
 class MockGetVehicleTypesUseCase extends Mock implements GetVehicleTypesUseCase {}
 class MockImagePickerService extends Mock implements ImagePickerService {}
-class FakeRegisterForm extends Fake implements RegisterEntity {}
+class FakeRegisterForm extends Fake implements RegisterForm {}
 
 void main() {
   late MockRegisterUseCase mockRegisterUseCase;
@@ -72,7 +73,14 @@ void main() {
       act: (cubit) => cubit.onIntent(const LoadDropdownDataIntent()),
       expect: () => [
         predicate<RegisterState>((s) =>
+            s.countriesResource.isLoading && s.vehicleTypesResource.isInitial),
+        predicate<RegisterState>((s) =>
             s.countriesResource.isLoading && s.vehicleTypesResource.isLoading),
+        predicate<RegisterState>((s) =>
+            s.countriesResource.isSuccess &&
+            s.countriesResource.data == countries &&
+            s.selectedCountry == countries.first &&
+            s.vehicleTypesResource.isLoading),
         predicate<RegisterState>((s) =>
             s.countriesResource.isSuccess &&
             s.countriesResource.data == countries &&
@@ -97,7 +105,13 @@ void main() {
       act: (cubit) => cubit.onIntent(const LoadDropdownDataIntent()),
       expect: () => [
         predicate<RegisterState>((s) =>
+            s.countriesResource.isLoading && s.vehicleTypesResource.isInitial),
+        predicate<RegisterState>((s) =>
             s.countriesResource.isLoading && s.vehicleTypesResource.isLoading),
+        predicate<RegisterState>((s) =>
+            s.countriesResource.isError &&
+            s.countriesResource.errorMessage == 'Failed to fetch countries' &&
+            s.vehicleTypesResource.isLoading),
         predicate<RegisterState>((s) =>
             s.countriesResource.isError &&
             s.countriesResource.errorMessage == 'Failed to fetch countries' &&
@@ -194,7 +208,7 @@ void main() {
 
   group('RegisterCubit - Submit Registration', () {
     late RegisterCubit registerCubit;
-    const form = RegisterEntity(
+    const form = RegisterForm(
       firstName: 'Omar',
       lastName: 'Khaled',
       email: 'omar@example.com',
