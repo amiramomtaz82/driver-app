@@ -3,41 +3,73 @@ import 'package:driver_app/config/mixins/ui_event_handler_mixin.dart';
 import 'package:driver_app/core/app_theme/app_colors.dart';
 import 'package:driver_app/core/app_theme/text_styles.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
-import 'package:driver_app/features/location/presentation/user_location/manager/user_location_cubit.dart';
-import 'package:driver_app/features/location/presentation/user_location/manager/user_location_intents.dart';
-import 'package:driver_app/features/location/presentation/user_location/manager/user_location_state.dart';
+import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_cubit.dart';
+import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_intents.dart';
+import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_state.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_address_card.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_map_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-class UserLocationView extends StatefulWidget {
-  const UserLocationView({
+
+class LocationDetailView extends StatefulWidget {
+  const LocationDetailView({
     super.key,
-    required this.userInfo,
-    required this.pickupInfo,
+    required this.type,
+    required this.primaryInfo,
+    required this.secondaryInfo,
   });
-  final LocationInfo userInfo;
-  final LocationInfo pickupInfo;
+
+  const LocationDetailView.pickup({
+    super.key,
+    required LocationInfo pickupInfo,
+    required LocationInfo userInfo,
+  })  : type = LocationDetailType.pickup,
+        primaryInfo = pickupInfo,
+        secondaryInfo = userInfo;
+
+  const LocationDetailView.user({
+    super.key,
+    required LocationInfo userInfo,
+    required LocationInfo pickupInfo,
+  })  : type = LocationDetailType.user,
+        primaryInfo = userInfo,
+        secondaryInfo = pickupInfo;
+
+  final LocationDetailType type;
+  final LocationInfo primaryInfo;
+  final LocationInfo secondaryInfo;
+
   @override
-  State<UserLocationView> createState() => _UserLocationViewState();
+  State<LocationDetailView> createState() => _LocationDetailViewState();
 }
-class _UserLocationViewState extends State<UserLocationView>
-    with UiEventMixin<UserLocationView, UserLocationState, UiEvent> {
-  late final UserLocationCubit _cubit;
+
+class _LocationDetailViewState extends State<LocationDetailView>
+    with UiEventMixin<LocationDetailView, LocationDetailState, UiEvent> {
+  late final LocationDetailCubit _cubit;
+
   @override
-  UserLocationCubit get cubit => _cubit;
+  LocationDetailCubit get cubit => _cubit;
+
   @override
   void initState() {
-    _cubit = GetIt.I.get<UserLocationCubit>(param1: widget.userInfo);
+    _cubit = GetIt.I.get<LocationDetailCubit>(
+      param1: LocationDetailState(
+        type: widget.type,
+        primaryInfo: widget.primaryInfo,
+        secondaryInfo: widget.secondaryInfo,
+      ),
+    );
     super.initState();
-    _cubit.onIntent(const LoadUserLocation());
+    _cubit.onIntent(const LoadLocationDetail());
   }
+
   @override
   void dispose() {
     _cubit.close();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -45,20 +77,28 @@ class _UserLocationViewState extends State<UserLocationView>
       child: Scaffold(
         body: Stack(
           children: [
-            BlocBuilder<UserLocationCubit, UserLocationState>(
+            BlocBuilder<LocationDetailCubit, LocationDetailState>(
               buildWhen: (prev, curr) =>
                   prev.driverLocationResource != curr.driverLocationResource ||
                   prev.routeResource != curr.routeResource,
               builder: (context, state) {
-                final driverLoc = state.driverLocationResource.data;
+                final resource = state.driverLocationResource;
+                final driverLoc = resource.data;
                 final routePoints = state.routeResource.data?.points ?? [];
+
+                if (resource.isError) {
+                  return _LocationErrorPlaceholder(
+                    message: resource.errorMessage ?? 'Failed to get location',
+                    onRetry: () => _cubit.onIntent(const LoadLocationDetail()),
+                  );
+                }
                 if (driverLoc == null) {
-                  return const _MapPlaceholder();
+                  return const _MapLoadingPlaceholder();
                 }
                 return LocationMapSection(
                   driverLocation: driverLoc,
-                  destinationLocation: state.userInfo.coordinates,
-                  destinationLabel: 'User',
+                  destinationLocation: state.primaryInfo.coordinates,
+                  destinationLabel: state.destinationLabel,
                   routePoints: routePoints,
                 );
               },
@@ -69,23 +109,12 @@ class _UserLocationViewState extends State<UserLocationView>
                 child: _BackButton(),
               ),
             ),
-            BlocBuilder<UserLocationCubit, UserLocationState>(
-              buildWhen: (p, c) =>
-                  p.driverLocationResource.status !=
-                  c.driverLocationResource.status,
-              builder: (context, state) {
-                if (state.driverLocationResource.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return const SizedBox.shrink();
-              },
-            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  BlocBuilder<UserLocationCubit, UserLocationState>(
+                  BlocBuilder<LocationDetailCubit, LocationDetailState>(
                     buildWhen: (p, c) => p.routeResource != c.routeResource,
                     builder: (context, state) {
                       final distance = state.routeResource.data?.formattedDistance;
@@ -94,10 +123,10 @@ class _UserLocationViewState extends State<UserLocationView>
                     },
                   ),
                   LocationAddressCard(
-                    primaryLabel: 'User address',
-                    primaryInfo: widget.userInfo,
-                    secondaryLabel: 'Pickup address',
-                    secondaryInfo: widget.pickupInfo,
+                    primaryLabel: _cubit.state.primaryLabel,
+                    primaryInfo: widget.primaryInfo,
+                    secondaryLabel: _cubit.state.secondaryLabel,
+                    secondaryInfo: widget.secondaryInfo,
                   ),
                 ],
               ),
@@ -108,8 +137,9 @@ class _UserLocationViewState extends State<UserLocationView>
     );
   }
 }
-class _MapPlaceholder extends StatelessWidget {
-  const _MapPlaceholder();
+
+class _MapLoadingPlaceholder extends StatelessWidget {
+  const _MapLoadingPlaceholder();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -130,6 +160,46 @@ class _MapPlaceholder extends StatelessWidget {
     );
   }
 }
+
+class _LocationErrorPlaceholder extends StatelessWidget {
+  const _LocationErrorPlaceholder({
+    required this.message,
+    required this.onRetry,
+  });
+  final String message;
+  final VoidCallback onRetry;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.lightGrey,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.location_off, color: AppColors.pink, size: 48),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.grey),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.pink,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _DistanceBadge extends StatelessWidget {
   const _DistanceBadge({required this.distance});
   final String distance;
@@ -166,6 +236,7 @@ class _DistanceBadge extends StatelessWidget {
     );
   }
 }
+
 class _BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

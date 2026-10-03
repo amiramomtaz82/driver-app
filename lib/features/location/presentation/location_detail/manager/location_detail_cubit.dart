@@ -2,49 +2,56 @@ import 'package:driver_app/config/base/base_cubit.dart';
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
-import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:driver_app/features/location/domain/use_cases/get_current_location_use_case.dart';
 import 'package:driver_app/features/location/domain/use_cases/get_route_use_case.dart';
 import 'package:injectable/injectable.dart';
 import 'package:latlong2/latlong.dart';
-import 'user_location_intents.dart';
-import 'user_location_state.dart';
+import 'location_detail_intents.dart';
+import 'location_detail_state.dart';
+
 @injectable
-class UserLocationCubit extends BaseCubit<UserLocationState, UiEvent> {
+class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
   final GetCurrentLocationUseCase _getCurrentLocation;
   final GetRouteUseCase _getRoute;
-  UserLocationCubit(
+
+  LocationDetailCubit(
     this._getCurrentLocation,
     this._getRoute,
-    @factoryParam LocationInfo userInfo,
-  ) : super(UserLocationState(userInfo: userInfo));
-  void onIntent(UserLocationIntent intent) {
+    @factoryParam LocationDetailState initialState,
+  ) : super(initialState);
+
+  void onIntent(LocationDetailIntent intent) {
     switch (intent) {
-      case LoadUserLocation():
+      case LoadLocationDetail():
         _load();
-      case CallUserTapped():
+      case CallTapped():
         break;
-      case MessageUserTapped():
+      case MessageTapped():
         break;
     }
   }
+
   Future<void> _load() async {
     emit(state.copyWith(
       driverLocationResource: const Resource.loading(),
       routeResource: const Resource.loading(),
     ));
+
     final locationResponse = await _getCurrentLocation();
+
     switch (locationResponse) {
       case SuccessResponse<LatLng> s:
         final driverLatLng = s.data;
         emit(state.copyWith(
           driverLocationResource: Resource.success(driverLatLng),
         ));
+
         final routeResponse = await _getRoute(
           origin: driverLatLng,
-          destination: state.userInfo.coordinates,
+          destination: state.primaryInfo.coordinates,
         );
+
         switch (routeResponse) {
           case SuccessResponse<RouteData> r:
             emit(state.copyWith(routeResource: Resource.success(r.data)));

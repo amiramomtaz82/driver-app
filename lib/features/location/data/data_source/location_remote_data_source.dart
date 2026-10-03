@@ -2,15 +2,32 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:driver_app/core/constants/endpoints.dart';
+
 class RouteResult {
   const RouteResult({required this.points, required this.distanceMeters});
   final List<LatLng> points;
   final double distanceMeters;
 }
+
 @injectable
 class LocationRemoteDataSource {
   final Dio _dio;
   LocationRemoteDataSource(this._dio);
+
+  Future<LatLng> getDriverLocation() async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      Endpoints.driverLocation,
+    );
+    final data = response.data!;
+    final lat = (data['lat'] ?? data['latitude'] as num?)?.toDouble();
+    final lng = (data['lng'] ?? data['longitude'] ?? data['lon'] as num?)?.toDouble();
+    if (lat == null || lng == null) {
+      throw Exception('Invalid location response: $data');
+    }
+    return LatLng(lat, lng);
+  }
+
   Future<RouteResult> getRoute({
     required LatLng origin,
     required LatLng destination,
