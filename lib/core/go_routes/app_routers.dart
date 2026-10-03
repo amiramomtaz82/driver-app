@@ -19,7 +19,7 @@ import '../widgets/coming_soon_view.dart';
 import 'main_shell_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
