@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../data/data_source/orders_remote_data_source.dart';
 import '../../data/models/available_orders_response_model.dart';
 import '../../data/models/order_details_dto.dart';
+import '../client/orders_api_keys.dart';
 import '../client/orders_client.dart';
 
 @Injectable(as: OrdersRemoteDataSource)
@@ -53,7 +54,7 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
     required String newStatus,
   }) {
     return _ordersApiClient.updateOrderStatus(orderId, {
-      'newStatus': newStatus,
+      OrdersApiKeys.newStatus: newStatus,
     });
   }
 }

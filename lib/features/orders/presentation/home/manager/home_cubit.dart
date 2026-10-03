@@ -95,9 +95,12 @@ class HomeCubit extends BaseCubit<HomeState, UiEvent> {
 
     switch (response) {
       case SuccessResponse<void>():
-        emitEvent(NavigateEvent(AppRoutes.orderDetails, arguments: orderId));
-        await _refresh();
+        // Lock the driver onto the order: no way back to Home until it is done.
+        emitEvent(
+          NavigateReplacementEvent(AppRoutes.orderDetails, arguments: orderId),
+        );
       case ErrorResponse<void>():
+        // Most likely another driver claimed it first; refresh drops it.
         emitEvent(
           ShowSnackBarEvent(message: response.errMessage.tr(), isError: true),
         );

@@ -1,7 +1,7 @@
 import '../models/available_orders_response_model.dart';
 import '../models/order_details_dto.dart';
 
-abstract class OrdersRemoteDataSource {
+abstract interface class OrdersRemoteDataSource {
   Future<AvailableOrdersDataModel> getAvailableOrders({
     required int page,
     required int pageSize,

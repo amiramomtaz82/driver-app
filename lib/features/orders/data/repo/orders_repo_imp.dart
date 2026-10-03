@@ -44,18 +44,10 @@ class OrdersRepoImpl implements OrdersRepo {
         pageSize: pageSize,
       );
 
-      final pagination = orders.pagination;
       return SuccessResponse(
         PaginatedResponse<AvailableOrderEntity>(
           data: orders.items.map((order) => order.toEntity()).toList(),
-          pagination: PaginationModel(
-            page: pagination?.page,
-            pageSize: pagination?.pageSize,
-            totalCount: pagination?.totalCount,
-            totalPages: pagination?.totalPages,
-            hasNextPage: pagination?.hasNextPage,
-            hasPreviousPage: pagination?.hasPreviousPage,
-          ),
+          pagination: orders.pagination ?? const PaginationModel(),
         ),
       );
     } on DioException catch (e) {
