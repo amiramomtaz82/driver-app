@@ -12,6 +12,8 @@
     "gender_female": "Female",
     "gender_male": "Male",
     "gender": "Gender",
+    "camera": "Camera",
+    "gallery": "Gallery",
     "done": "Done",
     "retry": "Retry",
     "no_more_items": "No more orders",
@@ -20,10 +22,7 @@
   "home": {
     "title": "Flowery rider",
     "no_available_orders": "No available orders right now",
-    "order_accepted": "Order accepted",
-    "camera": "Camera",
-    "gallery": "Gallery",
-    "done": "Done"
+    "order_accepted": "Order accepted"
   },
   "onboarding": {
     "welcome_title": "Welcome to",

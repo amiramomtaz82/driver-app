@@ -116,4 +116,15 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
+  @override
+  Future<BaseResponse<AuthMessageEntity>> forgetPassword({
+    required String email,
+  }) async {
+    try {
+      final result = await _authRemoteDataSource.forgetPassword(email: email);
+      return SuccessResponse(result.toEntity());
+    } catch (e) {
+      return ErrorResponse(error: e);
+    }
+  }
 }
