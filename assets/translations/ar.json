@@ -9,6 +9,8 @@
     "upload": "رفع",
     "female": "أنثى",
     "male": "ذكر",
+    "gender_female": "أنثى",
+    "gender_male": "ذكر",
     "gender": "النوع",
     "done": "تم",
     "retry": "إعادة المحاولة",
@@ -19,6 +21,9 @@
     "title": "فلوري رايدر",
     "no_available_orders": "لا توجد طلبات متاحة حالياً",
     "order_accepted": "تم قبول الطلب"
+    "camera": "الكاميرا",
+    "gallery": "المعرض",
+    "done": "تم"
   },
   "onboarding": {
     "welcome_title": "مرحباً بك في",

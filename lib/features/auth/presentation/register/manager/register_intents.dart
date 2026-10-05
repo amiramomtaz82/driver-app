@@ -1,5 +1,8 @@
 
-import '../../../data/models/register_request_dto.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../domain/entities/register_form.dart';
+
 import '../../../domain/entities/country.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
 
@@ -34,17 +37,19 @@ class ToggleConfirmPasswordVisibilityIntent extends RegisterIntent {
   const ToggleConfirmPasswordVisibilityIntent();
 }
 
-class SetLicensePhotoIntent extends RegisterIntent {
-  final String path;
-  const SetLicensePhotoIntent(this.path);
-}
 
-class SetIdImageIntent extends RegisterIntent {
-  final String path;
-  const SetIdImageIntent(this.path);
-}
+
+
 
 class SubmitRegisterIntent extends RegisterIntent {
-  final RegisterRequestDto request;
-  const SubmitRegisterIntent(this.request);
+  final RegisterForm form;
+  const SubmitRegisterIntent(this.form);
+}
+class PickLicensePhotoIntent extends RegisterIntent {
+  final ImageSource source;
+  const PickLicensePhotoIntent(this.source);
+}
+class PickIdImageIntent extends RegisterIntent {
+  final ImageSource source;
+  const PickIdImageIntent(this.source);
 }

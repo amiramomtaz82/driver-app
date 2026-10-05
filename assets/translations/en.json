@@ -9,6 +9,8 @@
     "upload": "Upload",
     "female": "Female",
     "male": "Male",
+    "gender_female": "Female",
+    "gender_male": "Male",
     "gender": "Gender",
     "done": "Done",
     "retry": "Retry",
@@ -19,6 +21,9 @@
     "title": "Flowery rider",
     "no_available_orders": "No available orders right now",
     "order_accepted": "Order accepted"
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "done": "Done"
   },
   "onboarding": {
     "welcome_title": "Welcome to",

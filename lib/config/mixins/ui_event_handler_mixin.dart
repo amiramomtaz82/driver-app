@@ -66,9 +66,6 @@ E extends UiEvent> on State<W> {
             );
           },
         );
-
-      default:
-        onCustomUiEvent(event);
     }
   }
 

@@ -1,16 +1,11 @@
-import 'package:driver_app/config/base_response/base_response.dart';
-
-import '../entities/auth_message_entity.dart';
-import '../entities/reset_token_entity.dart';
-
-import '../../data/models/register_request_dto.dart';
-import '../../data/models/register_response_dto.dart';
+import '../../../../config/base_response/base_response.dart';
 import '../entities/country.dart';
+import '../entities/register_response_entity.dart';
+import '../entities/register_form.dart';
 import '../entities/vehicle_type_entity.dart';
-import 'package:driver_app/config/base_response/base_response.dart';
-import '../models/login_response_model.dart';
 
 abstract interface class AuthRepo {
+  Future<BaseResponse<RegisterEntityResponse>> register(RegisterForm params);
   Future<BaseResponse<AuthMessageEntity>> forgetPassword({
     required String email,
   });
