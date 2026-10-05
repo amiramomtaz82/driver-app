@@ -9,7 +9,11 @@
     "upload": "رفع",
     "female": "أنثى",
     "male": "ذكر",
+    "gender_female": "أنثى",
+    "gender_male": "ذكر",
     "gender": "النوع",
+    "camera": "الكاميرا",
+    "gallery": "المعرض",
     "done": "تم"
   },
   "onboarding": {

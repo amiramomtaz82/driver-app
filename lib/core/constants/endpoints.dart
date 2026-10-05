@@ -1,10 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Endpoints {
   Endpoints._();
 
-  static String get baseUrl => "";
+  static String get baseUrl => dotenv.env['BASE_URL']!;
+  static const String register = '/api/drivers/applications';
+  static const String countries = '/api/v1/countries';
+  static const String vehicleTypes = '/api/v1/vehicle-types';
 
-  static const String loginEndPoint = '';
-  static const String register = '';
-  static const String forgetPassword = '';
-  static const String verifyOtp = '';
-  static const String resetPassword = '';}
+}

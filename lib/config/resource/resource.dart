@@ -29,6 +29,7 @@ class Resource<E> extends Equatable {
   bool get isSuccess => status == ApiStatus.success;
   bool get isLoading => status == ApiStatus.loading;
   bool get isError => status == ApiStatus.error;
+  bool get isInitial => status == ApiStatus.initial;
 
   @override
   List<Object?> get props => [status, data, errorMessage];
