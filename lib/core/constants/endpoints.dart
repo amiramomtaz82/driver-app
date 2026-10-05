@@ -8,4 +8,6 @@ class Endpoints {
   static const String countries = '/api/v1/countries';
   static const String vehicleTypes = '/api/v1/vehicle-types';
 
+  static const String loginEndPoint = '/auth/login';
+
 }

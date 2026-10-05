@@ -4,7 +4,10 @@ import '../../data/models/country_dto.dart';
 import '../../data/models/register_request_dto.dart';
 import '../../data/models/register_response_dto.dart';
 import '../../data/models/vehicle_type_dto.dart';
+import '../../domain/models/login_request_model.dart';
+import '../../domain/models/login_response_model.dart';
 import '../client/auth_client.dart';
+
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final AuthApiClient _authApiClient;
@@ -24,5 +27,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<List<VehicleTypeDto>> getVehicleTypes() {
     return _authApiClient.getVehicleTypes();
+  }
+
+
+
+  @override
+  Future<LoginResponseModel> login(LoginRequestModel request) {
+    return _authApiClient.login(request.toJson());
   }
 }

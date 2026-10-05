@@ -1,4 +1,3 @@
-// lib/core/extensions/context_extension.dart
 import 'package:flutter/material.dart';
 
 import 'custom_colors.dart';

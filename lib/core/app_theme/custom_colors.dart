@@ -1,4 +1,3 @@
-// lib/core/theme/custom_colors_extension.dart
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
@@ -39,7 +38,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color divider;
   final Color hint;
 
-  // Light Palette Definition
   static const light = CustomColors(
     primary: AppColors.pink,
     secondary: AppColors.darkGrey,
@@ -58,7 +56,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
     hint: AppColors.grey,
   );
 
-  // Dark Palette Definition
   static const dark = CustomColors(
     primary: AppColors.darkPink,
     secondary: AppColors.grey,

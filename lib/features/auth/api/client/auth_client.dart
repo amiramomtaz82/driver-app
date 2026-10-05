@@ -18,6 +18,8 @@ abstract class AuthApiClient {
   @factoryMethod
   factory AuthApiClient(Dio dio) = _AuthApiClient;
 
+  @POST(Endpoints.loginEndPoint)
+  Future<LoginResponseModel> login(@Body() Map<String, dynamic> body);
   @POST(Endpoints.register)
   @MultiPart()
   Future<RegisterResponseDto> register(@PartMap() Map<String, dynamic> request);

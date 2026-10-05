@@ -1,7 +1,9 @@
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
+import 'package:driver_app/config/base_response/base_response.dart';
+import 'package:driver_app/features/auth/domain/models/login_request_model.dart';
+import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/country.dart';
 import '../../domain/entities/register_form.dart';
@@ -16,7 +18,6 @@ import '../models/vehicle_type_dto.dart';
 @Injectable(as: AuthRepo)
 class AuthRepoImpl implements AuthRepo {
   final AuthRemoteDataSource _authRemoteDataSource;
-  // ignore: unused_field
   final AuthLocalDataSource _authLocalDataSource;
 
   AuthRepoImpl(
@@ -28,7 +29,25 @@ class AuthRepoImpl implements AuthRepo {
   static const bool useDummyData = false
   ;
 
-
+  @override
+  Future<BaseResponse<LoginResponseModel>> login({
+    required String email,
+    required String password,
+    required bool rememberMe,
+  }) async {
+    try {
+      final result = await _authRemoteDataSource.login(
+        LoginRequestModel(email: email, password: password),
+      );
+      if (rememberMe) {
+        await _authLocalDataSource.saveToken(result.token);
+        await _authLocalDataSource.saveRefreshToken(result.refreshToken);
+      }
+      return SuccessResponse(result);
+    } catch (e) {
+      return ErrorResponse(error: e);
+    }
+  }
   @override
   Future<BaseResponse<RegisterEntityResponse>> register(RegisterForm params) {
     return safeCall(() async {
@@ -49,8 +68,8 @@ class AuthRepoImpl implements AuthRepo {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
-  }
 
+}
   @override
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
     if (useDummyData) {
@@ -62,3 +81,4 @@ class AuthRepoImpl implements AuthRepo {
     });
   }
 }
+
