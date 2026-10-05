@@ -7,6 +7,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/constants/endpoints.dart';
 import '../../data/models/register_response_dto.dart';
+import '../../domain/models/login_response_model.dart';
 
 
 

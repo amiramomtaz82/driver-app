@@ -6,8 +6,6 @@ import 'config/di/di.dart';
 
 import 'core/app_theme/app_theme.dart';
 import 'core/go_routes/app_routers.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-void main() async{
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
