@@ -30,8 +30,7 @@ class AuthRepoImpl implements AuthRepo {
       );
 
   // Toggle: change to false when backend endpoints are ready!
-  static const bool useDummyData = false
-  ;
+
 
 
   @override
