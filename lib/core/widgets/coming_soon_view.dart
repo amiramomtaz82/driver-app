@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
 class ComingSoonView extends StatelessWidget {
   const ComingSoonView({super.key, required this.title});
-
   final String title;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,12 +2,10 @@ import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/auth/domain/models/login_request_model.dart';
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';
-
 import '../../domain/entities/reset_token_entity.dart';
 import '../../domain/entities/vehicle_type_entity.dart';
 import '../../domain/repo/auth_repo.dart';
@@ -17,16 +15,12 @@ import '../models/country_dto.dart';
 import '../models/register_request_dto.dart';
 import '../models/register_response_dto.dart';
 import '../models/vehicle_type_dto.dart';
-
 @Injectable(as: AuthRepo)
 class AuthRepoImpl implements AuthRepo {
   final AuthRemoteDataSource _authRemoteDataSource;
   final AuthLocalDataSource _authLocalDataSource;
-
   AuthRepoImpl(this._authRemoteDataSource, this._authLocalDataSource);
-
   static const bool useDummyData = true;
-
   @override
   Future<BaseResponse<AuthMessageEntity>> forgetPassword({
     required String email,
@@ -38,13 +32,11 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
-
   @override
   Future<BaseResponse<RegisterResponseDto>> register(
     RegisterRequestDto request,
   ) async {
     if (useDummyData) {
-      // Simulate network delay so your loading indicator shows during the demo
       await Future.delayed(const Duration(seconds: 1));
       return const SuccessResponse(
         RegisterResponseDto(
@@ -56,7 +48,6 @@ class AuthRepoImpl implements AuthRepo {
     }
     return safeCall(() => _authRemoteDataSource.register(request));
   }
-
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
     if (useDummyData) {
@@ -68,8 +59,7 @@ class AuthRepoImpl implements AuthRepo {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
-  }
-
+}
   @override
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
@@ -89,7 +79,6 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
-
   @override
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
     if (useDummyData) {
@@ -102,7 +91,6 @@ class AuthRepoImpl implements AuthRepo {
       return dtos.map((dto) => dto.toEntity()).toList();
     });
   }
-
   @override
   Future<BaseResponse<ResetToken>> verifyOtp({
     required String email,
@@ -118,7 +106,6 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
-
   @override
   Future<BaseResponse<AuthMessageEntity>> resetPassword({
     required String resetToken,

@@ -12,30 +12,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../generated/locale_keys.g.dart';
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
-
   @override
   State<LoginView> createState() => _LoginViewState();
 }
-
 class _LoginViewState extends State<LoginView>
     with UiEventMixin<LoginView, LoginState, UiEvent> {
   final _formKey = GlobalKey<FormState>();
-
   @override
   LoginCubit get cubit => _cubit;
   final LoginCubit _cubit = GetIt.I<LoginCubit>();
-
   @override
   void dispose() {
     _cubit.close();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(

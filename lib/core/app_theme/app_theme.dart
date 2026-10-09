@@ -1,20 +1,16 @@
 import 'package:driver_app/core/app_theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
-
 abstract final class AppTheme {
   AppTheme._();
-
   static ThemeData get lightTheme => _buildTheme(
     brightness: Brightness.light,
     colors: CustomColors.light,
   );
-
   static ThemeData get darkTheme => _buildTheme(
     brightness: Brightness.dark,
     colors: CustomColors.dark,
   );
-
   static ThemeData _buildTheme({
     required Brightness brightness,
     required CustomColors colors,
@@ -23,21 +19,18 @@ abstract final class AppTheme {
       borderRadius: BorderRadius.circular(5),
       gapPadding: 5,
     );
-
     final colorScheme = ColorScheme.fromSeed(
       seedColor: colors.primary,
       brightness: brightness,
       surface: colors.background,
       error: colors.error,
     );
-
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colors.background,
       extensions: [colors],
-
       appBarTheme: AppBarTheme(
         backgroundColor: colors.background,
         foregroundColor: colors.textPrimary,
@@ -46,22 +39,14 @@ abstract final class AppTheme {
       ),
       textTheme: TextTheme(
         headlineLarge: AppTextStyles.headlineLarge.copyWith(color: colors.textPrimary),
-
         titleMedium: AppTextStyles.titleMedium.copyWith(color: colors.textPrimary),
-
         titleSmall: AppTextStyles.titleSmall.copyWith(color: colors.textPrimary),
-
         bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colors.textPrimary),
-
         bodyMedium: AppTextStyles.bodyMedium.copyWith(color: colors.darkGrey),
-
         bodySmall: AppTextStyles.caption.copyWith(color: colors.grey),
-
         labelLarge: AppTextStyles.button.copyWith(color: colors.white),
-
         labelSmall: AppTextStyles.labelSmall.copyWith(color: colors.darkGrey),
       ),
-      ///--------------- Text Field -------------------///
       inputDecorationTheme: InputDecorationTheme(
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: true,
@@ -107,8 +92,6 @@ abstract final class AppTheme {
           borderSide: BorderSide(color: colors.error, width: 1.5),
         ),
       ),
-
-      ///------------------ Snack Bar -------------------///
       snackBarTheme: SnackBarThemeData(
         backgroundColor: colors.primary,
         contentTextStyle: TextStyle(
@@ -123,8 +106,6 @@ abstract final class AppTheme {
         ),
         actionTextColor: colors.white,
       ),
-
-      ///---------------- Elevated Button ------------------------///
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: colors.primary,
@@ -141,7 +122,6 @@ abstract final class AppTheme {
           ),
         ),
       ),
-
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: colors.textPrimary,
@@ -156,8 +136,6 @@ abstract final class AppTheme {
           ),
         ),
       ),
-
-      ///------------------- Navigation Bar ---------------------///
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colors.white,
         elevation: 0,

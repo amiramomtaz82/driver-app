@@ -2,9 +2,7 @@ import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/features/auth/domain/entities/auth_message_entity.dart';
 import 'package:driver_app/features/auth/domain/entities/reset_token_entity.dart';
 import 'package:equatable/equatable.dart';
-
 enum ForgetPasswordStep { email, otp, resetPassword }
-
 class ForgetPasswordState extends Equatable {
   final ForgetPasswordStep step;
   final String email;
@@ -14,7 +12,6 @@ class ForgetPasswordState extends Equatable {
   final Resource<AuthMessageEntity> sendCodeResource;
   final Resource<ResetToken> verifyOtpResource;
   final Resource<AuthMessageEntity> resetPasswordResource;
-
   const ForgetPasswordState({
     this.step = ForgetPasswordStep.email,
     this.email = '',
@@ -25,21 +22,13 @@ class ForgetPasswordState extends Equatable {
     this.verifyOtpResource = const Resource.initial(),
     this.resetPasswordResource = const Resource.initial(),
   });
-
   bool get isEmailValid => email.isNotEmpty;
-
   bool get isResetFormValid =>
       newPassword.isNotEmpty && confirmPassword.isNotEmpty;
-
   bool get canResend => resendCooldown == 0 && !sendCodeResource.isLoading;
-
-  /// The reset token is only kept while the OTP verification succeeded.
   ResetToken? get resetToken => verifyOtpResource.data;
-
-  /// The inline error under the OTP boxes — only while the verify step failed.
   String? get otpErrorMessage =>
       verifyOtpResource.isError ? verifyOtpResource.errorMessage : null;
-
   ForgetPasswordState copyWith({
     ForgetPasswordStep? step,
     String? email,
@@ -62,7 +51,6 @@ class ForgetPasswordState extends Equatable {
           resetPasswordResource ?? this.resetPasswordResource,
     );
   }
-
   @override
   List<Object?> get props => [
     step,
