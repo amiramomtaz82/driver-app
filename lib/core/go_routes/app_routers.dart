@@ -22,7 +22,7 @@ class LocationDetailArgs {
 }
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.login,
+  initialLocation: AppRoutes.pickupLocation,
   routes: [
     GoRoute(
       path: AppRoutes.onboarding,
@@ -59,12 +59,12 @@ final GoRouter appRouter = GoRouter(
               primaryInfo: LocationInfo(
                 name: 'Flowery store',
                 address: '20th st, Sheikh Zayed, Giza',
-                coordinates: latlong2.LatLng(37.4219983, -122.084),
+                coordinates: latlong2.LatLng(30.0131, 31.2089),
               ),
               secondaryInfo: LocationInfo(
                 name: 'Nour mohamed',
                 address: '20th st, Sheikh Zayed, Giza',
-                coordinates: latlong2.LatLng(37.42796133580664, -122.085749655962),
+                coordinates: latlong2.LatLng(30.0444, 31.2357),
               ),
             );
         return LocationDetailView.pickup(
@@ -83,12 +83,12 @@ final GoRouter appRouter = GoRouter(
               primaryInfo: LocationInfo(
                 name: 'Nour mohamed',
                 address: '20th st, Sheikh Zayed, Giza',
-                coordinates: latlong2.LatLng(37.42796133580664, -122.085749655962),
+                coordinates: latlong2.LatLng(30.0444, 31.2357),
               ),
               secondaryInfo: LocationInfo(
                 name: 'Flowery store',
                 address: '20th st, Sheikh Zayed, Giza',
-                coordinates: latlong2.LatLng(37.4219983, -122.084),
+                coordinates: latlong2.LatLng(30.0131, 31.2089),
               ),
             );
         return LocationDetailView.user(

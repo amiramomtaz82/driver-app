@@ -3,7 +3,8 @@ import 'package:driver_app/features/location/presentation/widgets/location_marke
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-class LocationMapSection extends StatelessWidget {
+
+class LocationMapSection extends StatefulWidget {
   const LocationMapSection({
     super.key,
     required this.driverLocation,
@@ -11,35 +12,68 @@ class LocationMapSection extends StatelessWidget {
     required this.destinationLabel,
     required this.routePoints,
   });
+
   final LatLng driverLocation;
   final LatLng destinationLocation;
   final String destinationLabel;
   final List<LatLng> routePoints;
+
+  @override
+  State<LocationMapSection> createState() => _LocationMapSectionState();
+}
+
+class _LocationMapSectionState extends State<LocationMapSection> {
+  final MapController _mapController = MapController();
+  bool _initialFitDone = false;
+
+  @override
+  void didUpdateWidget(covariant LocationMapSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.driverLocation != widget.driverLocation) {
+      _fitBounds();
+    }
+  }
+
+  void _fitBounds() {
+    final bounds = LatLngBounds.fromPoints([
+      widget.driverLocation,
+      widget.destinationLocation,
+    ]);
+    _mapController.fitCamera(
+      CameraFit.bounds(
+        bounds: bounds,
+        padding: const EdgeInsets.all(80),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final centerLat =
-        (driverLocation.latitude + destinationLocation.latitude) / 2;
-    final centerLng =
-        (driverLocation.longitude + destinationLocation.longitude) / 2;
-    final center = LatLng(centerLat, centerLng);
     return FlutterMap(
+      mapController: _mapController,
       options: MapOptions(
-        initialCenter: center,
+        initialCenter: widget.driverLocation,
         initialZoom: 14,
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all,
         ),
+        onMapReady: () {
+          if (!_initialFitDone) {
+            _initialFitDone = true;
+            _fitBounds();
+          }
+        },
       ),
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.example.driver_app',
         ),
-        if (routePoints.isNotEmpty)
+        if (widget.routePoints.isNotEmpty)
           PolylineLayer(
             polylines: [
               Polyline(
-                points: routePoints,
+                points: widget.routePoints,
                 color: AppColors.pink,
                 strokeWidth: 4.0,
               ),
@@ -48,7 +82,7 @@ class LocationMapSection extends StatelessWidget {
         MarkerLayer(
           markers: [
             Marker(
-              point: driverLocation,
+              point: widget.driverLocation,
               width: 90,
               height: 52,
               child: const LocationMarker(
@@ -57,11 +91,11 @@ class LocationMapSection extends StatelessWidget {
               ),
             ),
             Marker(
-              point: destinationLocation,
+              point: widget.destinationLocation,
               width: 80,
               height: 52,
               child: LocationMarker(
-                label: destinationLabel,
+                label: widget.destinationLabel,
                 color: AppColors.pink,
               ),
             ),

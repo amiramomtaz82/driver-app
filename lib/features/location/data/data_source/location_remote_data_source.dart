@@ -28,6 +28,20 @@ class LocationRemoteDataSource {
     return LatLng(lat, lng);
   }
 
+  Future<void> reportDriverLocation({
+    required double lat,
+    required double lng,
+  }) async {
+    await _dio.post(
+      Endpoints.driverLocation,
+      data: {
+        'lat': lat,
+        'lng': lng,
+        'recordedAt': DateTime.now().toUtc().toIso8601String(),
+      },
+    );
+  }
+
   Future<RouteResult> getRoute({
     required LatLng origin,
     required LatLng destination,
