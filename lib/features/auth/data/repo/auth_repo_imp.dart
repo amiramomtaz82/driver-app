@@ -34,7 +34,8 @@ class AuthRepoImpl implements AuthRepo {
   }
   @override
   Future<BaseResponse<RegisterResponseDto>> register(
-      RegisterRequestDto request) async {
+    RegisterRequestDto request,
+  ) async {
     if (useDummyData) {
       await Future.delayed(const Duration(seconds: 1));
       return const SuccessResponse(
@@ -51,7 +52,8 @@ class AuthRepoImpl implements AuthRepo {
   Future<BaseResponse<List<Country>>> getCountries() async {
     if (useDummyData) {
       return SuccessResponse(
-          CountryDto.dummyList.map((dto) => dto.toEntity()).toList());
+        CountryDto.dummyList.map((dto) => dto.toEntity()).toList(),
+      );
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getCountries();
@@ -68,8 +70,8 @@ class AuthRepoImpl implements AuthRepo {
       final result = await _authRemoteDataSource.login(
         LoginRequestModel(email: email, password: password),
       );
+      await _authLocalDataSource.saveToken(result.token);
       if (rememberMe) {
-        await _authLocalDataSource.saveToken(result.token);
         await _authLocalDataSource.saveRefreshToken(result.refreshToken);
       }
       return SuccessResponse(result);
@@ -81,7 +83,8 @@ class AuthRepoImpl implements AuthRepo {
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
     if (useDummyData) {
       return SuccessResponse(
-          VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList());
+        VehicleTypeDto.dummyList.map((dto) => dto.toEntity()).toList(),
+      );
     }
     return safeCall(() async {
       final dtos = await _authRemoteDataSource.getVehicleTypes();

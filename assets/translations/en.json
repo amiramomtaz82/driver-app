@@ -10,7 +10,15 @@
     "female": "Female",
     "male": "Male",
     "gender": "Gender",
-    "done": "Done"
+    "done": "Done",
+    "retry": "Retry",
+    "no_more_items": "No more orders",
+    "confirm": "Confirm"
+  },
+  "home": {
+    "title": "Flowery rider",
+    "no_available_orders": "No available orders right now",
+    "order_accepted": "Order accepted"
   },
   "onboarding": {
     "welcome_title": "Welcome to",
@@ -62,10 +70,12 @@
     "status": "Status",
     "status_accepted": "Accepted",
     "status_picked": "Picked Up",
-    "status_arrived": "Arrived at Location",
+    "status_out_for_delivery": "Out for delivery",
+    "status_arrived": "Arrived",
     "status_delivered": "Delivered",
     "status_completed": "Completed",
     "status_cancelled": "Cancelled",
+    "status_unknown": "Unknown",
     "pickup_address": "Pickup address",
     "user_address": "User address",
     "pickup_location": "Pickup location",
@@ -79,6 +89,10 @@
     "payment_method": "Payment Method",
     "cash_on_delivery": "Cash on Delivery",
     "currency_egp": "EGP",
+    "quantity_short": "X{count}",
+    "waiting_customer_confirmation": "Waiting for customer confirmation",
+    "confirm_status_title": "Update order status",
+    "confirm_status_message": "Are you sure you want to change the order status to \"{status}\"?",
     "thank_you": "Thank you!!",
     "order_delivered_successfully": "Order delivered successfully"
   },

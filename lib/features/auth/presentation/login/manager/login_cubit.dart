@@ -39,15 +39,10 @@ class LoginCubit extends BaseCubit<LoginState, UiEvent> {
     switch (response) {
       case SuccessResponse<LoginResponseModel> s:
         emit(state.copyWith(loginResource: Resource.success(s.data)));
-        emitEvent(const NavigateReplacementEvent(AppRoutes.home));
+        emitEvent(const NavigateReplacementEvent(AppRoutes.splash));
       case ErrorResponse<LoginResponseModel> e:
-        emit(state.copyWith(
-          loginResource: Resource.error(e.errMessage),
-        ));
-        emitEvent(ShowSnackBarEvent(
-          message: e.errMessage,
-          isError: true,
-        ));
+        emit(state.copyWith(loginResource: Resource.error(e.errMessage)));
+        emitEvent(ShowSnackBarEvent(message: e.errMessage, isError: true));
     }
   }
 }

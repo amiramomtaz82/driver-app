@@ -8,9 +8,9 @@ class AuthInterceptor extends Interceptor {
   static const String _accessTokenKey = "accessToken";
   @override
   Future<void> onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final token = await _secureStorage.read(key: _accessTokenKey);
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
@@ -19,9 +19,9 @@ class AuthInterceptor extends Interceptor {
   }
   @override
   Future<void> onError(
-      DioException err,
-      ErrorInterceptorHandler handler,
-      ) async {
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     if (err.response?.statusCode == 401) {
       await _secureStorage.delete(key: _accessTokenKey);
     }
