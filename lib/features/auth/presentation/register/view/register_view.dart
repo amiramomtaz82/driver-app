@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../../config/base/ui_events.dart';
 import '../../../../../config/di/di.dart';
 import '../../../../../config/mixins/ui_event_handler_mixin.dart';

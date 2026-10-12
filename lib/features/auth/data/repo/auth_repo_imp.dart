@@ -2,7 +2,6 @@ import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/auth/domain/models/login_request_model.dart';
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';

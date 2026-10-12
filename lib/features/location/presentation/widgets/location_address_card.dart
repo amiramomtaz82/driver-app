@@ -1,8 +1,9 @@
 import 'package:driver_app/core/app_theme/app_colors.dart';
 import 'package:driver_app/core/app_theme/text_styles.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
+import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_intents.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 class LocationAddressCard extends StatelessWidget {
   const LocationAddressCard({
     super.key,
@@ -10,11 +11,15 @@ class LocationAddressCard extends StatelessWidget {
     required this.primaryInfo,
     required this.secondaryLabel,
     required this.secondaryInfo,
+    this.onIntent,
   });
+
   final String primaryLabel;
   final LocationInfo primaryInfo;
   final String secondaryLabel;
   final LocationInfo secondaryInfo;
+  final void Function(LocationDetailIntent)? onIntent;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,18 +49,34 @@ class LocationAddressCard extends StatelessWidget {
               ),
             ),
           ),
-          _InfoRow(label: primaryLabel, info: primaryInfo),
+          _InfoRow(
+            label: primaryLabel,
+            info: primaryInfo,
+            onIntent: onIntent,
+          ),
           const Divider(height: 24),
-          _InfoRow(label: secondaryLabel, info: secondaryInfo),
+          _InfoRow(
+            label: secondaryLabel,
+            info: secondaryInfo,
+            onIntent: onIntent,
+          ),
         ],
       ),
     );
   }
 }
+
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.info});
+  const _InfoRow({
+    required this.label,
+    required this.info,
+    this.onIntent,
+  });
+
   final String label;
   final LocationInfo info;
+  final void Function(LocationDetailIntent)? onIntent;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -109,12 +130,12 @@ class _InfoRow extends StatelessWidget {
             if (info.phone != null) ...[
               _ActionButton(
                 icon: Icons.phone_outlined,
-                onTap: () => _launchPhone(info.phone!),
+                onTap: () => onIntent?.call(CallTapped(phone: info.phone!)),
               ),
               const SizedBox(width: 8),
               _ActionButton(
                 icon: Icons.chat_bubble_outline,
-                onTap: () => _launchSms(info.phone!),
+                onTap: () => onIntent?.call(MessageTapped(phone: info.phone!)),
               ),
             ],
           ],
@@ -122,19 +143,14 @@ class _InfoRow extends StatelessWidget {
       ],
     );
   }
-  Future<void> _launchPhone(String phone) async {
-    final uri = Uri(scheme: 'tel', path: phone);
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
-  Future<void> _launchSms(String phone) async {
-    final uri = Uri(scheme: 'sms', path: phone);
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
 }
+
 class _Avatar extends StatelessWidget {
   const _Avatar({required this.imageUrl, required this.name});
+
   final String? imageUrl;
   final String name;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -163,10 +179,13 @@ class _Avatar extends StatelessWidget {
     );
   }
 }
+
 class _ActionButton extends StatelessWidget {
   const _ActionButton({required this.icon, required this.onTap});
+
   final IconData icon;
   final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

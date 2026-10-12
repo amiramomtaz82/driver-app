@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/di/di.dart';
 import 'core/app_theme/app_theme.dart';
 import 'core/go_routes/app_routers.dart';

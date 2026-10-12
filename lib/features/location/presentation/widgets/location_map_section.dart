@@ -1,4 +1,5 @@
 import 'package:driver_app/core/app_theme/app_colors.dart';
+import 'package:driver_app/core/constants/map_constants.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -66,8 +67,8 @@ class _LocationMapSectionState extends State<LocationMapSection> {
       ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.example.driver_app',
+          urlTemplate: MapConstants.tileLayerUrl,
+          userAgentPackageName: MapConstants.packageName,
         ),
         if (widget.routePoints.isNotEmpty)
           PolylineLayer(
@@ -83,17 +84,17 @@ class _LocationMapSectionState extends State<LocationMapSection> {
           markers: [
             Marker(
               point: widget.driverLocation,
-              width: 90,
-              height: 52,
+              width: 100,
+              height: 75,
               child: const LocationMarker(
-                label: 'Your location',
+                label: MapConstants.yourLocation,
                 color: AppColors.success,
               ),
             ),
             Marker(
               point: widget.destinationLocation,
-              width: 80,
-              height: 52,
+              width: 100,
+              height: 75,
               child: LocationMarker(
                 label: widget.destinationLabel,
                 color: AppColors.pink,

@@ -12,5 +12,5 @@ abstract interface class LocationRepo {
 
   Stream<LatLng> watchDriverLocation();
 
-  Future<void> reportDriverLocation({required LatLng location});
+  Future<BaseResponse<void>> reportDriverLocation({required LatLng location});
 }

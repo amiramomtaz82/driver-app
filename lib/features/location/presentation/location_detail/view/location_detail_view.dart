@@ -2,6 +2,7 @@ import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/mixins/ui_event_handler_mixin.dart';
 import 'package:driver_app/core/app_theme/app_colors.dart';
 import 'package:driver_app/core/app_theme/text_styles.dart';
+import 'package:driver_app/core/constants/map_constants.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_cubit.dart';
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_intents.dart';
@@ -88,7 +89,7 @@ class _LocationDetailViewState extends State<LocationDetailView>
 
                 if (resource.isError) {
                   return _LocationErrorPlaceholder(
-                    message: resource.errorMessage ?? 'Failed to get location',
+                    message: resource.errorMessage ?? MapConstants.failedToGetLocation,
                     onRetry: () => _cubit.onIntent(const LoadLocationDetail()),
                   );
                 }
@@ -127,6 +128,7 @@ class _LocationDetailViewState extends State<LocationDetailView>
                     primaryInfo: widget.primaryInfo,
                     secondaryLabel: _cubit.state.secondaryLabel,
                     secondaryInfo: widget.secondaryInfo,
+                    onIntent: _cubit.onIntent,
                   ),
                 ],
               ),
@@ -151,7 +153,7 @@ class _MapLoadingPlaceholder extends StatelessWidget {
             const CircularProgressIndicator(color: AppColors.pink),
             const SizedBox(height: 12),
             Text(
-              'Getting your location...',
+              MapConstants.gettingLocation,
               style: AppTextStyles.bodyMedium.copyWith(color: AppColors.grey),
             ),
           ],
@@ -187,7 +189,7 @@ class _LocationErrorPlaceholder extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: const Text(MapConstants.retry),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.pink,
                 foregroundColor: Colors.white,

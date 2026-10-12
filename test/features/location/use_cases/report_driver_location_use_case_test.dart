@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/location/domain/repo/location_repo.dart';
 import 'package:driver_app/features/location/domain/use_cases/report_driver_location_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,7 +26,7 @@ void main() {
     when(() => mockRepo.watchDriverLocation())
         .thenAnswer((_) => locationController.stream);
     when(() => mockRepo.reportDriverLocation(location: any(named: 'location')))
-        .thenAnswer((_) async {});
+        .thenAnswer((_) async => const SuccessResponse(null));
   });
 
   tearDown(() {
@@ -40,7 +41,6 @@ void main() {
       useCase.startReporting();
       locationController.add(firstLocation);
 
-      // Allow the stream listener to process.
       await Future<void>.delayed(Duration.zero);
 
       verify(
@@ -50,17 +50,15 @@ void main() {
 
     test('does NOT report when distance < 100 m', () async {
       const origin = LatLng(30.0, 31.0);
-      // ~10 m away — should be skipped.
       const nearby = LatLng(30.00009, 31.0);
 
       useCase.startReporting();
       locationController.add(origin);
       await Future<void>.delayed(Duration.zero);
 
-      // Reset so we only track the second call.
       clearInteractions(mockRepo);
       when(() => mockRepo.reportDriverLocation(location: any(named: 'location')))
-          .thenAnswer((_) async {});
+          .thenAnswer((_) async => const SuccessResponse(null));
 
       locationController.add(nearby);
       await Future<void>.delayed(Duration.zero);
@@ -72,7 +70,6 @@ void main() {
 
     test('reports when distance >= 100 m', () async {
       const origin = LatLng(30.0, 31.0);
-      // ~1.1 km away — should be reported.
       const farAway = LatLng(30.01, 31.0);
 
       useCase.startReporting();
@@ -81,7 +78,7 @@ void main() {
 
       clearInteractions(mockRepo);
       when(() => mockRepo.reportDriverLocation(location: any(named: 'location')))
-          .thenAnswer((_) async {});
+          .thenAnswer((_) async => const SuccessResponse(null));
 
       locationController.add(farAway);
       await Future<void>.delayed(Duration.zero);
@@ -107,7 +104,7 @@ void main() {
 
     test('stopReporting resets lastReportedLocation', () async {
       const first = LatLng(30.0, 31.0);
-      const second = LatLng(30.0, 31.0); // Same location.
+      const second = LatLng(30.0, 31.0);
 
       useCase.startReporting();
       locationController.add(first);
@@ -115,12 +112,10 @@ void main() {
 
       useCase.stopReporting();
 
-      // Start again — should report immediately even though same coords.
       useCase.startReporting();
       locationController.add(second);
       await Future<void>.delayed(Duration.zero);
 
-      // First call from first start, second call from second start.
       verify(
         () => mockRepo.reportDriverLocation(location: any(named: 'location')),
       ).called(2);

@@ -38,9 +38,9 @@ class LocationRepoImpl implements LocationRepo {
   Stream<LatLng> watchDriverLocation() => _gpsService.locationStream;
 
   @override
-  Future<void> reportDriverLocation({required LatLng location}) =>
-      _remoteDataSource.reportDriverLocation(
-        lat: location.latitude,
-        lng: location.longitude,
-      );
+  Future<BaseResponse<void>> reportDriverLocation({required LatLng location}) =>
+      safeCall(() => _remoteDataSource.reportDriverLocation(
+            lat: location.latitude,
+            lng: location.longitude,
+          ));
 }

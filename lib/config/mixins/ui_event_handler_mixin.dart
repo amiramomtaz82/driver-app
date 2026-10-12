@@ -54,11 +54,8 @@ E extends UiEvent> on State<W> {
             );
           },
         );
-      default:
-        onCustomUiEvent(event);
     }
   }
-  void onCustomUiEvent(E event) {}
   @override
   void dispose() {
     _subscription?.cancel();

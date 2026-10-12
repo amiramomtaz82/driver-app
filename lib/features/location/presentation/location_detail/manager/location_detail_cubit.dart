@@ -4,6 +4,7 @@ import 'package:driver_app/config/base/base_cubit.dart';
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
+import 'package:driver_app/features/location/data/service/url_launcher_service.dart';
 import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:driver_app/features/location/domain/use_cases/get_route_use_case.dart';
 import 'package:driver_app/features/location/domain/use_cases/watch_driver_location_use_case.dart';
@@ -17,6 +18,7 @@ import 'location_detail_state.dart';
 class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
   final WatchDriverLocationUseCase _watchDriverLocation;
   final GetRouteUseCase _getRoute;
+  final UrlLauncherService _urlLauncher;
 
   StreamSubscription<LatLng>? _locationSub;
   bool _routeFetched = false;
@@ -24,6 +26,7 @@ class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
   LocationDetailCubit(
     this._watchDriverLocation,
     this._getRoute,
+    this._urlLauncher,
     @factoryParam LocationDetailState initialState,
   ) : super(initialState);
 
@@ -31,10 +34,30 @@ class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
     switch (intent) {
       case LoadLocationDetail():
         _startWatching();
-      case CallTapped():
-        break;
-      case MessageTapped():
-        break;
+      case CallTapped(:final phone):
+        _call(phone);
+      case MessageTapped(:final phone):
+        _message(phone);
+    }
+  }
+
+  Future<void> _call(String phone) async {
+    final success = await _urlLauncher.launchPhone(phone);
+    if (!success) {
+      emitEvent(const ShowSnackBarEvent(
+        message: 'Could not make phone call',
+        isError: true,
+      ));
+    }
+  }
+
+  Future<void> _message(String phone) async {
+    final success = await _urlLauncher.launchSms(phone);
+    if (!success) {
+      emitEvent(const ShowSnackBarEvent(
+        message: 'Could not send message',
+        isError: true,
+      ));
     }
   }
 

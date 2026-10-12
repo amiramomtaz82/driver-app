@@ -1,7 +1,6 @@
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/mixins/ui_event_handler_mixin.dart';
 import 'package:driver_app/config/resource/resource.dart';
-import 'package:driver_app/core/app_theme/app_colors.dart';
 import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:driver_app/core/validation/validation.dart';
 import 'package:driver_app/features/auth/presentation/login/manager/login_cubit.dart';

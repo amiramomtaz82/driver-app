@@ -7,9 +7,13 @@ class LoadLocationDetail extends LocationDetailIntent {
 }
 
 class CallTapped extends LocationDetailIntent {
-  const CallTapped();
+  final String phone;
+
+  const CallTapped({required this.phone});
 }
 
 class MessageTapped extends LocationDetailIntent {
-  const MessageTapped();
+  final String phone;
+
+  const MessageTapped({required this.phone});
 }
