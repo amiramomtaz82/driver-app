@@ -381,17 +381,6 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      debugPrint('Total CPI in tree: ${find.byType(CircularProgressIndicator).evaluate().length}');
-      for (final element in find.byType(CircularProgressIndicator).evaluate()) {
-        debugPrint('Found CPI parent: ${element.depth}');
-      }
-
-      for (final element in find.descendant(of: find.byType(CountryDropdownField), matching: find.byWidgetPredicate((_) => true)).evaluate()) {
-        if (element.widget.runtimeType.toString().contains('Progress') ||
-            element.widget.runtimeType.toString().contains('Circular')) {
-          debugPrint('Matching descendant: ${element.widget.runtimeType}');
-        }
-      }
 
       expect(
         find.descendant(

@@ -4,7 +4,6 @@ import 'package:driver_app/features/auth/domain/models/login_response_model.dart
 import 'package:driver_app/features/auth/domain/entities/register_response_entity.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';
@@ -16,8 +15,6 @@ import '../../domain/repo/auth_repo.dart';
 import '../data_source/local_data_source.dart';
 import '../data_source/remote_data_source.dart';
 import '../models/register_request_dto.dart';
-
-import '../models/vehicle_type_dto.dart';
 
 @Injectable(as: AuthRepo)
 class AuthRepoImpl implements AuthRepo {
