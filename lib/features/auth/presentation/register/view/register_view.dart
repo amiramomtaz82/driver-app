@@ -148,7 +148,7 @@ class _RegisterViewState extends State<RegisterView>
                       ),
                       const SizedBox(height: 20),
                       DropdownButtonFormField<Country>(
-                        value: state.selectedCountry,
+                        initialValue: state.selectedCountry,
                         decoration: InputDecoration(
                           labelText: LocaleKeys.apply_country_label.tr(),
                         ),
@@ -189,7 +189,7 @@ class _RegisterViewState extends State<RegisterView>
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField<VehicleType>(
-                        value: state.selectedVehicleType,
+                        initialValue: state.selectedVehicleType,
                         decoration: InputDecoration(
                           labelText: LocaleKeys.apply_vehicle_type_label.tr(),
                         ),
@@ -314,32 +314,34 @@ class _RegisterViewState extends State<RegisterView>
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Text(
-                            LocaleKeys.common_gender.tr(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
-                          ),
-                          const SizedBox(width: 16),
-                          Radio<String>(
-                            value: 'female',
-                            groupValue: state.gender,
-                            activeColor: AppColors.pink,
-                            onChanged: (val) =>
-                                cubit.onIntent(SelectGenderIntent(val!)),
-                          ),
-                          Text('common.female'.tr()),
-                          const SizedBox(width: 12),
-                          Radio<String>(
-                            value: 'male',
-                            groupValue: state.gender,
-                            activeColor: AppColors.pink,
-                            onChanged: (val) =>
-                                cubit.onIntent(SelectGenderIntent(val!)),
-                          ),
-                          Text('common.male'.tr()),
-                        ],
+                      RadioGroup<String>(
+                        groupValue: state.gender,
+                        onChanged: (val) {
+                          if (val != null) {
+                            cubit.onIntent(SelectGenderIntent(val));
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              LocaleKeys.common_gender.tr(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 14),
+                            ),
+                            const SizedBox(width: 16),
+                            const Radio<String>(
+                              value: 'female',
+                              activeColor: AppColors.pink,
+                            ),
+                            Text('common.female'.tr()),
+                            const SizedBox(width: 12),
+                            const Radio<String>(
+                              value: 'male',
+                              activeColor: AppColors.pink,
+                            ),
+                            Text('common.male'.tr()),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton(
