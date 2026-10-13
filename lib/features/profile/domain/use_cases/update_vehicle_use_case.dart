@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+
 import '../../../../config/base_response/base_response.dart';
 import '../entities/update_vehicle_params.dart';
 import '../repo/profile_repo.dart';

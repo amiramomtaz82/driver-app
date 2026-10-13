@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import '../../../../config/base_response/base_response.dart';
 
+import '../../../../config/base_response/base_response.dart';
 import '../entities/driver_profile_entity.dart';
 import '../repo/profile_repo.dart';
 

@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+
 import '../../../../config/base_response/base_response.dart';
 import '../entities/driver_profile_entity.dart';
 import '../entities/update_user_profile_params.dart';
@@ -11,7 +12,7 @@ class UpdateUserProfileUseCase {
   const UpdateUserProfileUseCase(this._profileRepo);
 
   Future<BaseResponse<DriverProfileEntity>> call(
-      UpdateUserProfileParams params,
-      ) =>
+    UpdateUserProfileParams params,
+  ) =>
       _profileRepo.updateUserProfile(params);
 }
