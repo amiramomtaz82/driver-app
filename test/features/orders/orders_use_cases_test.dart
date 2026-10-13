@@ -3,8 +3,10 @@ import 'package:driver_app/core/pagination/paginated_response.dart';
 import 'package:driver_app/core/pagination/pagination_model.dart';
 import 'package:driver_app/features/orders/domain/entities/available_order_entity.dart';
 import 'package:driver_app/features/orders/domain/repo/orders_repo.dart';
+import 'package:driver_app/features/orders/domain/entities/order_history_entity.dart';
 import 'package:driver_app/features/orders/domain/use_cases/accept_order_use_case.dart';
 import 'package:driver_app/features/orders/domain/use_cases/get_available_orders_use_case.dart';
+import 'package:driver_app/features/orders/domain/use_cases/get_order_history_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -48,6 +50,28 @@ void main() {
 
       expect(result, response);
       verify(() => repo.acceptOrder(orderId: 'order-1')).called(1);
+    });
+  });
+
+  group('GetOrderHistoryUseCase', () {
+    test('delegates to the repo with the given page args', () async {
+      const response = SuccessResponse(
+        PaginatedResponse<OrderHistoryEntity>(
+          data: [],
+          pagination: PaginationModel(),
+        ),
+      );
+      when(
+        () => repo.getOrderHistory(
+          page: any(named: 'page'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).thenAnswer((_) async => response);
+
+      final result = await GetOrderHistoryUseCase(repo)(page: 1, pageSize: 10);
+
+      expect(result, response);
+      verify(() => repo.getOrderHistory(page: 1, pageSize: 10)).called(1);
     });
   });
 }

@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../data/data_source/orders_remote_data_source.dart';
 import '../../data/models/available_orders_response_model.dart';
 import '../../data/models/order_details_dto.dart';
+import '../../data/models/order_history_response_model.dart';
 import '../client/orders_api_keys.dart';
 import '../client/orders_client.dart';
 
@@ -19,6 +20,18 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
     required int pageSize,
   }) async {
     final response = await _ordersApiClient.getAvailableOrders(
+      page: page,
+      pageSize: pageSize,
+    );
+    return response.data;
+  }
+
+  @override
+  Future<OrderHistoryDataModel> getOrderHistory({
+    required int page,
+    required int pageSize,
+  }) async {
+    final response = await _ordersApiClient.getOrderHistory(
       page: page,
       pageSize: pageSize,
     );

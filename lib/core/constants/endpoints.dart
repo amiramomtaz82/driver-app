@@ -17,6 +17,7 @@ class Endpoints {
   static const String vehicleTypes = '/api/v1/meta/vehicle-types';
 
   static const String availableOrders = '/order/drivers/available-orders';
+  static const String driverOrdersHistory = '/order/drivers/me/orders';
   static const String acceptOrder = '/order/drivers/me/orders/{orderId}/accept';
   static const String activeOrder = '/order/drivers/me/active-order';
   static const String driverOrderDetails = '/order/drivers/me/orders/{orderId}';
