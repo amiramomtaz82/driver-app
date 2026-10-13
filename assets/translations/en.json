@@ -102,13 +102,19 @@
   },
   "profile": {
     "title": "Profile",
-    "edit_profile": "Edit Profile",
-    "vehicle_info": "Vehicle Details",
+    "edit_profile": "Edit profile",
+    "vehicle_info": "Vehicle info",
+    "vehicle_type": "Vehicle type",
+    "vehicle_number": "Vehicle number",
+    "vehicle_license": "Vehicle license",
     "language": "Language",
-    "current_language": "English",
-    "logout_dialog_title": "Log Out",
-    "logout_dialog_desc": "Are you sure you want to log out?"
-  },
+    "logout": "Logout",
+    "logout_confirm_title": "LOGOUT",
+    "logout_confirm_msg": "Confirm logout!!",
+    "update": "Update",
+    "update_success": "Vehicle info updated successfully",
+    "app_version": "v 6.3.0 - (446)"
+  } ,
   "reset_password": {
     "title": "Reset Password",
     "current_password_label": "Current Password",

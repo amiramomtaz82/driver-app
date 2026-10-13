@@ -20,4 +20,14 @@ class Endpoints {
   static const String activeOrder = '/order/drivers/me/active-order';
   static const String driverOrderDetails = '/order/drivers/me/orders/{orderId}';
   static const String updateOrderStatus = '/order/orders/{orderId}/status';
+
+  // Profile Endpoints
+  static const String getUserProfile = '/api/users/GetProfile';
+  static const String updateUserProfile = '/api/users/UpdateProfile';
+  static const String changePassword = '/auth/change-password';
+  // Vehicle Endpoints
+  static const String getDriverVehicle = '/api/v1/drivers/me/vehicle';
+  static const String updateDriverVehicle = '/api/v1/drivers/me/vehicle';
+
+  static const String logout = '/auth/logout';
 }
