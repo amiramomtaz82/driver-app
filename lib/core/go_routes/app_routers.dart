@@ -13,6 +13,8 @@ import '../../features/orders/presentation/home/manager/home_cubit.dart';
 import '../../features/orders/presentation/home/view/home_view.dart';
 import '../../features/orders/presentation/order_details/manager/order_details_cubit.dart';
 import '../../features/orders/presentation/order_details/view/order_details_view.dart';
+import '../../features/orders/presentation/order_history/manager/order_history_cubit.dart';
+import '../../features/orders/presentation/order_history/view/order_history_view.dart';
 import '../../features/orders/presentation/order_success/view/order_success_view.dart';
 import '../../features/splash/presentation/manager/splash_cubit.dart';
 import '../../features/splash/presentation/view/splash_view.dart';
@@ -20,7 +22,7 @@ import '../widgets/coming_soon_view.dart';
 import 'main_shell_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -79,8 +81,10 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.orders,
               name: AppRoutes.orders,
-              builder: (context, state) =>
-                  const ComingSoonView(title: 'Orders'),
+              builder: (context, state) => BlocProvider(
+                create: (_) => getIt<OrderHistoryCubit>(),
+                child: const OrderHistoryView(),
+              ),
             ),
           ],
         ),
@@ -102,8 +106,21 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final orderId = state.extra as String? ?? '';
         return BlocProvider(
-          create: (_) => getIt<OrderDetailsCubit>(param1: orderId),
+          create: (_) =>
+              getIt<OrderDetailsCubit>(param1: orderId, param2: false),
           child: const OrderDetailsView(),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.orderHistoryDetails,
+      name: AppRoutes.orderHistoryDetails,
+      builder: (context, state) {
+        final orderId = state.extra as String? ?? '';
+        return BlocProvider(
+          create: (_) =>
+              getIt<OrderDetailsCubit>(param1: orderId, param2: true),
+          child: const OrderDetailsView(readOnly: true),
         );
       },
     ),

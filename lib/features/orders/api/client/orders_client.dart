@@ -5,6 +5,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../../../core/constants/endpoints.dart';
 import '../../data/models/available_orders_response_model.dart';
 import '../../data/models/order_details_response_model.dart';
+import '../../data/models/order_history_response_model.dart';
 import 'orders_api_keys.dart';
 
 part 'orders_client.g.dart';
@@ -17,6 +18,12 @@ abstract class OrdersApiClient {
 
   @GET(Endpoints.availableOrders)
   Future<AvailableOrdersResponseModel> getAvailableOrders({
+    @Query(OrdersApiKeys.page) required int page,
+    @Query(OrdersApiKeys.pageSize) required int pageSize,
+  });
+
+  @GET(Endpoints.driverOrdersHistory)
+  Future<OrderHistoryResponseModel> getOrderHistory({
     @Query(OrdersApiKeys.page) required int page,
     @Query(OrdersApiKeys.pageSize) required int pageSize,
   });

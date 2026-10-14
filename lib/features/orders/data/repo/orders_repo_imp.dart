@@ -9,6 +9,7 @@ import '../../../../core/pagination/paginated_response.dart';
 import '../../../../core/pagination/pagination_model.dart';
 import '../../domain/entities/available_order_entity.dart';
 import '../../domain/entities/order_details_entity.dart';
+import '../../domain/entities/order_history_entity.dart';
 import '../../domain/entities/order_status.dart';
 import '../../domain/repo/orders_repo.dart';
 import '../data_source/orders_remote_data_source.dart';
@@ -20,7 +21,7 @@ class OrdersRepoImpl implements OrdersRepo {
   final OrdersRemoteDataSource _ordersRemoteDataSource;
   final SecureStorage _secureStorage;
 
-  static const bool useDummyData = true;
+  static const bool useDummyData = false;
 
   @override
   Future<BaseResponse<PaginatedResponse<AvailableOrderEntity>>>
@@ -48,6 +49,28 @@ class OrdersRepoImpl implements OrdersRepo {
         PaginatedResponse<AvailableOrderEntity>(
           data: orders.items.map((order) => order.toEntity()).toList(),
           pagination: orders.pagination ?? const PaginationModel(),
+        ),
+      );
+    } on DioException catch (e) {
+      return ErrorResponse(error: e);
+    }
+  }
+
+  @override
+  Future<BaseResponse<PaginatedResponse<OrderHistoryEntity>>> getOrderHistory({
+    required int page,
+    required int pageSize,
+  }) async {
+    try {
+      final history = await _ordersRemoteDataSource.getOrderHistory(
+        page: page,
+        pageSize: pageSize,
+      );
+
+      return SuccessResponse(
+        PaginatedResponse<OrderHistoryEntity>(
+          data: history.items.map((order) => order.toEntity()).toList(),
+          pagination: history.pagination ?? const PaginationModel(),
         ),
       );
     } on DioException catch (e) {

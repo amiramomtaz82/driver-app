@@ -7,6 +7,7 @@ import '../../../../../core/extensions/num_money_extension.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../../domain/entities/order_details_entity.dart';
 import '../../../domain/entities/order_status.dart';
+import '../../widgets/order_status_chip.dart';
 import '../manager/order_details_cubit.dart';
 import '../manager/order_details_state.dart';
 import 'contact_party_card.dart';
@@ -17,11 +18,17 @@ import 'order_summary_row.dart';
 
 /// Scrollable order-details content. The pieces that depend on the live status
 /// (progress bar, status card) rebuild on their own via [BlocSelector]; the
-/// rest is built once from the loaded [order].
+/// rest is built once from the loaded [order]. In [readOnly] mode (history
+/// viewing) the live header is replaced by a simple status + order-number row.
 class OrderDetailsBody extends StatelessWidget {
-  const OrderDetailsBody({super.key, required this.order});
+  const OrderDetailsBody({
+    super.key,
+    required this.order,
+    this.readOnly = false,
+  });
 
   final OrderDetailsEntity order;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,10 @@ class OrderDetailsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _StatusSection(order: order),
+          if (readOnly)
+            _ReadOnlyHeader(order: order)
+          else
+            _StatusSection(order: order),
           const SizedBox(height: 20),
           OrderSectionLabel(LocaleKeys.orders_pickup_address.tr()),
           const SizedBox(height: 8),
@@ -84,6 +94,27 @@ class OrderDetailsBody extends StatelessWidget {
   void _showPhone(BuildContext context, String? phone) {
     if (phone == null || phone.isEmpty) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(phone)));
+  }
+}
+
+/// Simple status + order-number header for the read-only (history) view.
+class _ReadOnlyHeader extends StatelessWidget {
+  const _ReadOnlyHeader({required this.order});
+
+  final OrderDetailsEntity order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        OrderStatusChip(status: order.status),
+        Text(
+          '# ${order.orderNumber}',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ],
+    );
   }
 }
 
