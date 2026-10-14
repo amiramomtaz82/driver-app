@@ -14,13 +14,15 @@ import '../../features/orders/presentation/home/view/home_view.dart';
 import '../../features/orders/presentation/order_details/manager/order_details_cubit.dart';
 import '../../features/orders/presentation/order_details/view/order_details_view.dart';
 import '../../features/orders/presentation/order_success/view/order_success_view.dart';
+import '../../features/profile/presentation/manager/profile_cubit.dart';
+import '../../features/profile/presentation/view/profile_view/profile_view.dart';
 import '../../features/splash/presentation/manager/splash_cubit.dart';
 import '../../features/splash/presentation/view/splash_view.dart';
 import '../widgets/coming_soon_view.dart';
 import 'main_shell_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -89,8 +91,10 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.profile,
               name: AppRoutes.profile,
-              builder: (context, state) =>
-                  const ComingSoonView(title: 'Profile'),
+              builder: (context, state) => BlocProvider.value(
+                value: getIt<ProfileCubit>(),
+                child: const ProfileView(),
+              ),
             ),
           ],
         ),

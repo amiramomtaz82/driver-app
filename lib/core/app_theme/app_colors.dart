@@ -11,7 +11,7 @@ abstract final class AppColors {
   static const Color lightGrey = Color(0xFFEAEAEA);
   static const Color grey = Color(0xFFA6A6A6);
   static const Color darkGrey = Color(0xFF535353);
-  static const Color dividerGrey = Color(0xFFF9F9F9);
+  static const Color dividerGrey = Color(0xFFCFCFCF);
   static const Color borderBlack = Color(0xFF1D1B20);
 
   static const Color darkBackground = Color(0xFF121212);

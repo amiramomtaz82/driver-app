@@ -10,7 +10,11 @@ class AppRoutes {
   static const String registrationSuccess = '/registration-success';
 
   static const String orders = '/orders';
+
   static const String profile = '/profile';
+  static const String editUserProfile = '/edit-user-profile';
+  static const String editVehicle = '/edit-vehicle';
+
   static const String orderDetails = '/order-details';
   static const String orderSuccess = '/order-success';
 }

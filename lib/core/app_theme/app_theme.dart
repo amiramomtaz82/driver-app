@@ -38,6 +38,7 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: colors.background,
       extensions: [colors],
 
+
       appBarTheme: AppBarTheme(
         backgroundColor: colors.background,
         foregroundColor: colors.textPrimary,
