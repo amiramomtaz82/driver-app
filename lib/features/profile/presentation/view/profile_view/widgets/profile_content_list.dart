@@ -23,6 +23,7 @@ class ProfileContentList extends StatelessWidget {
     required this.onLogoutTap,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

@@ -150,13 +150,20 @@ class ProfileCubit extends BaseCubit<ProfileState, UiEvent> {
 
   void _handleUserEditResponse(BaseResponse<dynamic> response) {
     switch (response) {
-      case SuccessResponse(:final data):
+      case SuccessResponse():
+        final current = state.profileResource.data;
+        final updated = current?.copyWith(
+          fullName: '${state.editFirstName.trim()} ${state.editLastName.trim()}',
+          phone: state.editPhone.trim(),
+          gender: state.editGender,
+          photoUrl: state.editPhotoPath ?? current.photoUrl,
+        );
         emit(state.copyWith(
-          profileResource: Resource.success(data),
+          profileResource: Resource.success(updated),
           updateUserResource: const Resource.success(null),
         ));
         emitEvent(const ShowSnackBarEvent(
-          message: LocaleKeys.profile_update_success,
+          message: LocaleKeys.profile_user_update_success,
           isError: false,
         ));
         emitEvent(const PopEvent(true));

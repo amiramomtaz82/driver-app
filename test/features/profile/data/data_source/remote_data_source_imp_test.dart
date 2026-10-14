@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:driver_app/features/profile/api/profile_api_client.dart';
 import 'package:driver_app/features/profile/data/data_source/remote_data_source_imp.dart';
 import 'package:driver_app/features/profile/data/models/driver_vehicle_dto.dart';
@@ -8,10 +9,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockProfileClient extends Mock implements ProfileClient {}
+class FakeFormData extends Fake implements FormData {}
 
 void main() {
   late MockProfileClient mockClient;
   late ProfileRemoteDataSourceImpl dataSource;
+
+  setUpAll(() {
+    registerFallbackValue(FakeFormData());
+  });
 
   setUp(() {
     mockClient = MockProfileClient();
@@ -71,7 +77,7 @@ void main() {
 
       expect(result, equals(updatedDto));
       expect(result.fullName, equals('Amira Updated'));
-      verify(() => mockClient.updateUserProfile(request.toMap())).called(1);
+      verify(() => mockClient.updateUserProfile(any())).called(1);
     });
 
     test('should rethrow exception when client fails', () async {
@@ -79,7 +85,7 @@ void main() {
       when(() => mockClient.updateUserProfile(any())).thenThrow(exception);
 
       expect(() => dataSource.updateUserProfile(request), throwsA(equals(exception)));
-      verify(() => mockClient.updateUserProfile(request.toMap())).called(1);
+      verify(() => mockClient.updateUserProfile(any())).called(1);
     });
   });
 
@@ -121,7 +127,7 @@ void main() {
 
       await dataSource.updateDriverVehicle(request);
 
-      verify(() => mockClient.updateDriverVehicle(request.toMap())).called(1);
+      verify(() => mockClient.updateDriverVehicle(any())).called(1);
     });
 
     test('should rethrow exception when client fails', () async {
@@ -129,7 +135,7 @@ void main() {
       when(() => mockClient.updateDriverVehicle(any())).thenThrow(exception);
 
       expect(() => dataSource.updateDriverVehicle(request), throwsA(equals(exception)));
-      verify(() => mockClient.updateDriverVehicle(request.toMap())).called(1);
+      verify(() => mockClient.updateDriverVehicle(any())).called(1);
     });
   });
 

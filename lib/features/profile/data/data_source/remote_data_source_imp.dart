@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../api/profile_api_client.dart';
@@ -22,7 +23,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<UserProfileDto> updateUserProfile(
       UpdateUserProfileRequestDto requestDto,
       ) =>
-      _client.updateUserProfile(requestDto.toMap());
+      _client.updateUserProfile(FormData.fromMap(requestDto.toMap()));
 
   @override
   Future<DriverVehicleDto> getDriverVehicle() => _client.getDriverVehicle();
@@ -31,7 +32,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<void> updateDriverVehicle(
       UpdateVehicleRequestDto requestDto,
       ) =>
-      _client.updateDriverVehicle(requestDto.toMap());
+      _client.updateDriverVehicle(FormData.fromMap(requestDto.toMap()));
 
   @override
   Future<void> logout() => _client.logout();

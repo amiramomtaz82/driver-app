@@ -18,18 +18,16 @@ abstract class ProfileClient {
   Future<UserProfileDto> getUserProfile();
 
   @PUT(Endpoints.updateUserProfile)
-  @MultiPart()
   Future<UserProfileDto> updateUserProfile(
-      @PartMap() Map<String, dynamic> parts,
+      @Body() FormData body,
       );
 
   @GET(Endpoints.getDriverVehicle)
   Future<DriverVehicleDto> getDriverVehicle();
 
   @PATCH(Endpoints.updateDriverVehicle)
-  @MultiPart()
   Future<void> updateDriverVehicle(
-      @PartMap() Map<String, dynamic> parts,
+      @Body() FormData body,
       );
 
   @POST(Endpoints.logout)

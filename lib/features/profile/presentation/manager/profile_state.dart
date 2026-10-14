@@ -58,15 +58,27 @@ class ProfileState extends Equatable {
     editLicensePath: null,
     updateVehicleResource: Resource.initial(),
   );
-
+  bool get hasUserEditChanged {
+    final original = profileResource.data;
+    if (original == null) return false;
+    final initialGender = original.gender.isEmpty ? 'Male' : original.gender;
+    final nameChanged = editFirstName.trim() != original.firstName.trim() ||
+        editLastName.trim() != original.lastName.trim();
+    final phoneChanged = editPhone.trim() != original.phone.trim();
+    final genderChanged = editGender != initialGender;
+    final photoChanged = editPhotoPath != null && editPhotoPath!.isNotEmpty;
+    return nameChanged || phoneChanged || genderChanged || photoChanged;
+  }
   bool get isUserEditValid =>
       editFirstName.trim().isNotEmpty &&
           editLastName.trim().isNotEmpty &&
-          editPhone.trim().isNotEmpty;
+          editPhone.trim().isNotEmpty&&
+          hasUserEditChanged;
 
   bool get isVehicleEditValid =>
       selectedVehicleType != null &&
           editVehicleNumber.trim().isNotEmpty;
+
 
   ProfileState copyWith({
     Resource<DriverProfileEntity>? profileResource,

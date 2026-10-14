@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/app_theme/context_extension.dart';
@@ -17,7 +19,16 @@ class UserInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.customColors;
     final textTheme = context.theme.textTheme;
-
+    final photoUrl = profile.photoUrl;
+    final bool hasPhoto = photoUrl != null && photoUrl.isNotEmpty && photoUrl != 'null';
+    ImageProvider? avatarImage;
+    if (hasPhoto) {
+      if (photoUrl.startsWith('http://') || photoUrl.startsWith('https://')) {
+        avatarImage = NetworkImage(photoUrl);
+      } else {
+        avatarImage = FileImage(File(photoUrl)); // 👈 Handles your local uploaded picture!
+      }
+    }
     return Card(
       elevation: 0,
 color: colors.background,
@@ -34,12 +45,10 @@ color: colors.background,
               CircleAvatar(
                 radius: 28,
                 backgroundColor: colors.divider,
-                backgroundImage: profile.photoUrl != null && profile.photoUrl!.isNotEmpty
-                    ? NetworkImage(profile.photoUrl!)
-                    : null,
-                child: profile.photoUrl == null || profile.photoUrl!.isEmpty
+                backgroundImage: avatarImage,
+                child: !hasPhoto
                     ? Icon(Icons.person, size: 32, color: colors.grey)
-                    :Icon(Icons.person,color: colors.grey,size: 30,),
+                    : null,
               ),
               const SizedBox(width: 14),
               Expanded(

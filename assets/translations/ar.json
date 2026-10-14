@@ -113,6 +113,7 @@
     "logout_confirm_msg": "هل أنت متأكد من تسجيل الخروج؟",
     "update": "تحديث",
     "update_success": "تم تحديث بيانات المركبة بنجاح",
+    "user_update_success": "تم تحديث الملف الشخصي بنجاح",
     "app_version": "v 6.3.0 - (446)"
   },
   "reset_password": {

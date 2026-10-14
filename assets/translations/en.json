@@ -113,6 +113,7 @@
     "logout_confirm_msg": "Confirm logout!!",
     "update": "Update",
     "update_success": "Vehicle info updated successfully",
+    "user_update_success": "Profile updated successfully",
     "app_version": "v 6.3.0 - (446)"
   } ,
   "reset_password": {

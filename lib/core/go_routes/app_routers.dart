@@ -15,6 +15,7 @@ import '../../features/orders/presentation/order_details/manager/order_details_c
 import '../../features/orders/presentation/order_details/view/order_details_view.dart';
 import '../../features/orders/presentation/order_success/view/order_success_view.dart';
 import '../../features/profile/presentation/manager/profile_cubit.dart';
+import '../../features/profile/presentation/view/edit_profile/edit_user_profile_view.dart';
 import '../../features/profile/presentation/view/profile_view/profile_view.dart';
 import '../../features/splash/presentation/manager/splash_cubit.dart';
 import '../../features/splash/presentation/view/splash_view.dart';
@@ -100,6 +101,8 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
+
+
     GoRoute(
       path: AppRoutes.orderDetails,
       name: AppRoutes.orderDetails,
@@ -110,7 +113,16 @@ final GoRouter appRouter = GoRouter(
           child: const OrderDetailsView(),
         );
       },
+    ),GoRoute(
+      path: AppRoutes.editUserProfile,
+      name: AppRoutes.editUserProfile,
+      builder: (context, state) => BlocProvider.value(
+        value: getIt<ProfileCubit>(),
+        child: const EditUserProfileView(),
+      ),
     ),
+
+
     GoRoute(
       path: AppRoutes.orderSuccess,
       name: AppRoutes.orderSuccess,
