@@ -15,29 +15,33 @@ class GenderSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          LocaleKeys.common_gender.tr(),
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        const Spacer(),
-        Radio<String>(
-          value: 'Female',
-          groupValue: selectedGender,
-          activeColor: AppColors.pink,
-          onChanged: (v) => onGenderChanged(v!),
-        ),
-        Text(LocaleKeys.common_gender_female.tr()),
-        const SizedBox(width: 8),
-        Radio<String>(
-          value: 'Male',
-          groupValue: selectedGender,
-          activeColor: AppColors.pink,
-          onChanged: (v) => onGenderChanged(v!),
-        ),
-        Text(LocaleKeys.common_gender_male.tr()),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            LocaleKeys.common_gender.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          const SizedBox(width: 16),
+          Radio<String>(
+            value: 'Female',
+            groupValue: selectedGender,
+            activeColor: AppColors.pink,
+            onChanged: (v) => onGenderChanged(v!),
+          ),
+          Text(LocaleKeys.common_gender_female.tr()),
+          const SizedBox(width: 8),
+          Radio<String>(
+            value: 'Male',
+            groupValue: selectedGender,
+            activeColor: AppColors.pink,
+            onChanged: (v) => onGenderChanged(v!),
+          ),
+          Text(LocaleKeys.common_gender_male.tr()),
+        ],
+      ),
     );
   }
 }

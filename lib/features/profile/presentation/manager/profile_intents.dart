@@ -1,8 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../auth/domain/entities/vehicle_type_entity.dart';
 
-sealed class ProfileIntent {
+sealed class ProfileIntent extends Equatable {
   const ProfileIntent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 // --- Screen 1: Profile Main Intents ---
@@ -34,26 +38,41 @@ class InitUserEditForm extends UserEditIntent {
 class FirstNameChanged extends UserEditIntent {
   final String value;
   const FirstNameChanged(this.value);
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class LastNameChanged extends UserEditIntent {
   final String value;
   const LastNameChanged(this.value);
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class PhoneChanged extends UserEditIntent {
   final String value;
   const PhoneChanged(this.value);
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class GenderChanged extends UserEditIntent {
   final String value;
   const GenderChanged(this.value);
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class PickUserPhotoIntent extends UserEditIntent {
   final ImageSource source;
   const PickUserPhotoIntent(this.source);
+
+  @override
+  List<Object?> get props => [source];
 }
 
 class SubmitUserEdit extends UserEditIntent {
@@ -72,16 +91,25 @@ class InitVehicleEditForm extends VehicleEditIntent {
 class VehicleTypeSelected extends VehicleEditIntent {
   final VehicleType type;
   const VehicleTypeSelected(this.type);
+
+  @override
+  List<Object?> get props => [type];
 }
 
 class VehicleNumberChanged extends VehicleEditIntent {
   final String number;
   const VehicleNumberChanged(this.number);
+
+  @override
+  List<Object?> get props => [number];
 }
 
 class PickVehicleLicenseIntent extends VehicleEditIntent {
   final ImageSource source;
   const PickVehicleLicenseIntent(this.source);
+
+  @override
+  List<Object?> get props => [source];
 }
 
 class SubmitVehicleEdit extends VehicleEditIntent {
