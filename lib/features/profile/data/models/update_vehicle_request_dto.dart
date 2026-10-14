@@ -18,7 +18,10 @@ class UpdateVehicleRequestDto {
       UpdateVehicleParams params,
       ) async {
     MultipartFile? file;
-    if (params.licenseFilePath != null && params.licenseFilePath!.isNotEmpty) {
+    if (params.licenseFilePath != null &&
+        params.licenseFilePath!.isNotEmpty &&
+        !params.licenseFilePath!.startsWith('http://') &&
+        !params.licenseFilePath!.startsWith('https://')) {
       file = await MultipartFile.fromFile(params.licenseFilePath!);
     }
 

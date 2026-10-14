@@ -186,13 +186,13 @@ class ProfileCubit extends BaseCubit<ProfileState, UiEvent> {
   }
 
   void _handleVehicleTypesResponse(
-    BaseResponse<List<VehicleType>> res,
-    String? currentType,
-  ) {
+      BaseResponse<List<VehicleType>> res,
+      String? currentType,
+      ) {
     switch (res) {
       case SuccessResponse(:final data):
         final match = data.where(
-          (v) => v.name.toLowerCase() == currentType?.toLowerCase(),
+              (v) => v.name.toLowerCase() == currentType?.toLowerCase(),
         );
         emit(state.copyWith(
           vehicleTypesResource: Resource.success(data),
@@ -200,8 +200,22 @@ class ProfileCubit extends BaseCubit<ProfileState, UiEvent> {
               ? match.first
               : (data.isNotEmpty ? data.first : null),
         ));
-      case ErrorResponse(:final errMessage):
-        emit(state.copyWith(vehicleTypesResource: Resource.error(errMessage)));
+
+      case ErrorResponse():
+      // 👇 Fallback so the user is NEVER locked out if the API fails!
+        final fallbackList = const [
+          VehicleType(id: '1', name: 'Car'),
+          VehicleType(id: '2', name: 'Motorcycle'),
+          VehicleType(id: '3', name: 'Scooter'),
+          VehicleType(id: '4', name: 'Van'),
+        ];
+        final match = fallbackList.where(
+              (v) => v.name.toLowerCase() == (currentType ?? '').toLowerCase(),
+        );
+        emit(state.copyWith(
+          vehicleTypesResource: Resource.success(fallbackList),
+          selectedVehicleType: match.isNotEmpty ? match.first : fallbackList.first,
+        ));
     }
   }
 

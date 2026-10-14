@@ -35,10 +35,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<List<VehicleTypeDto>> getVehicleTypes() {
-    return _authApiClient.getVehicleTypes();
+  Future<List<VehicleTypeDto>> getVehicleTypes() async {
+    final response = await _authApiClient.getVehicleTypes();
+    return response.data ?? [];
   }
-
 
 
   @override
