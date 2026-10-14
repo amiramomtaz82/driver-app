@@ -51,13 +51,15 @@ void main() {
       expect(find.byIcon(Icons.cancel), findsOneWidget);
     });
 
-    testWidgets('has no interactive button (display only)', (tester) async {
+    testWidgets('is tappable (wrapped in an InkWell with an onTap)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         _wrap(OrderHistoryCard(order: _order(OrderStatus.delivered))),
       );
 
-      expect(find.byType(ElevatedButton), findsNothing);
-      expect(find.byType(InkWell), findsNothing);
+      final inkWell = tester.widget<InkWell>(find.byType(InkWell));
+      expect(inkWell.onTap, isNotNull);
     });
   });
 }

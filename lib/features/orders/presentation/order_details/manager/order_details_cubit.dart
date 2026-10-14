@@ -21,11 +21,13 @@ const Duration kOrderPollInterval = Duration(seconds: 5);
 class OrderDetailsCubit extends BaseCubit<OrderDetailsState, UiEvent> {
   OrderDetailsCubit(
     @factoryParam this._orderId,
+    @factoryParam this._readOnly,
     this._getOrderDetailsUseCase,
     this._updateOrderStatusUseCase,
   ) : super(const OrderDetailsState());
 
   final String _orderId;
+  final bool _readOnly;
   final GetOrderDetailsUseCase _getOrderDetailsUseCase;
   final UpdateOrderStatusUseCase _updateOrderStatusUseCase;
 
@@ -56,6 +58,7 @@ class OrderDetailsCubit extends BaseCubit<OrderDetailsState, UiEvent> {
   }
 
   Future<void> _advanceStatus() async {
+    if (_readOnly) return;
     final current = state.details.data;
     if (current == null || state.isUpdatingStatus) return;
 
@@ -85,6 +88,7 @@ class OrderDetailsCubit extends BaseCubit<OrderDetailsState, UiEvent> {
   }
 
   void _onStatus(OrderStatus status) {
+    if (_readOnly) return;
     if (status == OrderStatus.delivered) {
       _stopPolling();
       emitEvent(const NavigateReplacementEvent(AppRoutes.orderSuccess));

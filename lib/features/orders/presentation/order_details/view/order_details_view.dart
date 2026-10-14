@@ -15,7 +15,11 @@ import '../widgets/order_details_body.dart';
 import '../widgets/order_message_retry.dart';
 
 class OrderDetailsView extends StatefulWidget {
-  const OrderDetailsView({super.key});
+  const OrderDetailsView({super.key, this.readOnly = false});
+
+  /// Read-only viewing (from order history): back navigation is allowed and
+  /// the status action bar is hidden.
+  final bool readOnly;
 
   @override
   State<OrderDetailsView> createState() => _OrderDetailsViewState();
@@ -35,12 +39,14 @@ class _OrderDetailsViewState extends State<OrderDetailsView>
 
   @override
   Widget build(BuildContext context) {
-    // Locked onto the order: no back to Home until it is complete.
+    final readOnly = widget.readOnly;
+    // Active order: locked onto it (no back) until complete. History: viewable
+    // with a back arrow.
     return PopScope(
-      canPop: false,
+      canPop: readOnly,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: readOnly,
           title: Text(LocaleKeys.orders_order_details.tr()),
         ),
         body: BlocBuilder<OrderDetailsCubit, OrderDetailsState>(
@@ -64,6 +70,9 @@ class _OrderDetailsViewState extends State<OrderDetailsView>
             }
 
             final order = resource.data!;
+            if (readOnly) {
+              return OrderDetailsBody(order: order, readOnly: true);
+            }
             return Column(
               children: [
                 Expanded(child: OrderDetailsBody(order: order)),

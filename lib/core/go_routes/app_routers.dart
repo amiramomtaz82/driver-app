@@ -102,8 +102,21 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final orderId = state.extra as String? ?? '';
         return BlocProvider(
-          create: (_) => getIt<OrderDetailsCubit>(param1: orderId),
+          create: (_) =>
+              getIt<OrderDetailsCubit>(param1: orderId, param2: false),
           child: const OrderDetailsView(),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.orderHistoryDetails,
+      name: AppRoutes.orderHistoryDetails,
+      builder: (context, state) {
+        final orderId = state.extra as String? ?? '';
+        return BlocProvider(
+          create: (_) =>
+              getIt<OrderDetailsCubit>(param1: orderId, param2: true),
+          child: const OrderDetailsView(readOnly: true),
         );
       },
     ),

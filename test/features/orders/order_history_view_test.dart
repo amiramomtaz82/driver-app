@@ -24,11 +24,14 @@ const _order = OrderHistoryEntity(
   recipientAddress: 'Cairo',
 );
 
-OrderHistoryState _stateWith(Resource<List<OrderHistoryEntity>> resource) {
+OrderHistoryState _stateWith(
+  Resource<List<OrderHistoryEntity>> resource, {
+  bool hasNextPage = false,
+}) {
   return OrderHistoryState(
     pagination: PaginationState<OrderHistoryEntity>(
       resource: resource,
-      hasNextPage: false,
+      hasNextPage: hasNextPage,
     ),
   );
 }
@@ -55,6 +58,19 @@ void main() {
       ),
     );
   }
+
+  testWidgets('loads the first page on init', (tester) async {
+    when(
+      () => cubit.state,
+    ).thenReturn(_stateWith(const Resource.success([_order])));
+
+    await tester.pumpWidget(makeTestable());
+    await tester.pump();
+
+    verify(
+      () => cubit.onIntent(any(that: isA<OrderHistoryStarted>())),
+    ).called(1);
+  });
 
   testWidgets('renders a card per order and the title', (tester) async {
     when(
@@ -87,5 +103,37 @@ void main() {
     await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
+
+  testWidgets('shows an end-of-list note when there is no next page', (
+    tester,
+  ) async {
+    when(
+      () => cubit.state,
+    ).thenReturn(_stateWith(const Resource.success([_order])));
+
+    await tester.pumpWidget(makeTestable());
+    await tester.pump();
+
+    expect(find.text('common.no_more_items'), findsOneWidget);
+  });
+
+  testWidgets('error state shows retry and refreshes on tap', (tester) async {
+    when(() => cubit.state).thenReturn(
+      _stateWith(const Resource.error('errors.something_went_wrong')),
+    );
+
+    await tester.pumpWidget(makeTestable());
+    await tester.pump();
+
+    final retry = find.text('common.retry');
+    expect(retry, findsOneWidget);
+
+    await tester.tap(retry);
+    await tester.pump();
+
+    verify(
+      () => cubit.onIntent(any(that: isA<OrderHistoryRefreshed>())),
+    ).called(1);
   });
 }

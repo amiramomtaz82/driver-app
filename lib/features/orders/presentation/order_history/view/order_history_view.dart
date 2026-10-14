@@ -39,10 +39,6 @@ class _OrderHistoryViewState extends State<OrderHistoryView> {
     }
   }
 
-  Future<void> _onRefresh() async {
-    context.read<OrderHistoryCubit>().onIntent(const OrderHistoryRefreshed());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,60 +54,75 @@ class _OrderHistoryViewState extends State<OrderHistoryView> {
               ),
             ),
             Expanded(
-              child: BlocBuilder<OrderHistoryCubit, OrderHistoryState>(
-                builder: (context, state) => _buildBody(context, state),
-              ),
+              child: _OrderHistoryBody(scrollController: _scrollController),
             ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildBody(BuildContext context, OrderHistoryState state) {
-    final pagination = state.pagination;
-    final orders = state.orders;
+class _OrderHistoryBody extends StatelessWidget {
+  const _OrderHistoryBody({required this.scrollController});
 
-    if (pagination.resource.isLoading && orders.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  final ScrollController scrollController;
 
-    if (pagination.resource.isError && orders.isEmpty) {
-      return _MessageWithRetry(
-        message:
-            pagination.resource.errorMessage?.tr() ??
-            LocaleKeys.errors_something_went_wrong.tr(),
-        onRetry: _onRefresh,
-      );
-    }
+  Future<void> _refresh(BuildContext context) async {
+    context.read<OrderHistoryCubit>().onIntent(const OrderHistoryRefreshed());
+  }
 
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      child: ListView.separated(
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        itemCount: orders.isEmpty ? 1 : orders.length + 1,
-        separatorBuilder: (_, _) => const SizedBox(height: 16),
-        itemBuilder: (context, index) {
-          if (orders.isEmpty) {
-            return _EmptyState(message: LocaleKeys.orders_recent_orders.tr());
-          }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<OrderHistoryCubit, OrderHistoryState>(
+      builder: (context, state) {
+        final pagination = state.pagination;
+        final orders = state.orders;
 
-          if (index == orders.length) {
-            return PaginationFooter(
-              isLoadingMore: pagination.isLoadingMore,
-              hasNextPage: pagination.hasNextPage,
-              loadMoreError: pagination.loadMoreError,
-              onRetry: () => context.read<OrderHistoryCubit>().onIntent(
-                const OrderHistoryRetried(),
-              ),
-            );
-          }
+        if (pagination.resource.isLoading && orders.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          return OrderHistoryCard(order: orders[index]);
-        },
-      ),
+        if (pagination.resource.isError && orders.isEmpty) {
+          return _MessageWithRetry(
+            message:
+                pagination.resource.errorMessage?.tr() ??
+                LocaleKeys.errors_something_went_wrong.tr(),
+            onRetry: () => _refresh(context),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => _refresh(context),
+          child: ListView.separated(
+            controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            itemCount: orders.isEmpty ? 1 : orders.length + 1,
+            separatorBuilder: (_, _) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              if (orders.isEmpty) {
+                return _EmptyState(
+                  message: LocaleKeys.orders_recent_orders.tr(),
+                );
+              }
+
+              if (index == orders.length) {
+                return PaginationFooter(
+                  isLoadingMore: pagination.isLoadingMore,
+                  hasNextPage: pagination.hasNextPage,
+                  loadMoreError: pagination.loadMoreError,
+                  onRetry: () => context.read<OrderHistoryCubit>().onIntent(
+                    const OrderHistoryRetried(),
+                  ),
+                );
+              }
+
+              return OrderHistoryCard(order: orders[index]);
+            },
+          ),
+        );
+      },
     );
   }
 }
