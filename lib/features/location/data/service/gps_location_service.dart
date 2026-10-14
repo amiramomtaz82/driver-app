@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
-import 'package:latlong2/latlong.dart';
 import 'geolocator_wrapper.dart';
 
 @lazySingleton
@@ -10,35 +9,41 @@ class GpsLocationService {
 
   GpsLocationService(this._geolocator);
 
-  StreamController<LatLng>? _controller;
+  StreamController<Position>? _controller;
   StreamSubscription<Position>? _positionSub;
 
-  Stream<LatLng> get locationStream {
-    _controller ??= StreamController<LatLng>.broadcast(
+  Stream<Position> get locationStream {
+    _controller ??= StreamController<Position>.broadcast(
       onListen: _onListen,
       onCancel: _stopIfNoListeners,
     );
+    if (_positionSub == null) {
+      startListening();
+    }
     return _controller!.stream;
   }
 
   void _onListen() {
-    _startListening();
+    startListening();
   }
 
-  Future<void> _startListening() async {
+  Future<void> startListening() async {
     if (_positionSub != null) return;
 
     final controller = _controller;
-    if (controller == null) return;
+    if (controller == null || controller.isClosed) return;
 
     try {
       await _ensurePermissions();
     } catch (e) {
-      controller.addError(e);
+      if (_controller != null && !_controller!.isClosed) {
+        _controller!.addError(e);
+      }
       return;
     }
 
-    if (_controller == null || _controller != controller) return;
+    if (_controller == null || _controller != controller || _controller!.isClosed) return;
+    if (_positionSub != null) return;
 
     _positionSub = _geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -47,10 +52,14 @@ class GpsLocationService {
       ),
     ).listen(
       (position) {
-        _controller?.add(LatLng(position.latitude, position.longitude));
+        if (_controller != null && !_controller!.isClosed) {
+          _controller!.add(position);
+        }
       },
       onError: (Object error) {
-        _controller?.addError(error);
+        if (_controller != null && !_controller!.isClosed) {
+          _controller!.addError(error);
+        }
       },
     );
   }

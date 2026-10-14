@@ -94,7 +94,17 @@
     "confirm_status_title": "تحديث حالة الطلب",
     "confirm_status_message": "هل أنت متأكد من تغيير حالة الطلب إلى \"{status}\"؟",
     "thank_you": "شكراً لك!!",
-    "order_delivered_successfully": "تم توصيل الطلب بنجاح"
+    "order_delivered_successfully": "تم توصيل الطلب بنجاح",
+    "getting_location": "جاري تحديد موقعك...",
+    "failed_to_get_location": "تعذر تحديد الموقع",
+    "calculating_route": "جاري حساب المسار...",
+    "route_unavailable": "المسار غير متوفر",
+    "store": "المتجر",
+    "user": "العميل",
+    "your_location": "موقعك",
+    "missing_location_data": "بيانات الموقع غير متوفرة",
+    "could_not_make_phone_call": "تعذر إجراء المكالمة",
+    "could_not_send_message": "تعذر إرسال الرسالة"
   },
   "profile": {
     "title": "الملف الشخصي",

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/core/constants/endpoints.dart';
+import 'package:driver_app/features/location/data/models/driver_location_request_dto.dart';
+import 'package:driver_app/features/location/data/models/driver_location_response_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -12,8 +14,8 @@ abstract class LocationApiClient {
   factory LocationApiClient(Dio dio) = _LocationApiClient;
 
   @POST(Endpoints.driverLocation)
-  Future<HttpResponse<dynamic>> getDriverLocation();
+  Future<DriverLocationResponseDto> getDriverLocation();
 
   @POST(Endpoints.driverLocation)
-  Future<void> reportDriverLocation(@Body() Map<String, dynamic> body);
+  Future<void> reportDriverLocation(@Body() DriverLocationRequestDto body);
 }

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
+import 'package:driver_app/features/location/data/service/distance_calculator_service.dart';
 import 'package:driver_app/features/location/data/service/url_launcher_service.dart';
+import 'package:driver_app/features/location/domain/entities/location_coordinates.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:driver_app/features/location/domain/use_cases/get_route_use_case.dart';
@@ -12,7 +14,6 @@ import 'package:driver_app/features/location/presentation/location_detail/manage
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_intents.dart';
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_state.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockWatchDriverLocation extends Mock
@@ -22,7 +23,10 @@ class MockGetRoute extends Mock implements GetRouteUseCase {}
 
 class MockUrlLauncherService extends Mock implements UrlLauncherService {}
 
-const _storeCoords = LatLng(30.05, 31.25);
+class MockDistanceCalculatorService extends Mock
+    implements DistanceCalculatorService {}
+
+const _storeCoords = LocationCoordinates(latitude: 30.05, longitude: 31.25);
 
 const _initialState = LocationDetailState(
   type: LocationDetailType.pickup,
@@ -34,12 +38,12 @@ const _initialState = LocationDetailState(
   secondaryInfo: LocationInfo(
     name: 'User',
     address: '456 Side St',
-    coordinates: LatLng(30.06, 31.26),
+    coordinates: LocationCoordinates(latitude: 30.06, longitude: 31.26),
   ),
 );
 
 const _routeData = RouteData(
-  points: [LatLng(30.0, 31.0), _storeCoords],
+  points: [LocationCoordinates(latitude: 30.0, longitude: 31.0), _storeCoords],
   distanceMeters: 5500,
 );
 
@@ -47,17 +51,21 @@ void main() {
   late MockWatchDriverLocation mockWatch;
   late MockGetRoute mockGetRoute;
   late MockUrlLauncherService mockUrlLauncher;
-  late StreamController<LatLng> locationController;
+  late MockDistanceCalculatorService mockDistanceCalculator;
+  late StreamController<BaseResponse<LocationCoordinates>> locationController;
 
   setUpAll(() {
-    registerFallbackValue(const LatLng(0, 0));
+    registerFallbackValue(
+        const LocationCoordinates(latitude: 0, longitude: 0));
   });
 
   setUp(() {
     mockWatch = MockWatchDriverLocation();
     mockGetRoute = MockGetRoute();
     mockUrlLauncher = MockUrlLauncherService();
-    locationController = StreamController<LatLng>.broadcast();
+    mockDistanceCalculator = MockDistanceCalculatorService();
+    locationController =
+        StreamController<BaseResponse<LocationCoordinates>>.broadcast();
 
     when(() => mockWatch.call())
         .thenAnswer((_) => locationController.stream);
@@ -69,6 +77,7 @@ void main() {
         mockWatch,
         mockGetRoute,
         mockUrlLauncher,
+        mockDistanceCalculator,
         _initialState,
       );
 
@@ -92,12 +101,14 @@ void main() {
       },
       act: (cubit) {
         cubit.onIntent(const LoadLocationDetail());
-        locationController.add(const LatLng(30.0, 31.0));
+        locationController.add(const SuccessResponse(
+            LocationCoordinates(latitude: 30.0, longitude: 31.0)));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
         isA<LocationDetailState>()
-            .having((s) => s.driverLocationResource.isLoading, 'driver loading', true)
+            .having((s) => s.driverLocationResource.isLoading, 'driver loading',
+                true)
             .having((s) => s.routeResource.isLoading, 'route loading', true),
         isA<LocationDetailState>().having(
           (s) => s.driverLocationResource.isSuccess,
@@ -111,7 +122,7 @@ void main() {
     );
 
     blocTest<LocationDetailCubit, LocationDetailState>(
-      'updates driver location on subsequent GPS emissions without re-fetching route',
+      'updates driver location and re-fetches route when distance moved exceeds threshold',
       build: () {
         when(
           () => mockGetRoute(
@@ -119,13 +130,19 @@ void main() {
             destination: any(named: 'destination'),
           ),
         ).thenAnswer((_) async => const SuccessResponse(_routeData));
+        when(() => mockDistanceCalculator.calculateDistanceInMeters(
+              any(),
+              any(),
+            )).thenReturn(60.0);
         return buildCubit();
       },
       act: (cubit) async {
         cubit.onIntent(const LoadLocationDetail());
-        locationController.add(const LatLng(30.0, 31.0));
+        locationController.add(const SuccessResponse(
+            LocationCoordinates(latitude: 30.0, longitude: 31.0)));
         await Future<void>.delayed(const Duration(milliseconds: 50));
-        locationController.add(const LatLng(30.001, 31.001));
+        locationController.add(const SuccessResponse(
+            LocationCoordinates(latitude: 30.001, longitude: 31.001)));
       },
       wait: const Duration(milliseconds: 200),
       verify: (_) {
@@ -134,7 +151,7 @@ void main() {
             origin: any(named: 'origin'),
             destination: any(named: 'destination'),
           ),
-        ).called(1);
+        ).called(2);
       },
     );
 
@@ -143,14 +160,15 @@ void main() {
       build: () => buildCubit(),
       act: (cubit) {
         cubit.onIntent(const LoadLocationDetail());
-        locationController.addError(Exception('GPS disabled'));
+        locationController.add(ErrorResponse(errMessage: 'GPS disabled'));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
         isA<LocationDetailState>()
             .having((s) => s.driverLocationResource.isLoading, 'loading', true),
         isA<LocationDetailState>()
-            .having((s) => s.driverLocationResource.isError, 'driver error', true)
+            .having(
+                (s) => s.driverLocationResource.isError, 'driver error', true)
             .having((s) => s.routeResource.isError, 'route error', true),
       ],
     );
@@ -170,7 +188,8 @@ void main() {
       },
       act: (cubit) {
         cubit.onIntent(const LoadLocationDetail());
-        locationController.add(const LatLng(30.0, 31.0));
+        locationController.add(const SuccessResponse(
+            LocationCoordinates(latitude: 30.0, longitude: 31.0)));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [

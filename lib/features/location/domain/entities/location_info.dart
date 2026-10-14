@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:latlong2/latlong.dart';
+import 'location_coordinates.dart';
+
 class LocationInfo extends Equatable {
   final String name;
   final String address;
   final String? imageUrl;
-  final LatLng coordinates;
+  final LocationCoordinates coordinates;
   final String? phone;
+
   const LocationInfo({
     required this.name,
     required this.address,
@@ -13,6 +15,7 @@ class LocationInfo extends Equatable {
     this.imageUrl,
     this.phone,
   });
+
   @override
   List<Object?> get props => [name, address, imageUrl, coordinates, phone];
 }

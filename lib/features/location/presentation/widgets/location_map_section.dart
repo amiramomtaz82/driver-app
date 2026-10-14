@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:driver_app/core/app_theme/app_colors.dart';
 import 'package:driver_app/core/constants/map_constants.dart';
+import 'package:driver_app/features/location/domain/entities/location_coordinates.dart';
+import 'package:driver_app/features/location/presentation/extensions/location_coordinates_extension.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_marker.dart';
+import 'package:driver_app/generated/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -14,10 +18,10 @@ class LocationMapSection extends StatefulWidget {
     required this.routePoints,
   });
 
-  final LatLng driverLocation;
-  final LatLng destinationLocation;
+  final LocationCoordinates driverLocation;
+  final LocationCoordinates destinationLocation;
   final String destinationLabel;
-  final List<LatLng> routePoints;
+  final List<LocationCoordinates> routePoints;
 
   @override
   State<LocationMapSection> createState() => _LocationMapSectionState();
@@ -26,6 +30,11 @@ class LocationMapSection extends StatefulWidget {
 class _LocationMapSectionState extends State<LocationMapSection> {
   final MapController _mapController = MapController();
   bool _initialFitDone = false;
+
+  LatLng get _driverLatLng => widget.driverLocation.toLatLng();
+  LatLng get _destinationLatLng => widget.destinationLocation.toLatLng();
+  List<LatLng> get _routeLatLngs =>
+      widget.routePoints.map((p) => p.toLatLng()).toList();
 
   @override
   void didUpdateWidget(covariant LocationMapSection oldWidget) {
@@ -37,8 +46,8 @@ class _LocationMapSectionState extends State<LocationMapSection> {
 
   void _fitBounds() {
     final bounds = LatLngBounds.fromPoints([
-      widget.driverLocation,
-      widget.destinationLocation,
+      _driverLatLng,
+      _destinationLatLng,
     ]);
     _mapController.fitCamera(
       CameraFit.bounds(
@@ -53,7 +62,7 @@ class _LocationMapSectionState extends State<LocationMapSection> {
     return FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        initialCenter: widget.driverLocation,
+        initialCenter: _driverLatLng,
         initialZoom: 14,
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all,
@@ -74,7 +83,7 @@ class _LocationMapSectionState extends State<LocationMapSection> {
           PolylineLayer(
             polylines: [
               Polyline(
-                points: widget.routePoints,
+                points: _routeLatLngs,
                 color: AppColors.pink,
                 strokeWidth: 4.0,
               ),
@@ -83,16 +92,16 @@ class _LocationMapSectionState extends State<LocationMapSection> {
         MarkerLayer(
           markers: [
             Marker(
-              point: widget.driverLocation,
+              point: _driverLatLng,
               width: 100,
               height: 75,
-              child: const LocationMarker(
-                label: MapConstants.yourLocation,
+              child: LocationMarker(
+                label: LocaleKeys.orders_your_location.tr(),
                 color: AppColors.success,
               ),
             ),
             Marker(
-              point: widget.destinationLocation,
+              point: _destinationLatLng,
               width: 100,
               height: 75,
               child: LocationMarker(

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/resource/resource.dart';
-import 'package:driver_app/core/constants/map_constants.dart';
+import 'package:driver_app/features/location/domain/entities/location_coordinates.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_cubit.dart';
@@ -11,10 +11,11 @@ import 'package:driver_app/features/location/presentation/location_detail/manage
 import 'package:driver_app/features/location/presentation/location_detail/view/location_detail_view.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_address_card.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_map_section.dart';
+import 'package:driver_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLocationDetailCubit extends Mock implements LocationDetailCubit {}
@@ -31,14 +32,14 @@ void main() {
   const storeInfo = LocationInfo(
     name: 'Flowery Store',
     address: 'Sheikh Zayed, Giza',
-    coordinates: LatLng(30.0131, 31.2089),
+    coordinates: LocationCoordinates(latitude: 30.0131, longitude: 31.2089),
     phone: '01012345678',
   );
 
   const userInfo = LocationInfo(
     name: 'Nour Mohamed',
     address: 'Downtown, Cairo',
-    coordinates: LatLng(30.0444, 31.2357),
+    coordinates: LocationCoordinates(latitude: 30.0444, longitude: 31.2357),
     phone: '01198765432',
   );
 
@@ -79,7 +80,8 @@ void main() {
   }
 
   group('LocationDetailView Widget Tests —', () {
-    testWidgets('shows loading placeholder when driver location is null', (tester) async {
+    testWidgets('shows loading placeholder when driver location is loading or initial',
+        (tester) async {
       await tester.pumpWidget(
         makeTestable(
           const LocationDetailView.pickup(
@@ -90,14 +92,16 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text(MapConstants.gettingLocation), findsOneWidget);
+      expect(find.text(LocaleKeys.orders_getting_location.tr()), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('shows error placeholder when driver location has error', (tester) async {
+    testWidgets('shows error placeholder when driver location has error',
+        (tester) async {
       when(() => mockCubit.state).thenReturn(
         defaultState.copyWith(
-          driverLocationResource: const Resource.error('Location permission denied'),
+          driverLocationResource:
+              const Resource.error('Location permission denied'),
         ),
       );
 
@@ -112,17 +116,23 @@ void main() {
       await tester.pump();
 
       expect(find.text('Location permission denied'), findsOneWidget);
-      expect(find.text(MapConstants.retry), findsOneWidget);
+      expect(find.text(LocaleKeys.common_retry.tr()), findsOneWidget);
       expect(find.byIcon(Icons.location_off), findsOneWidget);
     });
 
-    testWidgets('renders map and address card when location is loaded', (tester) async {
+    testWidgets('renders map and address card when location is loaded',
+        (tester) async {
       when(() => mockCubit.state).thenReturn(
         defaultState.copyWith(
-          driverLocationResource: const Resource.success(LatLng(30.0, 31.0)),
+          driverLocationResource: const Resource.success(
+            LocationCoordinates(latitude: 30.0, longitude: 31.0),
+          ),
           routeResource: const Resource.success(
             RouteData(
-              points: [LatLng(30.0, 31.0), LatLng(30.0131, 31.2089)],
+              points: [
+                LocationCoordinates(latitude: 30.0, longitude: 31.0),
+                LocationCoordinates(latitude: 30.0131, longitude: 31.2089),
+              ],
               distanceMeters: 2500,
             ),
           ),

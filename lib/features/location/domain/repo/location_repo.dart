@@ -1,16 +1,18 @@
 import 'package:driver_app/config/base_response/base_response.dart';
-import 'package:driver_app/features/location/domain/entities/route_data.dart';
-import 'package:latlong2/latlong.dart';
+import '../entities/location_coordinates.dart';
+import '../entities/route_data.dart';
 
 abstract interface class LocationRepo {
-  Future<BaseResponse<LatLng>> getCurrentLocation();
+  Future<BaseResponse<LocationCoordinates>> getCurrentLocation();
 
   Future<BaseResponse<RouteData>> getRoute({
-    required LatLng origin,
-    required LatLng destination,
+    required LocationCoordinates origin,
+    required LocationCoordinates destination,
   });
 
-  Stream<LatLng> watchDriverLocation();
+  Stream<BaseResponse<LocationCoordinates>> watchDriverLocation();
 
-  Future<BaseResponse<void>> reportDriverLocation({required LatLng location});
+  Future<BaseResponse<void>> reportDriverLocation({
+    required LocationCoordinates location,
+  });
 }

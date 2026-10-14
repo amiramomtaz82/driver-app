@@ -1,8 +1,8 @@
 import 'package:driver_app/config/resource/resource.dart';
+import 'package:driver_app/features/location/domain/entities/location_coordinates.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:equatable/equatable.dart';
-import 'package:latlong2/latlong.dart';
 
 enum LocationDetailType { pickup, user }
 
@@ -10,7 +10,7 @@ class LocationDetailState extends Equatable {
   final LocationDetailType type;
   final LocationInfo primaryInfo;
   final LocationInfo secondaryInfo;
-  final Resource<LatLng> driverLocationResource;
+  final Resource<LocationCoordinates> driverLocationResource;
   final Resource<RouteData> routeResource;
 
   const LocationDetailState({
@@ -21,17 +21,8 @@ class LocationDetailState extends Equatable {
     this.routeResource = const Resource.initial(),
   });
 
-  String get primaryLabel =>
-      type == LocationDetailType.pickup ? 'Pickup address' : 'User address';
-
-  String get secondaryLabel =>
-      type == LocationDetailType.pickup ? 'User address' : 'Pickup address';
-
-  String get destinationLabel =>
-      type == LocationDetailType.pickup ? 'Store' : 'User';
-
   LocationDetailState copyWith({
-    Resource<LatLng>? driverLocationResource,
+    Resource<LocationCoordinates>? driverLocationResource,
     Resource<RouteData>? routeResource,
   }) {
     return LocationDetailState(

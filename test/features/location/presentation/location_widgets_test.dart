@@ -1,24 +1,25 @@
-import 'package:driver_app/core/constants/map_constants.dart';
+import 'package:driver_app/features/location/domain/entities/location_coordinates.dart';
 import 'package:driver_app/features/location/domain/entities/location_info.dart';
 import 'package:driver_app/features/location/presentation/location_detail/manager/location_detail_intents.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_address_card.dart';
 import 'package:driver_app/features/location/presentation/widgets/location_map_section.dart';
+import 'package:driver_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:latlong2/latlong.dart';
 
 void main() {
   const storeInfo = LocationInfo(
     name: 'Flowery Store',
     address: 'Sheikh Zayed, Giza',
-    coordinates: LatLng(30.0131, 31.2089),
+    coordinates: LocationCoordinates(latitude: 30.0131, longitude: 31.2089),
     phone: '01012345678',
   );
 
   const userInfo = LocationInfo(
     name: 'Nour Mohamed',
     address: 'Downtown, Cairo',
-    coordinates: LatLng(30.0444, 31.2357),
+    coordinates: LocationCoordinates(latitude: 30.0444, longitude: 31.2357),
     phone: '01198765432',
   );
 
@@ -33,17 +34,22 @@ void main() {
       await tester.pumpWidget(
         makeTestable(
           const LocationMapSection(
-            driverLocation: LatLng(30.0, 31.0),
-            destinationLocation: LatLng(30.05, 31.05),
+            driverLocation:
+                LocationCoordinates(latitude: 30.0, longitude: 31.0),
+            destinationLocation:
+                LocationCoordinates(latitude: 30.05, longitude: 31.05),
             destinationLabel: 'Store',
-            routePoints: [LatLng(30.0, 31.0), LatLng(30.05, 31.05)],
+            routePoints: [
+              LocationCoordinates(latitude: 30.0, longitude: 31.0),
+              LocationCoordinates(latitude: 30.05, longitude: 31.05),
+            ],
           ),
         ),
       );
       await tester.pump();
 
       expect(find.byType(LocationMapSection), findsOneWidget);
-      expect(find.text(MapConstants.yourLocation), findsOneWidget);
+      expect(find.text(LocaleKeys.orders_your_location.tr()), findsOneWidget);
       expect(find.text('Store'), findsOneWidget);
     });
   });
@@ -71,7 +77,8 @@ void main() {
       expect(find.text('Downtown, Cairo'), findsOneWidget);
     });
 
-    testWidgets('triggers CallTapped when phone icon is tapped', (tester) async {
+    testWidgets('triggers CallTapped when phone icon is tapped',
+        (tester) async {
       LocationDetailIntent? receivedIntent;
 
       await tester.pumpWidget(
@@ -97,7 +104,8 @@ void main() {
       expect((receivedIntent as CallTapped).phone, storeInfo.phone);
     });
 
-    testWidgets('triggers MessageTapped when message icon is tapped', (tester) async {
+    testWidgets('triggers MessageTapped when message icon is tapped',
+        (tester) async {
       LocationDetailIntent? receivedIntent;
 
       await tester.pumpWidget(
