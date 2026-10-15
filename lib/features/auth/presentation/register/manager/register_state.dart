@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
 import '../../../../../config/resource/resource.dart';
-import '../../../data/models/register_response_dto.dart';
+import '../../../../../core/constants/app_constants.dart';
+
 import '../../../domain/entities/country.dart';
+import '../../../domain/entities/register_response_entity.dart';
 import '../../../domain/entities/vehicle_type_entity.dart';
 class RegisterState extends Equatable {
   final Resource<List<Country>> countriesResource;
   final Resource<List<VehicleType>> vehicleTypesResource;
-  final Resource<RegisterResponseDto> registerResource;
+  final Resource<RegisterEntityResponse> registerResource;
+
+  // Selected dropdown values
   final Country? selectedCountry;
   final VehicleType? selectedVehicleType;
   final String gender; 
@@ -20,7 +24,7 @@ class RegisterState extends Equatable {
     this.registerResource = const Resource.initial(),
     this.selectedCountry,
     this.selectedVehicleType,
-    this.gender = 'male',
+    this.gender = GenderConstants.male,
     this.licensePhotoPath,
     this.idImagePath,
     this.isPasswordHidden = true,
@@ -29,7 +33,7 @@ class RegisterState extends Equatable {
   RegisterState copyWith({
     Resource<List<Country>>? countriesResource,
     Resource<List<VehicleType>>? vehicleTypesResource,
-    Resource<RegisterResponseDto>? registerResource,
+    Resource<RegisterEntityResponse>? registerResource,
     Country? selectedCountry,
     VehicleType? selectedVehicleType,
     String? gender,
