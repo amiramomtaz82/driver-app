@@ -3,12 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../generated/locale_keys.g.dart';
-
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

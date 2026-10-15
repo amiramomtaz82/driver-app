@@ -1,31 +1,22 @@
 import 'package:dio/dio.dart';
-
 import 'package:injectable/injectable.dart';
-
 import '../../../../config/secure_storage/secure_storage.dart';
-
 @injectable
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(this._secureStorage);
-
   final SecureStorage _secureStorage;
-
-  static const String _accessTokenKey = "auth_token";
-
+  static const String _accessTokenKey = "accessToken";
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
     final token = await _secureStorage.read(key: _accessTokenKey);
-
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
-
     handler.next(options);
   }
-
   @override
   Future<void> onError(
     DioException err,
@@ -34,7 +25,6 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       await _secureStorage.delete(key: _accessTokenKey);
     }
-
     handler.next(err);
   }
 }

@@ -10,24 +10,15 @@ abstract interface class AuthRemoteDataSource {
   Future<RegisterResponseDto> register(RegisterRequestDto request);
   Future<List<CountryDto>> getCountries();
   Future<List<VehicleTypeDto>> getVehicleTypes();
-
-
-
   Future<MessageResponseModel> forgetPassword({required String email});
-
   Future<VerifyOtpResponseData> verifyOtp({
     required String email,
     required String otpCode,
   });
-
   Future<MessageResponseModel> resetPassword({
     required String resetToken,
     required String newPassword,
     required String confirmNewPassword,
   });
-
-
-
-
   Future<LoginResponseModel> login(LoginRequestModel request);
 }

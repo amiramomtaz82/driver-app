@@ -6,7 +6,6 @@ class Endpoints {
   static String get baseUrl => dotenv.env['BASE_URL']!;
 
   static const String loginEndPoint = '/auth/login';
-
   static const String forgetPassword = '/auth/forgot-password';
   static const String verifyOtp = '/auth/verify-otp';
   static const String resetPassword = '/auth/reset-password';
@@ -20,4 +19,5 @@ class Endpoints {
   static const String activeOrder = '/order/drivers/me/active-order';
   static const String driverOrderDetails = '/order/drivers/me/orders/{orderId}';
   static const String updateOrderStatus = '/order/orders/{orderId}/status';
+  static const String driverLocation = '/order/drivers/me/location';
 }

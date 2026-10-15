@@ -98,7 +98,17 @@
     "confirm_status_title": "Update order status",
     "confirm_status_message": "Are you sure you want to change the order status to \"{status}\"?",
     "thank_you": "Thank you!!",
-    "order_delivered_successfully": "Order delivered successfully"
+    "order_delivered_successfully": "Order delivered successfully",
+    "getting_location": "Getting your location...",
+    "failed_to_get_location": "Failed to get location",
+    "calculating_route": "Calculating route...",
+    "route_unavailable": "Route unavailable",
+    "store": "Store",
+    "user": "User",
+    "your_location": "Your location",
+    "missing_location_data": "Missing location data",
+    "could_not_make_phone_call": "Could not make phone call",
+    "could_not_send_message": "Could not send message"
   },
   "profile": {
     "title": "Profile",
