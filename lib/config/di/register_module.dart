@@ -1,10 +1,15 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:latlong2/latlong.dart';
+
 @module
 abstract class RegisterModule {
   @lazySingleton
   FlutterSecureStorage get secureStorage => const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-  );
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+      );
+
+  @lazySingleton
+  Distance get distance => const Distance();
 }

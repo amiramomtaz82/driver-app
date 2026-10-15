@@ -11,7 +11,6 @@ import 'package:driver_app/features/location/domain/entities/route_data.dart';
 import 'package:driver_app/features/location/domain/use_cases/get_route_use_case.dart';
 import 'package:driver_app/features/location/domain/use_cases/watch_driver_location_use_case.dart';
 import 'package:driver_app/generated/locale_keys.g.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 
 import 'location_detail_intents.dart';
@@ -52,8 +51,8 @@ class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
   Future<void> _call(String phone) async {
     final success = await _urlLauncher.launchPhone(phone);
     if (!success) {
-      emitEvent(ShowSnackBarEvent(
-        message: LocaleKeys.orders_could_not_make_phone_call.tr(),
+      emitEvent(const ShowSnackBarEvent(
+        message: LocaleKeys.orders_could_not_make_phone_call,
         isError: true,
       ));
     }
@@ -62,8 +61,8 @@ class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
   Future<void> _message(String phone) async {
     final success = await _urlLauncher.launchSms(phone);
     if (!success) {
-      emitEvent(ShowSnackBarEvent(
-        message: LocaleKeys.orders_could_not_send_message.tr(),
+      emitEvent(const ShowSnackBarEvent(
+        message: LocaleKeys.orders_could_not_send_message,
         isError: true,
       ));
     }
@@ -94,14 +93,6 @@ class LocationDetailCubit extends BaseCubit<LocationDetailState, UiEvent> {
             ));
             emitEvent(ShowSnackBarEvent(message: e.errMessage, isError: true));
         }
-      },
-      onError: (Object error) {
-        final message = error.toString();
-        emit(state.copyWith(
-          driverLocationResource: Resource.error(message),
-          routeResource: Resource.error(message),
-        ));
-        emitEvent(ShowSnackBarEvent(message: message, isError: true));
       },
     );
   }

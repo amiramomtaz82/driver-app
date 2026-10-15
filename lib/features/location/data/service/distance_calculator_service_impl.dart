@@ -5,7 +5,9 @@ import 'distance_calculator_service.dart';
 
 @Injectable(as: DistanceCalculatorService)
 class DistanceCalculatorServiceImpl implements DistanceCalculatorService {
-  final Distance _distance = const Distance();
+  final Distance _distance;
+
+  DistanceCalculatorServiceImpl(this._distance);
 
   @override
   double calculateDistanceInMeters(
