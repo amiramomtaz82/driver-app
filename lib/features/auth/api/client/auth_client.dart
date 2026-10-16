@@ -36,7 +36,7 @@ abstract class AuthApiClient {
   Future<List<CountryDto>> getCountries();
 
   @GET(Endpoints.vehicleTypes)
-  Future<List<VehicleTypeDto>> getVehicleTypes();
+  Future<VehicleTypesResponseDto> getVehicleTypes();
   @POST(Endpoints.loginEndPoint)
   Future<LoginResponseModel> login(@Body() Map<String, dynamic> body);
 }

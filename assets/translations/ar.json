@@ -114,10 +114,19 @@
     "title": "الملف الشخصي",
     "edit_profile": "تعديل الملف الشخصي",
     "vehicle_info": "بيانات المركبة",
+    "vehicle_type": "نوع المركبة",
+    "vehicle_number": "رقم اللوحة",
+    "vehicle_license": "رخصة المركبة",
     "language": "اللغة",
-    "current_language": "العربية",
-    "logout_dialog_title": "تسجيل الخروج",
-    "logout_dialog_desc": "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
+    "logout": "تسجيل الخروج",
+    "logout_confirm_title": "تسجيل الخروج",
+    "logout_confirm_msg": "هل أنت متأكد من تسجيل الخروج؟",
+    "update": "تحديث",
+    "update_success": "تم تحديث بيانات المركبة بنجاح",
+    "user_update_success": "تم تحديث الملف الشخصي بنجاح",
+    "select_vehicle_type": "اختر نوع المركبة",
+    "loading_vehicle_types": "جاري تحميل أنواع المركبات...",
+    "app_version": "v 6.3.0 - (446)"
   },
   "reset_password": {
     "title": "إعادة تعيين كلمة المرور",
