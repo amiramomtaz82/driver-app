@@ -1,46 +1,36 @@
-// lib/core/theme/app_theme.dart
-import 'package:driver_app/core/app_theme/text_styels.dart';
+import 'package:driver_app/core/app_theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
-
 abstract final class AppTheme {
   AppTheme._();
-
   static ThemeData get lightTheme => _buildTheme(
     brightness: Brightness.light,
     colors: CustomColors.light,
   );
-
   static ThemeData get darkTheme => _buildTheme(
     brightness: Brightness.dark,
     colors: CustomColors.dark,
   );
-
   static ThemeData _buildTheme({
     required Brightness brightness,
     required CustomColors colors,
   }) {
-    // Shared input border template to eliminate code repetition
     final baseInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(5),
       gapPadding: 5,
     );
-
     final colorScheme = ColorScheme.fromSeed(
       seedColor: colors.primary,
       brightness: brightness,
       surface: colors.background,
       error: colors.error,
     );
-
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colors.background,
       extensions: [colors],
-
-      // Common AppBar theme
       appBarTheme: AppBarTheme(
         backgroundColor: colors.background,
         foregroundColor: colors.textPrimary,
@@ -48,31 +38,15 @@ abstract final class AppTheme {
         centerTitle: true,
       ),
       textTheme: TextTheme(
-        // Main Screen Titles ("Welcome!!", "Login", "Your application has been submitted!")
         headlineLarge: AppTextStyles.headlineLarge.copyWith(color: colors.textPrimary),
-
-        // Card headers, Dialog titles, Order numbers ("#123456", "LOGOUT")
         titleMedium: AppTextStyles.titleMedium.copyWith(color: colors.textPrimary),
-
-        // Section Headers ("Pickup address", "User address", "Order details")
         titleSmall: AppTextStyles.titleSmall.copyWith(color: colors.textPrimary),
-
-        // Input Field Values, Radio Titles, Order Item Names
         bodyLarge: AppTextStyles.bodyLarge.copyWith(color: colors.textPrimary),
-
-        // Descriptions, Subtitles, Address lines
         bodyMedium: AppTextStyles.bodyMedium.copyWith(color: colors.darkGrey),
-
-        // Timestamps, order metadata, and versions ("Wed, 03 Sep 2024", "v 6.3.0")
         bodySmall: AppTextStyles.caption.copyWith(color: colors.grey),
-
-        // Button text ("Continue", "Accept", "Start deliver")
         labelLarge: AppTextStyles.button.copyWith(color: colors.white),
-
-        // Floating Labels on TextFields
         labelSmall: AppTextStyles.labelSmall.copyWith(color: colors.darkGrey),
       ),
-      ///--------------- Text Field -------------------///
       inputDecorationTheme: InputDecorationTheme(
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: true,
@@ -118,8 +92,6 @@ abstract final class AppTheme {
           borderSide: BorderSide(color: colors.error, width: 1.5),
         ),
       ),
-
-      ///------------------ Snack Bar -------------------///
       snackBarTheme: SnackBarThemeData(
         backgroundColor: colors.primary,
         contentTextStyle: TextStyle(
@@ -134,13 +106,11 @@ abstract final class AppTheme {
         ),
         actionTextColor: colors.white,
       ),
-
-      ///---------------- Elevated Button ------------------------///
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: colors.primary,
           foregroundColor: colors.white,
-          disabledBackgroundColor: colors.darkGrey,
+          disabledBackgroundColor: colors.grey,
           disabledForegroundColor: colors.white,
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
@@ -152,8 +122,20 @@ abstract final class AppTheme {
           ),
         ),
       ),
-
-      ///------------------- Navigation Bar ---------------------///
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colors.textPrimary,
+          minimumSize: const Size(double.infinity, 52),
+          side: BorderSide(color: colors.darkGrey, width: 1.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colors.white,
         elevation: 0,

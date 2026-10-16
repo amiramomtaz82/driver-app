@@ -1,56 +1,41 @@
 import 'dart:async';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import '../base/base_cubit.dart';
 import '../base/ui_events.dart';
-
 mixin UiEventMixin<
 W extends StatefulWidget,
 S,
 E extends UiEvent> on State<W> {
-
   BaseCubit<S, E> get cubit;
-
   StreamSubscription<E>? _subscription;
-
   @override
   void initState() {
     super.initState();
-
     _subscription = cubit.eventStream.listen(
       _handleUiEvent,
     );
   }
-
   void _handleUiEvent(E event) {
     if (!mounted) return;
-
     switch (event) {
       case ShowSnackBarEvent():
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(event.message),
+            content: Text(event.message.tr()),
           ),
         );
-
       case NavigateEvent():
-        Navigator.of(context).pushNamed(
-          event.route,
-          arguments: event.arguments,
-        );
-
+        context.push(event.route, extra: event.arguments);
       case NavigateReplacementEvent():
-        Navigator.of(context).pushReplacementNamed(
-          event.route,
-          arguments: event.arguments,
-        );
-
+        context.go(event.route, extra: event.arguments);
       case PopEvent():
-        Navigator.of(context).pop(
-          event.result,
-        );
-
+        if (context.canPop()) {
+          context.pop(
+            event.result,
+          );
+        }
       case ShowDialogEvent():
         showDialog<void>(
           context: context,
@@ -69,14 +54,8 @@ E extends UiEvent> on State<W> {
             );
           },
         );
-
-      default:
-        onCustomUiEvent(event);
     }
   }
-
-  void onCustomUiEvent(E event) {}
-
   @override
   void dispose() {
     _subscription?.cancel();

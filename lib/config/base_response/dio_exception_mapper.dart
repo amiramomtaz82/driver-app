@@ -1,12 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/config/base_response/status_code_mapper.dart';
-
 import '../../generated/locale_keys.g.dart';
-
-
 class DioExceptionMapper {
   DioExceptionMapper._();
-
   static String toMessage(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
@@ -20,8 +16,6 @@ class DioExceptionMapper {
         return LocaleKeys.errors_invalid_certificate;
       case DioExceptionType.cancel:
         return LocaleKeys.errors_request_cancelled;
-    // The backend returned an error response,
-    //we can map the status code to a user-friendly message
       case DioExceptionType.badResponse:
         return StatusCodeMapper.toMessage(error.response?.statusCode);
       default:

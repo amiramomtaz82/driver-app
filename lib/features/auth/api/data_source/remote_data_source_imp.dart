@@ -1,10 +1,73 @@
 import 'package:injectable/injectable.dart';
-
 import '../../data/data_source/remote_data_source.dart';
+import '../../data/models/message_response_model.dart';
+import '../../data/models/verify_otp_response_model.dart';
+import '../../data/models/country_dto.dart';
+import '../../data/models/register_request_dto.dart';
+import '../../data/models/register_response_dto.dart';
+import '../../data/models/vehicle_type_dto.dart';
+import '../../domain/models/login_request_model.dart';
+import '../../domain/models/login_response_model.dart';
 import '../client/auth_client.dart';
 
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final AuthApiClient _authApiClient;
 
-  AuthRemoteDataSourceImpl(this._authApiClient);}
+  AuthRemoteDataSourceImpl(this._authApiClient);
+
+  @override
+  Future<LoginResponseModel> login(LoginRequestModel request) {
+    return _authApiClient.login(request.toJson());
+  }
+
+
+
+
+  @override
+  Future<RegisterResponseDto> register(RegisterRequestDto request) {
+    return _authApiClient.register(request.toMap());
+  }
+
+  @override
+  Future<List<CountryDto>> getCountries() {
+    return _authApiClient.getCountries();
+  }
+
+  @override
+  Future<List<VehicleTypeDto>> getVehicleTypes() async {
+    final response = await _authApiClient.getVehicleTypes();
+    return response.data ?? [];
+  }
+
+
+  @override
+  Future<MessageResponseModel> forgetPassword({required String email}) {
+    return _authApiClient.forgetPassword({'email': email});
+  }
+
+  @override
+  Future<VerifyOtpResponseData> verifyOtp({
+    required String email,
+    required String otpCode,
+  }) async {
+    final response = await _authApiClient.verifyOtp({
+      'email': email,
+      'otp': otpCode,
+    });
+    return response.value;
+  }
+
+  @override
+  Future<MessageResponseModel> resetPassword({
+    required String resetToken,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) {
+    return _authApiClient.resetPassword({
+      'resetToken': resetToken,
+      'newPassword': newPassword,
+      'confirmPassword': confirmNewPassword,
+    });
+  }
+}

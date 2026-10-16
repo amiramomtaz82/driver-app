@@ -6,7 +6,7 @@ abstract class BaseCubit<State, UiEvent> extends Cubit<State> {
   BaseCubit(super.initialState);
 
   final StreamController<UiEvent> _uiEventStreamController =
-  StreamController<UiEvent>();
+  StreamController<UiEvent>.broadcast();
 
   Stream<UiEvent> get eventStream => _uiEventStreamController.stream;
 
