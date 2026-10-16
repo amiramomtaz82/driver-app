@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/core/services/image_picker_service.dart';
@@ -343,10 +344,10 @@ void main() {
     );
 
     blocTest<ProfileCubit, ProfileState>(
-      'InitVehicleEditForm uses fallback list when GetVehicleTypesUseCase fails',
+      'InitVehicleEditForm emits error resource and snackbar when GetVehicleTypesUseCase fails',
       build: () {
         when(() => mockGetVehicleTypesUseCase()).thenAnswer(
-          (_) async => ErrorResponse(error: Exception('Network error')),
+          (_) async => ErrorResponse(errMessage: 'Network error'),
         );
         return buildCubit();
       },
@@ -366,18 +367,28 @@ void main() {
           profileResource: const Resource.success(testProfile),
           editVehicleNumber: testVehicle.vehicleNumber,
           editLicensePath: testVehicle.licensePhotoUrl,
-          vehicleTypesResource: const Resource.success([
-            VehicleType(id: '1', name: 'Car'),
-            VehicleType(id: '2', name: 'Motorcycle'),
-            VehicleType(id: '3', name: 'Scooter'),
-            VehicleType(id: '4', name: 'Van'),
-          ]),
-          selectedVehicleType: const VehicleType(id: '1', name: 'Car'),
+          vehicleTypesResource: const Resource.error('Network error'),
           updateVehicleResource: const Resource.initial(),
         ),
       ],
       verify: (_) => verify(() => mockGetVehicleTypesUseCase()).called(1),
     );
+
+    test('InitVehicleEditForm emits error snackbar event when GetVehicleTypesUseCase fails', () async {
+      when(() => mockGetVehicleTypesUseCase()).thenAnswer(
+        (_) async => ErrorResponse(errMessage: 'Network error'),
+      );
+      final cubit = buildCubit();
+      expectLater(
+        cubit.eventStream,
+        emits(
+          isA<ShowSnackBarEvent>()
+              .having((e) => e.message, 'message', 'Network error')
+              .having((e) => e.isError, 'isError', true),
+        ),
+      );
+      cubit.onIntent(const InitVehicleEditForm());
+    });
 
     blocTest<ProfileCubit, ProfileState>(
       'Vehicle field intents update selectedVehicleType and editVehicleNumber',

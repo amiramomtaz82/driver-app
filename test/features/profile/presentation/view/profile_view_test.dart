@@ -11,6 +11,7 @@ import 'package:driver_app/features/profile/presentation/view/profile_view/widge
 import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/profile_content_list.dart';
 import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/profile_error_view.dart';
 import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/profile_shimmer.dart';
+import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/settings_language_tile.dart';
 import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/user_info_card.dart';
 import 'package:driver_app/features/profile/presentation/view/profile_view/widgets/vehicle_info_card.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,6 +34,7 @@ class TestAssetLoader extends AssetLoader {
         'language': 'Language',
         'logout': 'Log Out',
         'logout_confirm_title': 'Log Out',
+        'logout_confirm_msg': 'Are you sure you want to log out?',
         'logout_confirm_message': 'Are you sure you want to log out?',
       },
       'common': {
@@ -151,8 +153,10 @@ void main() {
       expect(find.byType(ProfileContentList), findsOneWidget);
       expect(find.byType(UserInfoCard), findsOneWidget);
       expect(find.byType(VehicleInfoCard), findsOneWidget);
+      expect(find.byType(SettingsLanguageTile), findsOneWidget);
       expect(find.byType(LogoutTile), findsOneWidget);
 
+      expect(find.text('English'), findsOneWidget);
       expect(find.text('Amira Momtaz'), findsOneWidget);
       expect(find.text('amira@example.com'), findsOneWidget);
       expect(find.text('01012345678'), findsOneWidget);
@@ -186,6 +190,27 @@ void main() {
       await tester.tap(confirmBtn);
 
       verify(() => mockCubit.onIntent(const LogoutConfirmed())).called(1);
+    });
+
+    testWidgets('renders Unknown in VehicleInfoCard when vehicle info is not provided',
+        (tester) async {
+      const profileWithoutVehicle = DriverProfileEntity(
+        id: '1',
+        fullName: 'Amira Momtaz',
+        email: 'amira@example.com',
+        phone: '01012345678',
+        gender: 'Female',
+        photoUrl: null,
+        vehicle: null,
+      );
+      final state = ProfileState.initial().copyWith(
+        profileResource: const Resource.success(profileWithoutVehicle),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(state));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Unknown'), findsNWidgets(2)); // Type and Number both Unknown
     });
   });
 }

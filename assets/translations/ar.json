@@ -114,6 +114,8 @@
     "update": "تحديث",
     "update_success": "تم تحديث بيانات المركبة بنجاح",
     "user_update_success": "تم تحديث الملف الشخصي بنجاح",
+    "select_vehicle_type": "اختر نوع المركبة",
+    "loading_vehicle_types": "جاري تحميل أنواع المركبات...",
     "app_version": "v 6.3.0 - (446)"
   },
   "reset_password": {

@@ -114,6 +114,8 @@
     "update": "Update",
     "update_success": "Vehicle info updated successfully",
     "user_update_success": "Profile updated successfully",
+    "select_vehicle_type": "Select vehicle type",
+    "loading_vehicle_types": "Loading vehicle types...",
     "app_version": "v 6.3.0 - (446)"
   } ,
   "reset_password": {

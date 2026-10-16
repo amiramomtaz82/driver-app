@@ -21,14 +21,18 @@ class VehicleTypeDropdownField extends StatelessWidget {
         final types = state.vehicleTypesResource.data ?? [];
         final isLoading = state.vehicleTypesResource.isLoading;
 
-        // Ensure value exists in items list to avoid crashes:
+
         final selectedValue = types.contains(state.selectedVehicleType)
             ? state.selectedVehicleType
             : (types.isNotEmpty ? types.first : null);
 
         return DropdownButtonFormField<VehicleType>(
           value: selectedValue,
-          hint: Text(isLoading ? 'Loading vehicle types...' : 'Select vehicle type'),
+          hint: Text(
+            isLoading
+                ? LocaleKeys.profile_loading_vehicle_types.tr()
+                : LocaleKeys.profile_select_vehicle_type.tr(),
+          ),
           decoration: InputDecoration(
             labelText: LocaleKeys.apply_vehicle_type_label.tr(),
             border: const OutlineInputBorder(),

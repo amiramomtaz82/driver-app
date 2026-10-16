@@ -10,7 +10,7 @@ import '../../data/models/user_profile_dto.dart';
 import '../models/update_user_profile_request.dart';
 
 
-@LazySingleton(as: ProfileRemoteDataSource)
+@Injectable(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   final ProfileClient _client;
 

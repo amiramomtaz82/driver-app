@@ -45,6 +45,8 @@ class _EditVehicleViewState extends State<EditVehicleView>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.profile_edit_profile.tr()),
@@ -60,30 +62,31 @@ class _EditVehicleViewState extends State<EditVehicleView>
           ),
         ],
       ),
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          final cubit = context.read<ProfileCubit>();
-
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              const VehicleTypeDropdownField(),
-              const SizedBox(height: 16),
-              VehicleNumberField(
-                controller: _plateNumberController,
-                onChanged: (v) => cubit.onIntent(VehicleNumberChanged(v)),
-              ),
-              const SizedBox(height: 16),
-              const VehicleLicenseUploadTile(),
-              const SizedBox(height: 48),
-              UpdateVehicleButton(
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        children: [
+          const VehicleTypeDropdownField(),
+          const SizedBox(height: 16),
+          VehicleNumberField(
+            controller: _plateNumberController,
+            onChanged: (v) => cubit.onIntent(VehicleNumberChanged(v)),
+          ),
+          const SizedBox(height: 16),
+          const VehicleLicenseUploadTile(),
+          const SizedBox(height: 48),
+          BlocBuilder<ProfileCubit, ProfileState>(
+            buildWhen: (prev, curr) =>
+                prev.isVehicleEditValid != curr.isVehicleEditValid ||
+                prev.updateVehicleResource != curr.updateVehicleResource,
+            builder: (context, state) {
+              return UpdateVehicleButton(
                 isValid: state.isVehicleEditValid,
                 isLoading: state.updateVehicleResource.isLoading,
                 onPressed: () => cubit.onIntent(const SubmitVehicleEdit()),
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+        ],
       ),
     );
   }

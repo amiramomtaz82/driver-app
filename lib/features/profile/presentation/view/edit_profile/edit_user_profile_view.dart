@@ -28,6 +28,7 @@ class _EditUserProfileViewState extends State<EditUserProfileView>
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _phoneController;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   BaseCubit<ProfileState, UiEvent> get cubit => context.read<ProfileCubit>();
@@ -52,47 +53,65 @@ class _EditUserProfileViewState extends State<EditUserProfileView>
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.profile_edit_profile.tr()),
         centerTitle: false,
       ),
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          final cubit = context.read<ProfileCubit>();
-
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            children: [
-              const EditUserAvatarPicker(),
-              const SizedBox(height: 20),
-              NameFieldsRow(
-                firstNameController: _firstNameController,
-                lastNameController: _lastNameController,
-                onFirstNameChanged: (v) => cubit.onIntent(FirstNameChanged(v)),
-                onLastNameChanged: (v) => cubit.onIntent(LastNameChanged(v)),
-              ),
-              const SizedBox(height: 16),
-              UserEmailField(email: state.editEmail),
-              const SizedBox(height: 16),
-              UserPhoneField(
-                controller: _phoneController,
-                onChanged: (v) => cubit.onIntent(PhoneChanged(v)),
-              ),
-              const SizedBox(height: 20),
-              GenderSelector(
-                selectedGender: state.editGender,
-                onGenderChanged: (v) => cubit.onIntent(GenderChanged(v)),
-              ),
-              const SizedBox(height: 32),
-              UpdateUserProfileButton(
-                isValid: state.isUserEditValid,
-                isLoading: state.updateUserResource.isLoading,
-                onPressed: () => cubit.onIntent(const SubmitUserEdit()),
-              ),
-            ],
-          );
-        },
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          children: [
+            const EditUserAvatarPicker(),
+            const SizedBox(height: 20),
+            NameFieldsRow(
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              onFirstNameChanged: (v) => cubit.onIntent(FirstNameChanged(v)),
+              onLastNameChanged: (v) => cubit.onIntent(LastNameChanged(v)),
+            ),
+            const SizedBox(height: 16),
+            BlocSelector<ProfileCubit, ProfileState, String>(
+              selector: (state) => state.editEmail,
+              builder: (context, email) => UserEmailField(email: email),
+            ),
+            const SizedBox(height: 16),
+            UserPhoneField(
+              controller: _phoneController,
+              onChanged: (v) => cubit.onIntent(PhoneChanged(v)),
+            ),
+            const SizedBox(height: 20),
+            BlocSelector<ProfileCubit, ProfileState, String>(
+              selector: (state) => state.editGender,
+              builder: (context, selectedGender) {
+                return GenderSelector(
+                  selectedGender: selectedGender,
+                  onGenderChanged: (v) => cubit.onIntent(GenderChanged(v)),
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+            BlocBuilder<ProfileCubit, ProfileState>(
+              buildWhen: (prev, curr) =>
+                  prev.isUserEditValid != curr.isUserEditValid ||
+                  prev.updateUserResource != curr.updateUserResource,
+              builder: (context, state) {
+                return UpdateUserProfileButton(
+                  isValid: state.isUserEditValid,
+                  isLoading: state.updateUserResource.isLoading,
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? true) {
+                      cubit.onIntent(const SubmitUserEdit());
+                    }
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

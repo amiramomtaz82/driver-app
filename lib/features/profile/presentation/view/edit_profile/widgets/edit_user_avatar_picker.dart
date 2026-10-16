@@ -37,22 +37,39 @@ class EditUserAvatarPicker extends StatelessWidget {
       builder: (context, state) {
         final localPath = state.editPhotoPath;
         final networkUrl = state.profileResource.data?.photoUrl;
+        final placeholder = Icon(Icons.person, size: 50, color: colors.white);
 
-        ImageProvider? image;
+        Widget imageWidget;
         if (localPath != null && localPath.isNotEmpty) {
-          image = FileImage(File(localPath));
+          imageWidget = Image.file(
+            File(localPath),
+            width: 92,
+            height: 92,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => Center(child: placeholder),
+          );
         } else if (networkUrl != null && networkUrl.isNotEmpty) {
-          image = NetworkImage(networkUrl);
+          imageWidget = Image.network(
+            networkUrl,
+            width: 92,
+            height: 92,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => Center(child: placeholder),
+          );
+        } else {
+          imageWidget = Center(child: placeholder);
         }
 
         return Center(
           child: Stack(
             children: [
-              CircleAvatar(
-                radius: 46,
-                backgroundColor: colors.divider,
-                backgroundImage: image,
-                child: image == null ? Icon(Icons.person, size: 50, color: colors.white) : null,
+              ClipOval(
+                child: Container(
+                  width: 92,
+                  height: 92,
+                  color: colors.divider,
+                  child: imageWidget,
+                ),
               ),
               Positioned(
                 bottom: 0,

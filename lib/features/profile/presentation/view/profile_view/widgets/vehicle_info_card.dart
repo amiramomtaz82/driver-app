@@ -42,12 +42,16 @@ color: colors.background,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      vehicle?.vehicleType.isNotEmpty == true ? vehicle!.vehicleType : 'Car',
+                      vehicle != null && vehicle!.vehicleType.trim().isNotEmpty
+                          ? vehicle!.vehicleType
+                          : 'Unknown',
                       style: textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      vehicle?.vehicleNumber.isNotEmpty == true ? vehicle!.vehicleNumber : 'UP16DL0007',
+                      vehicle != null && vehicle!.vehicleNumber.trim().isNotEmpty
+                          ? vehicle!.vehicleNumber
+                          : 'Unknown',
                       style: textTheme.bodyLarge,
                     ),
                   ],

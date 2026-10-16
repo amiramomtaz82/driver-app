@@ -178,6 +178,7 @@ class ProfileCubit extends BaseCubit<ProfileState, UiEvent> {
     emit(state.copyWith(
       editVehicleNumber: vehicle?.vehicleNumber ?? '',
       editLicensePath: vehicle?.licensePhotoUrl,
+      clearSelectedVehicleType: true,
       vehicleTypesResource: const Resource.loading(),
       updateVehicleResource: const Resource.initial(),
     ));
@@ -201,21 +202,12 @@ class ProfileCubit extends BaseCubit<ProfileState, UiEvent> {
               : (data.isNotEmpty ? data.first : null),
         ));
 
-      case ErrorResponse():
-      // 👇 Fallback so the user is NEVER locked out if the API fails!
-        final fallbackList = const [
-          VehicleType(id: '1', name: 'Car'),
-          VehicleType(id: '2', name: 'Motorcycle'),
-          VehicleType(id: '3', name: 'Scooter'),
-          VehicleType(id: '4', name: 'Van'),
-        ];
-        final match = fallbackList.where(
-              (v) => v.name.toLowerCase() == (currentType ?? '').toLowerCase(),
-        );
+      case ErrorResponse(:final errMessage):
         emit(state.copyWith(
-          vehicleTypesResource: Resource.success(fallbackList),
-          selectedVehicleType: match.isNotEmpty ? match.first : fallbackList.first,
+          vehicleTypesResource: Resource.error(errMessage),
+          clearSelectedVehicleType: true,
         ));
+        emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));
     }
   }
 

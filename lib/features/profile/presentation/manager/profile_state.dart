@@ -92,6 +92,7 @@ class ProfileState extends Equatable {
     Resource<void>? updateUserResource,
     Resource<List<VehicleType>>? vehicleTypesResource,
     VehicleType? selectedVehicleType,
+    bool clearSelectedVehicleType = false,
     String? editVehicleNumber,
     String? editLicensePath,
     Resource<void>? updateVehicleResource,
@@ -107,7 +108,9 @@ class ProfileState extends Equatable {
       editPhotoPath: editPhotoPath ?? this.editPhotoPath,
       updateUserResource: updateUserResource ?? this.updateUserResource,
       vehicleTypesResource: vehicleTypesResource ?? this.vehicleTypesResource,
-      selectedVehicleType: selectedVehicleType ?? this.selectedVehicleType,
+      selectedVehicleType: clearSelectedVehicleType
+          ? null
+          : (selectedVehicleType ?? this.selectedVehicleType),
       editVehicleNumber: editVehicleNumber ?? this.editVehicleNumber,
       editLicensePath: editLicensePath ?? this.editLicensePath,
       updateVehicleResource: updateVehicleResource ?? this.updateVehicleResource,

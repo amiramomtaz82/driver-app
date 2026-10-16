@@ -22,14 +22,14 @@ class LogoutDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'LOGOUT',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            Text(
+              LocaleKeys.profile_logout_confirm_title.tr(),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 8),
             Text(
-              'Confirm logout!!',
-              style:textTheme.bodyLarge,
+              LocaleKeys.profile_logout_confirm_msg.tr(),
+              style: textTheme.bodyLarge,
             ),
             const SizedBox(height: 24),
             Row(

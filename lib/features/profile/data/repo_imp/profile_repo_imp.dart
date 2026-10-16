@@ -10,7 +10,7 @@ import '../data_source/remote_data_source.dart';
 import '../models/update_user_profile_request.dart';
 import '../models/update_vehicle_request_dto.dart';
 
-@LazySingleton(as: ProfileRepo)
+@Injectable(as: ProfileRepo)
 class ProfileRepoImpl implements ProfileRepo {
   final ProfileRemoteDataSource _remoteDataSource;
   final SecureStorage _secureStorage;

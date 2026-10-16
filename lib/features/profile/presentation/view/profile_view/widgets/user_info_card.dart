@@ -21,19 +21,36 @@ class UserInfoCard extends StatelessWidget {
     final textTheme = context.theme.textTheme;
     final photoUrl = profile.photoUrl;
     final bool hasPhoto = photoUrl != null && photoUrl.isNotEmpty && photoUrl != 'null';
-    ImageProvider? avatarImage;
+    final placeholder = Icon(Icons.person, size: 32, color: colors.grey);
+
+    Widget avatarWidget;
     if (hasPhoto) {
       if (photoUrl.startsWith('http://') || photoUrl.startsWith('https://')) {
-        avatarImage = NetworkImage(photoUrl);
+        avatarWidget = Image.network(
+          photoUrl,
+          width: 56,
+          height: 56,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => Center(child: placeholder),
+        );
       } else {
-        avatarImage = FileImage(File(photoUrl)); // 👈 Handles your local uploaded picture!
+        avatarWidget = Image.file(
+          File(photoUrl),
+          width: 56,
+          height: 56,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => Center(child: placeholder),
+        );
       }
+    } else {
+      avatarWidget = Center(child: placeholder);
     }
+
     return Card(
       elevation: 0,
-color: colors.background,
+      color: colors.background,
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: colors.divider,width: 1),
+          side: BorderSide(color: colors.divider, width: 1),
           borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
@@ -42,13 +59,13 @@ color: colors.background,
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 28,
-                backgroundColor: colors.divider,
-                backgroundImage: avatarImage,
-                child: !hasPhoto
-                    ? Icon(Icons.person, size: 32, color: colors.grey)
-                    : null,
+              ClipOval(
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  color: colors.divider,
+                  child: avatarWidget,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(

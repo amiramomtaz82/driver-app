@@ -36,6 +36,19 @@ class TestAssetLoader extends AssetLoader {
       'auth': {
         'email_label': 'Email Address',
       },
+      'apply': {
+        'first_name_label': 'First Name',
+        'second_name_label': 'Last Name',
+        'phone_label': 'Phone Number',
+      },
+      'errors': {
+        'validation': {
+          'name_required': 'Name is required',
+          'name_too_short': 'Name is too short',
+          'phone_required': 'Phone is required',
+          'phone_invalid': 'Phone is invalid',
+        },
+      },
       'common': {
         'update': 'Update',
         'gender': 'Gender',
@@ -253,6 +266,81 @@ void main() {
       await tester.pump(); // Pump frame without pumpAndSettle to check progress indicator
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('shows validation error when first name is too short',
+        (tester) async {
+      final state = ProfileState.initial().copyWith(
+        profileResource: const Resource.success(testProfile),
+        editFirstName: testProfile.firstName,
+        editLastName: testProfile.lastName,
+        editEmail: testProfile.email,
+        editPhone: testProfile.phone,
+        editGender: testProfile.gender,
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(state));
+      await tester.pumpAndSettle();
+
+      final firstNameField = find.descendant(
+        of: find.byType(NameFieldsRow),
+        matching: find.byType(TextFormField),
+      ).first;
+
+      await tester.enterText(firstNameField, 'A');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Name is too short'), findsOneWidget);
+    });
+
+    testWidgets('shows validation error when phone number is invalid',
+        (tester) async {
+      final state = ProfileState.initial().copyWith(
+        profileResource: const Resource.success(testProfile),
+        editFirstName: testProfile.firstName,
+        editLastName: testProfile.lastName,
+        editEmail: testProfile.email,
+        editPhone: testProfile.phone,
+        editGender: testProfile.gender,
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(state));
+      await tester.pumpAndSettle();
+
+      final phoneField = find.descendant(
+        of: find.byType(UserPhoneField),
+        matching: find.byType(TextFormField),
+      );
+
+      await tester.enterText(phoneField, '123');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Phone is invalid'), findsOneWidget);
+    });
+
+    testWidgets('EditUserAvatarPicker renders person placeholder when no photo is set',
+        (tester) async {
+      final state = ProfileState.initial().copyWith(
+        profileResource: const Resource.success(testProfile), // photoUrl is null
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(state));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.person), findsOneWidget);
+    });
+
+    testWidgets('EditUserAvatarPicker renders network image when photoUrl is present',
+        (tester) async {
+      final profileWithPhoto = testProfile.copyWith(photoUrl: 'https://example.com/photo.jpg');
+      final state = ProfileState.initial().copyWith(
+        profileResource: Resource.success(profileWithPhoto),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(state));
+      await tester.pump();
+
+      expect(find.byType(Image), findsOneWidget);
     });
   });
 }

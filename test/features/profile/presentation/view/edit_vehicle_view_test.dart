@@ -27,6 +27,8 @@ class TestAssetLoader extends AssetLoader {
     return {
       'profile': {
         'edit_profile': 'Edit Vehicle',
+        'select_vehicle_type': 'Select vehicle type',
+        'loading_vehicle_types': 'Loading vehicle types...',
       },
       'apply': {
         'vehicle_type_label': 'Vehicle Type',
