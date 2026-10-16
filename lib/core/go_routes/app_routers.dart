@@ -24,7 +24,7 @@ import '../widgets/coming_soon_view.dart';
 import 'main_shell_view.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.pickupLocation,
+  initialLocation: AppRoutes.onboarding,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
