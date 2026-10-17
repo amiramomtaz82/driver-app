@@ -6,11 +6,13 @@ import '../entities/register_form.dart';
 import '../entities/reset_token_entity.dart';
 import '../entities/vehicle_type_entity.dart';
 import '../models/login_response_model.dart';
+
 abstract interface class AuthRepo {
   Future<BaseResponse<RegisterEntityResponse>> register(RegisterForm params);
   Future<BaseResponse<AuthMessageEntity>> forgetPassword({
     required String email,
   });
+
   Future<BaseResponse<ResetToken>> verifyOtp({
     required String email,
     required String otpCode,

@@ -20,7 +20,7 @@ class OrdersRepoImpl implements OrdersRepo {
   final OrdersRemoteDataSource _ordersRemoteDataSource;
   final SecureStorage _secureStorage;
 
-  static const bool useDummyData = true;
+  static const bool useDummyData = false;
 
   @override
   Future<BaseResponse<PaginatedResponse<AvailableOrderEntity>>>

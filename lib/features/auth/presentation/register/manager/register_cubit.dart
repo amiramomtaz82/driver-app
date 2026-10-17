@@ -1,9 +1,11 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../../../config/base/base_cubit.dart';
 import '../../../../../config/base/ui_events.dart';
 import '../../../../../config/base_response/base_response.dart';
 import '../../../../../config/resource/resource.dart';
+
 import '../../../../../core/go_routes/routes_names.dart';
 import '../../../../../core/services/image_picker_service.dart';
 import '../../../domain/entities/country.dart';
@@ -15,6 +17,7 @@ import '../../../domain/use_cases/register_use_case.dart';
 
 import 'register_intents.dart';
 import 'register_state.dart';
+
 @injectable
 class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
   final RegisterUseCase _registerUseCase;
@@ -101,6 +104,7 @@ class RegisterCubit extends BaseCubit<RegisterState, UiEvent> {
       case SuccessResponse(:final data):
         emit(state.copyWith(registerResource: Resource.success(data)));
         emitEvent(const NavigateReplacementEvent(AppRoutes.registrationSuccess));
+
       case ErrorResponse(:final errMessage):
         emit(state.copyWith(registerResource: Resource.error(errMessage)));
         emitEvent(ShowSnackBarEvent(message: errMessage, isError: true));

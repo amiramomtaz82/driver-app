@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';
+
 import '../../domain/entities/reset_token_entity.dart';
 import '../../domain/entities/register_form.dart';
 import '../../domain/entities/vehicle_type_entity.dart';
@@ -40,6 +41,7 @@ class AuthRepoImpl implements AuthRepo {
       return responseDto.toEntity();
     });
   }
+
   @override
   Future<BaseResponse<List<Country>>> getCountries() async {
 
@@ -47,7 +49,8 @@ class AuthRepoImpl implements AuthRepo {
       final dtos = await _authRemoteDataSource.getCountries();
       return dtos.map((dto) => dto.toEntity()).toList();
     });
-}
+  }
+
   @override
   Future<BaseResponse<LoginResponseModel>> login({
     required String email,
@@ -67,6 +70,7 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
+
   @override
   Future<BaseResponse<List<VehicleType>>> getVehicleTypes() async {
 
@@ -75,6 +79,7 @@ class AuthRepoImpl implements AuthRepo {
       return dtos.map((dto) => dto.toEntity()).toList();
     });
   }
+
   @override
   Future<BaseResponse<ResetToken>> verifyOtp({
     required String email,
@@ -90,6 +95,7 @@ class AuthRepoImpl implements AuthRepo {
       return ErrorResponse(error: e);
     }
   }
+
   @override
   Future<BaseResponse<AuthMessageEntity>> resetPassword({
     required String resetToken,

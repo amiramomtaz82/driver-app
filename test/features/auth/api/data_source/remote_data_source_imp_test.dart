@@ -94,7 +94,13 @@ void main() {
         VehicleTypeDto(id: 'motorcycle', name: 'Motorcycle'),
       ];
 
-      when(() => mockApiClient.getVehicleTypes()).thenAnswer((_) async => vehicleTypes);
+      when(() => mockApiClient.getVehicleTypes()).thenAnswer(
+        (_) async => const VehicleTypesResponseDto(
+          success: true,
+          message: 'Success',
+          data: vehicleTypes,
+        ),
+      );
 
       final result = await remoteDataSource.getVehicleTypes();
 
