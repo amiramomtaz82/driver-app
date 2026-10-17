@@ -25,7 +25,6 @@ class Endpoints {
   // Profile Endpoints
   static const String getUserProfile = '/api/users/GetProfile';
   static const String updateUserProfile = '/api/users/UpdateProfile';
-  static const String changePassword = '/auth/change-password';
   // Vehicle Endpoints
   static const String getDriverVehicle = '/api/v1/drivers/me/vehicle';
   static const String updateDriverVehicle = '/api/v1/drivers/me/vehicle';

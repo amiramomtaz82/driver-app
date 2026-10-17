@@ -13,9 +13,7 @@ abstract class RegisterModule {
 
   @lazySingleton
   Distance get distance => const Distance();
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-  );
+
   @lazySingleton
   ImagePicker get imagePicker => ImagePicker();
 }
