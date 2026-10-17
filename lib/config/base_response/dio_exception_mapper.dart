@@ -1,12 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/config/base_response/status_code_mapper.dart';
-
 import '../../generated/locale_keys.g.dart';
-
-
 class DioExceptionMapper {
   DioExceptionMapper._();
-
   static String toMessage(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:

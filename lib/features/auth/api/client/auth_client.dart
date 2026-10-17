@@ -4,12 +4,9 @@ import 'package:driver_app/features/auth/data/models/message_response_model.dart
 import 'package:driver_app/features/auth/data/models/verify_otp_response_model.dart';
 import 'package:driver_app/features/auth/data/models/country_dto.dart';
 import 'package:driver_app/features/auth/data/models/vehicle_type_dto.dart';
-
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-
-import '../../data/models/register_request_dto.dart';
 import '../../data/models/register_response_dto.dart';
 
 
@@ -31,13 +28,15 @@ abstract class AuthApiClient {
   @POST(Endpoints.resetPassword)
   Future<MessageResponseModel> resetPassword(@Body() Map<String, dynamic> body);
   @POST(Endpoints.register)
-  Future<RegisterResponseDto> register(@Body() RegisterRequestDto request);
+  @MultiPart()
+  Future<RegisterResponseDto> register(@PartMap() Map<String, dynamic> request);
+
 
   @GET(Endpoints.countries)
   Future<List<CountryDto>> getCountries();
 
   @GET(Endpoints.vehicleTypes)
-  Future<List<VehicleTypeDto>> getVehicleTypes();
+  Future<VehicleTypesResponseDto> getVehicleTypes();
   @POST(Endpoints.loginEndPoint)
   Future<LoginResponseModel> login(@Body() Map<String, dynamic> body);
 

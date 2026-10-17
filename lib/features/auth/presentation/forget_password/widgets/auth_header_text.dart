@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
 class AuthHeaderText extends StatelessWidget {
   const AuthHeaderText({
     super.key,
     required this.title,
     required this.subtitle,
   });
-
   final String title;
   final String subtitle;
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

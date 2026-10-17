@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class AuthSubmitButton extends StatelessWidget {
   const AuthSubmitButton({
     super.key,
@@ -7,13 +6,9 @@ class AuthSubmitButton extends StatelessWidget {
     required this.isLoading,
     required this.onPressed,
   });
-
   final String label;
   final bool isLoading;
-
-  /// `null` disables the button.
   final VoidCallback? onPressed;
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
