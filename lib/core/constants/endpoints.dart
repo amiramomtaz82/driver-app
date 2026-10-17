@@ -17,6 +17,8 @@ class Endpoints {
   static const String countries = '/api/v1/meta/countries';
   static const String vehicleTypes = '/api/v1/meta/vehicle-types';
 
+  static const String changePassword = '/auth/change-password';
+
   static const String availableOrders = '/order/drivers/available-orders';
   static const String acceptOrder = '/order/drivers/me/orders/{orderId}/accept';
 }

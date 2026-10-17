@@ -1,6 +1,7 @@
 import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/change_password/view/change_password_view.dart';
 import '../../features/auth/presentation/forget_password/view/forget_password_view.dart';
 import '../../features/auth/presentation/login/login_view.dart';
 import '../../features/auth/presentation/register/view/register_view.dart';
@@ -40,6 +41,11 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.home,
       name: AppRoutes.home,
       builder: (context, state) => const HomeView(),
+    ),
+    GoRoute(
+      path: AppRoutes.changePassword,
+      name: AppRoutes.changePassword,
+      builder: (context, state) => const ChangePasswordView(),
     ),
   ],
 );

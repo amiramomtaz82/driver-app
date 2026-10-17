@@ -5,7 +5,6 @@ import 'package:driver_app/features/auth/domain/models/login_response_model.dart
 import 'package:injectable/injectable.dart';
 
 
-import '../../../../config/base_response/base_response.dart';
 import '../../../../config/base_response/safe_call.dart';
 import '../../domain/entities/auth_message_entity.dart';
 import '../../domain/entities/country.dart';
@@ -129,6 +128,24 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final result = await _authRemoteDataSource.resetPassword(
         resetToken: resetToken,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+      );
+      return SuccessResponse(result.toEntity());
+    } catch (e) {
+      return ErrorResponse(error: e);
+    }
+  }
+
+  @override
+  Future<BaseResponse<AuthMessageEntity>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) async {
+    try {
+      final result = await _authRemoteDataSource.changePassword(
+        currentPassword: currentPassword,
         newPassword: newPassword,
         confirmNewPassword: confirmNewPassword,
       );

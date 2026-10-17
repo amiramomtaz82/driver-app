@@ -5,12 +5,10 @@ import 'package:driver_app/features/auth/data/models/verify_otp_response_model.d
 import 'package:driver_app/features/auth/data/models/country_dto.dart';
 import 'package:driver_app/features/auth/data/models/vehicle_type_dto.dart';
 
-import 'package:driver_app/core/constants/endpoints.dart';
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../../../core/constants/endpoints.dart';
 import '../../data/models/register_request_dto.dart';
 import '../../data/models/register_response_dto.dart';
 
@@ -42,4 +40,7 @@ abstract class AuthApiClient {
   Future<List<VehicleTypeDto>> getVehicleTypes();
   @POST(Endpoints.loginEndPoint)
   Future<LoginResponseModel> login(@Body() Map<String, dynamic> body);
+
+  @POST(Endpoints.changePassword)
+  Future<MessageResponseModel> changePassword(@Body() Map<String, dynamic> body);
 }

@@ -30,4 +30,10 @@ abstract interface class AuthRemoteDataSource {
 
 
   Future<LoginResponseModel> login(LoginRequestModel request);
+
+  Future<MessageResponseModel> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  });
 }

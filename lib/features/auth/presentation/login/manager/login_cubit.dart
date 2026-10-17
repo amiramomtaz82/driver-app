@@ -1,7 +1,6 @@
 import 'package:driver_app/config/base/ui_events.dart';
 import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/features/auth/domain/models/login_response_model.dart';
-import 'package:driver_app/config/base_response/base_response.dart';
 import 'package:driver_app/config/resource/resource.dart';
 import 'package:driver_app/core/go_routes/routes_names.dart';
 import 'package:driver_app/features/auth/domain/repo/auth_repo.dart';
