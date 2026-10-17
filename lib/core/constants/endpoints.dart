@@ -14,6 +14,8 @@ class Endpoints {
   static const String countries = '/api/v1/countries';
   static const String vehicleTypes = '/api/v1/vehicle-types';
 
+  static const String changePassword = '/auth/change-password';
+
   static const String availableOrders = '/order/drivers/available-orders';
   static const String acceptOrder = '/order/drivers/me/orders/{orderId}/accept';
   static const String activeOrder = '/order/drivers/me/active-order';
@@ -23,7 +25,6 @@ class Endpoints {
   // Profile Endpoints
   static const String getUserProfile = '/api/users/GetProfile';
   static const String updateUserProfile = '/api/users/UpdateProfile';
-  static const String changePassword = '/auth/change-password';
   // Vehicle Endpoints
   static const String getDriverVehicle = '/api/v1/drivers/me/vehicle';
   static const String updateDriverVehicle = '/api/v1/drivers/me/vehicle';

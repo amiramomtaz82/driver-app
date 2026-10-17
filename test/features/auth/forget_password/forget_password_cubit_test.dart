@@ -124,7 +124,17 @@ void main() {
         return cubit;
       },
       seed: () => const ForgetPasswordState(email: email),
-      act: (c) => c.onIntent(const SendCodeSubmitted()),
+      act: (c) {
+        expectLater(
+          c.eventStream,
+          emits(
+            isA<ShowSnackBarEvent>()
+                .having((e) => e.message, 'message', 'Email not found')
+                .having((e) => e.isError, 'isError', true),
+          ),
+        );
+        c.onIntent(const SendCodeSubmitted());
+      },
       expect: () => [
         const ForgetPasswordState(
           email: email,
@@ -135,14 +145,6 @@ void main() {
           sendCodeResource: Resource.error('Email not found'),
         ),
       ],
-      verify: (c) => expectLater(
-        c.eventStream,
-        emits(
-          isA<ShowSnackBarEvent>()
-              .having((e) => e.message, 'message', 'Email not found')
-              .having((e) => e.isError, 'isError', true),
-        ),
-      ),
     );
 
     blocTest<ForgetPasswordCubit, ForgetPasswordState>(
@@ -281,7 +283,19 @@ void main() {
         confirmPassword: 'Pass1234',
         verifyOtpResource: Resource.success(validToken),
       ),
-      act: (c) => c.onIntent(const ResetPasswordSubmitted()),
+      act: (c) {
+        expectLater(
+          c.eventStream,
+          emits(
+            isA<NavigateReplacementEvent>().having(
+              (e) => e.route,
+              'route',
+              AppRoutes.login,
+            ),
+          ),
+        );
+        c.onIntent(const ResetPasswordSubmitted());
+      },
       expect: () => [
         isA<ForgetPasswordState>().having(
           (s) => s.resetPasswordResource.isLoading,
@@ -294,22 +308,12 @@ void main() {
           true,
         ),
       ],
-      verify: (c) async {
+      verify: (c) {
         verify(
           () => mockResetPassword(
             resetToken: 'token',
             newPassword: 'Pass1234',
             confirmNewPassword: 'Pass1234',
-          ),
-        );
-        await expectLater(
-          c.eventStream,
-          emits(
-            isA<NavigateReplacementEvent>().having(
-              (e) => e.route,
-              'route',
-              AppRoutes.login,
-            ),
           ),
         );
       },
@@ -333,7 +337,17 @@ void main() {
         confirmPassword: 'Pass1234',
         verifyOtpResource: Resource.success(validToken),
       ),
-      act: (c) => c.onIntent(const ResetPasswordSubmitted()),
+      act: (c) {
+        expectLater(
+          c.eventStream,
+          emits(
+            isA<ShowSnackBarEvent>()
+                .having((e) => e.message, 'message', 'Weak password')
+                .having((e) => e.isError, 'isError', true),
+          ),
+        );
+        c.onIntent(const ResetPasswordSubmitted());
+      },
       skip: 1,
       expect: () => [
         isA<ForgetPasswordState>()
@@ -344,14 +358,6 @@ void main() {
               'Weak password',
             ),
       ],
-      verify: (c) => expectLater(
-        c.eventStream,
-        emits(
-          isA<ShowSnackBarEvent>()
-              .having((e) => e.message, 'message', 'Weak password')
-              .having((e) => e.isError, 'isError', true),
-        ),
-      ),
     );
 
     blocTest<ForgetPasswordCubit, ForgetPasswordState>(
@@ -395,9 +401,11 @@ void main() {
     blocTest<ForgetPasswordCubit, ForgetPasswordState>(
       'pops the screen on BackPressed from the email step',
       build: () => cubit,
-      act: (c) => c.onIntent(const BackPressed()),
+      act: (c) {
+        expectLater(c.eventStream, emits(isA<PopEvent>()));
+        c.onIntent(const BackPressed());
+      },
       expect: () => <ForgetPasswordState>[],
-      verify: (c) => expectLater(c.eventStream, emits(isA<PopEvent>())),
     );
   });
 }

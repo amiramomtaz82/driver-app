@@ -39,4 +39,7 @@ abstract class AuthApiClient {
   Future<VehicleTypesResponseDto> getVehicleTypes();
   @POST(Endpoints.loginEndPoint)
   Future<LoginResponseModel> login(@Body() Map<String, dynamic> body);
+
+  @POST(Endpoints.changePassword)
+  Future<MessageResponseModel> changePassword(@Body() Map<String, dynamic> body);
 }

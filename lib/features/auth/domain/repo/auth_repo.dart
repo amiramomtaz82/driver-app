@@ -34,4 +34,10 @@ abstract interface class AuthRepo {
     required String password,
     required bool rememberMe,
   });
+
+  Future<BaseResponse<AuthMessageEntity>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  });
 }

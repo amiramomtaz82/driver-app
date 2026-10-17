@@ -70,4 +70,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       'confirmPassword': confirmNewPassword,
     });
   }
+
+  @override
+  Future<MessageResponseModel> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) {
+    return _authApiClient.changePassword({
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+      'confirmNewPassword': confirmNewPassword,
+    });
+  }
 }

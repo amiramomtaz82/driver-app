@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/auth/presentation/change_password/view/change_password_view.dart';
 import '../../features/auth/presentation/forget_password/view/forget_password_view.dart';
 import '../../features/auth/presentation/login/login_view.dart';
 import '../../features/auth/presentation/register/manager/register_cubit.dart';
@@ -175,6 +176,11 @@ final GoRouter appRouter = GoRouter(
           pickupInfo: args.secondaryInfo,
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.changePassword,
+      name: AppRoutes.changePassword,
+      builder: (context, state) => const ChangePasswordView(),
     ),
   ],
 );
